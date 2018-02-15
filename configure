@@ -1,0 +1,2 @@
+rm build/CMakeCache.txt
+cmake -Hsrc -Bbuild
