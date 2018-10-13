@@ -3,20 +3,15 @@
 \name{cpp_blackthunnus}
 \alias{cpp_blackthunnus}
 \alias{blackthunnus}
-\title{Run C++ simulation}
+\title{Run C++ simulation.}
 \usage{
 cpp_blackthunnus(args)
 
 blackthunnus(args = character(0L))
 }
 \arguments{
-\item{args}{command line arguments as a string vector}
-}
-\value{
-tibble
+\item{args}{command line arguments as a string vector.}
 }
 \description{
-Run C++ simulation
-
-Run C++ simulation
+\code{cpp_blackthunnus} is a Rcpp function to call blackthunnus
 }

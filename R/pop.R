@@ -1,3 +1,31 @@
+#' POP format
+#'
+#' @description
+#' `as_pop` converts a result data frame to POP format.
+#' @param .tbl A result data frame
+#' @param min_adult_age integer
+#' @rdname pop
+#' @export
+as_pop = function(.tbl, min_adult_age=5L) {
+  .tbl = .tbl %>%
+    pairwise_parent_offspring(min_adult_age) %>%
+    summarize_pop()
+  class(.tbl) = c(class(.tbl), "pop")
+  .tbl
+}
+
+#' @description
+#' `write_pop` writes a POP data frame to a file.
+#' @param x An outcome of as_pop()
+#' @param path A file name or connection to write to
+#' @rdname pop
+#' @export
+write_pop = function(x, path="pop.txt") {
+  stopifnot(inherits(x, "pop"))
+  readr::write_file("# ckdat:\n", path)
+  readr::write_tsv(x, path, na = "", append = TRUE, col_names = FALSE)
+}
+
 pairwise_parent_offspring = function(.tbl, min_adult_age) {
   .tbl = dplyr::filter(.tbl, !is.na(.data$capture_year))
   adults = .tbl %>%
@@ -20,29 +48,4 @@ summarize_pop = function(.tbl) {
     dplyr::summarise(pops = sum(.data$is_pop), comps = dplyr::n()) %>%
     dplyr::ungroup() %>%
     tidyr::complete_(c(~cohort, ~capture_year, ~capture_age), fill = list(pops = 0L, comps = 0L))
-}
-
-#' Convert a result data frame to POP format
-#' @param .tbl A result data frame
-#' @param min_adult_age integer
-#' @return tibble with additional class name "pop"
-#' @rdname pop
-#' @export
-as_pop = function(.tbl, min_adult_age=5L) {
-  .tbl = .tbl %>%
-    pairwise_parent_offspring(min_adult_age) %>%
-    summarize_pop()
-  class(.tbl) = c(class(.tbl), "pop")
-  .tbl
-}
-
-#' Write a POP data frame to a file
-#' @param x An outcome of as_pop()
-#' @param path A file name or connection to write to
-#' @rdname pop
-#' @export
-write_pop = function(x, path="pop.txt") {
-  stopifnot(inherits(x, "pop"))
-  readr::write_file("# ckdat:\n", path)
-  readr::write_tsv(x, path, na = "", append = TRUE, col_names = FALSE)
 }

@@ -4,7 +4,7 @@
 \alias{as_igraph}
 \alias{leaf_V}
 \alias{find_kinship}
-\title{convert result to igraph}
+\title{Functions for igraph class}
 \usage{
 as_igraph(.tbl)
 
@@ -23,17 +23,10 @@ this argument is ignored. \dQuote{all} is a synonym of \dQuote{total}.}
 
 \item{order}{integer}
 }
-\value{
-igraph
-
-vertices
-
-tibble
-}
 \description{
-convert result to igraph
+\code{as_igraph} converts a result to igraph.
 
-return vertices with zero degree
+\code{leaf_V} returns vertices with zero degree.
 
-find kinship below given order
+\code{find_kinship} finds kinship below given order.
 }

@@ -1,6 +1,8 @@
-#' Run C++ simulation
+#' Read functions
+#'
+#' @description
+#' `read_result` reads a result from blackthunnus.
 #' @inheritParams readr::read_tsv
-#' @return tibble
 #' @rdname read
 #' @export
 read_result = function(file) {

@@ -1,4 +1,7 @@
-#' Make snp table from a result
+#' Functions to process SNPs
+#'
+#' @description
+#' `make_snp` makes snp table from a result.
 #' @param .tbl result tibble
 #' @param lambda mutation rate per haploid per generation
 #' @param rho recombination rate per generation

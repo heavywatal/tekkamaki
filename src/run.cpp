@@ -2,7 +2,8 @@
 #include <Rcpp.h>
 #include <blackthunnus/program.hpp>
 
-//' Run C++ simulation
+//' @description
+//' `cpp_blackthunnus` is a Rcpp function to call blackthunnus
 //' @rdname blackthunnus
 // [[Rcpp::export]]
 Rcpp::CharacterVector cpp_blackthunnus(const std::vector<std::string>& args) {

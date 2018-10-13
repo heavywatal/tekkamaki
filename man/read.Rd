@@ -2,7 +2,7 @@
 % Please edit documentation in R/read.R
 \name{read_result}
 \alias{read_result}
-\title{Run C++ simulation}
+\title{Read functions}
 \usage{
 read_result(file)
 }
@@ -19,9 +19,6 @@ decompressed.
 Literal data is most useful for examples and tests. It must contain at
 least one new line to be recognised as data (instead of a path).}
 }
-\value{
-tibble
-}
 \description{
-Run C++ simulation
+\code{read_result} reads a result from blackthunnus.
 }

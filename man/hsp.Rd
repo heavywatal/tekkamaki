@@ -3,7 +3,7 @@
 \name{as_hsp}
 \alias{as_hsp}
 \alias{write_hsp}
-\title{Convert a result data frame to HSP format}
+\title{HSP format}
 \usage{
 as_hsp(.tbl)
 
@@ -16,11 +16,8 @@ write_hsp(x, path = "hsp.txt")
 
 \item{path}{A file name or connection to write to}
 }
-\value{
-tibble with additional class name "hsp"
-}
 \description{
-Convert a result data frame to HSP format
+\code{as_hsp} converts a result data frame to HSP format.
 
-Write a HSP data frame to a file
+\code{write_hsp} writes a HSP data frame to a file.
 }

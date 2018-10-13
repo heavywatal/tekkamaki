@@ -1,6 +1,8 @@
-#' convert result to igraph
+#' Functions for igraph class
+#'
+#' @description
+#' `as_igraph` converts a result to igraph.
 #' @param .tbl result tibble
-#' @return igraph
 #' @rdname graph
 #' @export
 as_igraph = function(.tbl) {
@@ -10,18 +12,18 @@ as_igraph = function(.tbl) {
     igraph::graph_from_data_frame()
 }
 
-#' return vertices with zero degree
+#' @description
+#' `leaf_V` returns vertices with zero degree.
 #' @inheritParams igraph::degree
-#' @return vertices
 #' @rdname graph
 #' @export
 leaf_V = function(graph, mode = "out") {
   igraph::V(graph)[igraph::degree(graph, mode = mode) < 1]
 }
 
-#' find kinship below given order
+#' @description
+#' `find_kinship` finds kinship below given order.
 #' @param order integer
-#' @return tibble
 #' @rdname graph
 #' @export
 find_kinship = function(.tbl, order = 4L) {

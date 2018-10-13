@@ -1,6 +1,5 @@
-#' Run C++ simulation
-#' @param args command line arguments as a string vector
-#' @return tibble
+#' Run C++ simulation.
+#' @param args command line arguments as a string vector.
 #' @rdname blackthunnus
 #' @export
 blackthunnus = function(args=character(0L)) {

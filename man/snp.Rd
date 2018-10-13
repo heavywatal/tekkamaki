@@ -2,7 +2,7 @@
 % Please edit documentation in R/snp.R
 \name{make_snp}
 \alias{make_snp}
-\title{Make snp table from a result}
+\title{Functions to process SNPs}
 \usage{
 make_snp(.tbl, lambda, rho = 0)
 }
@@ -14,5 +14,5 @@ make_snp(.tbl, lambda, rho = 0)
 \item{rho}{recombination rate per generation}
 }
 \description{
-Make snp table from a result
+\code{make_snp} makes snp table from a result.
 }

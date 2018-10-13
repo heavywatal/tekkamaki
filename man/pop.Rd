@@ -3,7 +3,7 @@
 \name{as_pop}
 \alias{as_pop}
 \alias{write_pop}
-\title{Convert a result data frame to POP format}
+\title{POP format}
 \usage{
 as_pop(.tbl, min_adult_age = 5L)
 
@@ -18,11 +18,8 @@ write_pop(x, path = "pop.txt")
 
 \item{path}{A file name or connection to write to}
 }
-\value{
-tibble with additional class name "pop"
-}
 \description{
-Convert a result data frame to POP format
+\code{as_pop} converts a result data frame to POP format.
 
-Write a POP data frame to a file
+\code{write_pop} writes a POP data frame to a file.
 }
