@@ -8,8 +8,12 @@
 // [[Rcpp::export]]
 Rcpp::CharacterVector cpp_blackthunnus(const std::vector<std::string>& args) {
     try {
+        std::streambuf* obuf = pbt::std_cout_rdbuf(Rcpp::Rcout.rdbuf());
+        std::streambuf* ebuf = pbt::std_cerr_rdbuf(Rcpp::Rcerr.rdbuf());
         pbt::Program program(args);
         program.run();
+        pbt::std_cout_rdbuf(obuf);
+        pbt::std_cout_rdbuf(ebuf);
         return Rcpp::CharacterVector::create(
             Rcpp::Named("sample_family", program.sample_family()),
             Rcpp::Named("demography", program.demography())
