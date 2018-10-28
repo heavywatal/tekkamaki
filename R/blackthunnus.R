@@ -9,6 +9,7 @@ blackthunnus = function(args=character(0L)) {
   args = c("-q", args)
   message(paste(args, collapse = " "))
   .out = cpp_blackthunnus(args)
+  if (length(.out) == 0L) return(invisible(NULL))
   tibble::tibble(
     sample_family = list(read_result(.out[["sample_family"]])),
     demograhy = list(readr::read_tsv(.out[["demography"]]))
