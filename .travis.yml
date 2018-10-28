@@ -1,0 +1,16 @@
+language: r
+sudo: false
+cache: packages
+r:
+- oldrel
+- release
+- devel
+addons:
+  apt:
+    sources:
+    - ubuntu-toolchain-r-test
+    packages:
+    - g++-8
+env:
+  global:
+  - CXX=g++-8

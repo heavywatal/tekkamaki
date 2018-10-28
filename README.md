@@ -1,5 +1,7 @@
 # tekkamaki
 
+[![Build Status](https://travis-ci.com/heavywatal/tekkamaki.svg?branch=master)](https://travis-ci.com/heavywatal/tekkamaki)
+
 R interface to [blackthunnus](https://github.com/heavywatal/blackthunnus)
 
 ## Requirements
