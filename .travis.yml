@@ -14,3 +14,10 @@ addons:
 env:
   global:
   - CXX=g++-8
+branches:
+  except:
+  - /^v?\d+\.\d+/
+notifications:
+  email: false
+  slack:
+    secure: PiP546VeRdbfN9KvdEUaycaOsVYFm23LkT00picRqUDWz8lypdZM5OoqEgmUznz9TTVP30YoRqzgSIdmD+OZe/rnDJvmp7lZNN2qCt8EcoeYWZ7kAKkZvBo6sTCTpsjc4Qw4bIYsOw3IpbSRtfwAg7irMym6nFoSxUGwb0L0oh7zUL3LWH+gYJWlWatMK9HF3F2GAWVgQioK0tNwGKmpSV7NIIqXccaY+SpxqxuHLTx0hjKFkEIV7fIE3BLEx8awMEZ0AT+EFFzhy/IS26yVSI/jiVOIEgy0Ydu7GwBqjvgmGYSSV62Dg/c3AQVGEVqlfu9bkauwsuni/rOGKBM/lVNZ+nhsXlExcjrIXRNESAu5AI4wDHgtlsbd6PJfSGMeKU6kXkmUvARrcICz9yusA+r0cwFPDDL9jrLwtgtpI7U6GBdZ25PCU8XJJ+WXJt4djwv6+YaXGaq74CAVpDLWDYsxDpnt4OBLdMKPrhGunFP0mUv1VH7DEmHHd4VvQ+0/kPfqjSN/OO3PsXaGln3M7BaRmMiLYG64dD8XzPabquUUpJjCmp2azf2TpZDaMQUjzmvPxU2t8nCgqsC3D8rDEK00pT8zWkd5TXR7inp0L3wis2/2y/MSt9S2XbCN5PBcItqNj0cfyC+WphSc15sklpcsDsGLPlh85M+jGgyjKF4=
