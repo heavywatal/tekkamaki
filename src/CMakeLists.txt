@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.1)
 project(tekkamaki
-  VERSION 0.3.2
+  VERSION 0.4.0
   LANGUAGES CXX)
 
 message(STATUS "CMAKE_CURRENT_SOURCE_DIR: ${CMAKE_CURRENT_SOURCE_DIR}")
@@ -13,7 +13,6 @@ if(blackthunnus_FOUND)
   get_filename_component(CMAKE_INSTALL_PREFIX ${INCLUDEDIR}/.. ABSOLUTE)
   install(CODE "message(STATUS ${blackthunnus_DIR})") # to make target 'install'
 else()
-  find_package(Git)
   set(package blackthunnus)
   set(repo heavywatal/${package})
   if(${PROJECT_VERSION} VERSION_LESS 0.1.0)
@@ -24,13 +23,15 @@ else()
     set(branch v${version})
   endif()
   set(subdir ${PROJECT_BINARY_DIR}/${package}-${version})
-  if(NOT EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/${subdir}/.git)
+  if(NOT EXISTS ${subdir})
+    find_package(Git)
     execute_process(COMMAND
       ${GIT_EXECUTABLE} clone --recursive --depth=1 --branch=${branch} https://github.com/${repo}.git ${subdir}
-      WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
     )
   endif()
   message(STATUS "add_subdirectory(${subdir})")
+  set(CMAKE_BUILD_TYPE Release)
+  set(BUILD_EXECUTABLE OFF CACHE BOOL "")
   add_subdirectory(${subdir} ${subdir}/build)
 endif()
 
