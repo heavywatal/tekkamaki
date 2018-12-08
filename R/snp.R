@@ -7,7 +7,7 @@
 #' @param rho recombination rate per generation
 #' @rdname snp
 #' @export
-make_snp = function(.tbl, lambda, rho=0) {
+make_snp = function(.tbl, lambda, rho = 0) {
   if (!missing(rho)) {
     stop("Recombination has not been implemented yet")
   }

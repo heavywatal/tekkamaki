@@ -6,7 +6,7 @@
 #' @param min_adult_age integer
 #' @rdname pop
 #' @export
-as_pop = function(.tbl, min_adult_age=5L) {
+as_pop = function(.tbl, min_adult_age = 5L) {
   .tbl = .tbl %>%
     pairwise_parent_offspring(min_adult_age) %>%
     summarize_pop()
@@ -20,7 +20,7 @@ as_pop = function(.tbl, min_adult_age=5L) {
 #' @param path A file name or connection to write to
 #' @rdname pop
 #' @export
-write_pop = function(x, path="pop.txt") {
+write_pop = function(x, path = "pop.txt") {
   stopifnot(inherits(x, "pop"))
   readr::write_file("# ckdat:\n", path)
   readr::write_tsv(x, path, na = "", append = TRUE, col_names = FALSE)

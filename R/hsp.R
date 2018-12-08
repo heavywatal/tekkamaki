@@ -19,7 +19,7 @@ as_hsp = function(.tbl) {
 #' @param path A file name or connection to write to
 #' @rdname hsp
 #' @export
-write_hsp = function(x, path="hsp.txt") {
+write_hsp = function(x, path = "hsp.txt") {
   stopifnot(inherits(x, "hsp"))
   lines = c(
     "# HSP 1-false-negative ratio",

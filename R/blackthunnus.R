@@ -2,7 +2,7 @@
 #' @param args command line arguments as a string vector.
 #' @rdname blackthunnus
 #' @export
-blackthunnus = function(args=character(0L)) {
+blackthunnus = function(args = character(0L)) {
   if (length(args) == 1L) {
     args = stringr::str_split(args, "\\s+") %>% purrr::flatten_chr()
   }
