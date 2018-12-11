@@ -1,4 +1,4 @@
-# tekkamaki
+# tekkamaki <img src="man/figures/logo.svg" align="right" height=140/>
 
 [![Build Status](https://travis-ci.com/heavywatal/tekkamaki.svg?branch=master)](https://travis-ci.com/heavywatal/tekkamaki)
 
