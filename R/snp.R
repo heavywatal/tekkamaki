@@ -1,6 +1,6 @@
 #' Functions to process SNPs
 #'
-#' @description
+#' @details
 #' `make_snp` makes snp table from a result.
 #' @param .tbl result tibble
 #' @param lambda mutation rate per haploid per generation

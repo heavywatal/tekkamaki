@@ -1,6 +1,6 @@
 #' HSP format
 #'
-#' @description
+#' @details
 #' `as_hsp` converts a result data frame to HSP format.
 #' @param .tbl A result data frame
 #' @rdname hsp
@@ -13,7 +13,7 @@ as_hsp = function(.tbl) {
   .tbl
 }
 
-#' @description
+#' @details
 #' `write_hsp` writes a HSP data frame to a file.
 #' @param x An outcome of as_hsp()
 #' @param path A file name or connection to write to

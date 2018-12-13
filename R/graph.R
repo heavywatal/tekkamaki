@@ -1,6 +1,6 @@
 #' Functions for igraph class
 #'
-#' @description
+#' @details
 #' `as_igraph` converts a result to igraph.
 #' @param .tbl result tibble
 #' @rdname graph
@@ -12,7 +12,7 @@ as_igraph = function(.tbl) {
     igraph::graph_from_data_frame()
 }
 
-#' @description
+#' @details
 #' `leaf_V` returns vertices with zero degree.
 #' @inheritParams igraph::degree
 #' @rdname graph
@@ -21,7 +21,7 @@ leaf_V = function(graph, mode = "out") {
   igraph::V(graph)[igraph::degree(graph, mode = mode) < 1]
 }
 
-#' @description
+#' @details
 #' `find_kinship` finds kinship below given order.
 #' @param order integer
 #' @rdname graph

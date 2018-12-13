@@ -1,6 +1,6 @@
 #' Read functions
 #'
-#' @description
+#' @details
 #' `read_result` reads a result from blackthunnus.
 #' @inheritParams readr::read_tsv
 #' @rdname read

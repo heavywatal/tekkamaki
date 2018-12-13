@@ -2,7 +2,7 @@
 #include <Rcpp.h>
 #include <blackthunnus/program.hpp>
 
-//' @description
+//' @details
 //' `cpp_blackthunnus` is a Rcpp function to call blackthunnus
 //' @rdname blackthunnus
 // [[Rcpp::export]]

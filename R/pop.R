@@ -1,6 +1,6 @@
 #' POP format
 #'
-#' @description
+#' @details
 #' `as_pop` converts a result data frame to POP format.
 #' @param .tbl A result data frame
 #' @param min_adult_age integer
@@ -14,7 +14,7 @@ as_pop = function(.tbl, min_adult_age = 5L) {
   .tbl
 }
 
-#' @description
+#' @details
 #' `write_pop` writes a POP data frame to a file.
 #' @param x An outcome of as_pop()
 #' @param path A file name or connection to write to
