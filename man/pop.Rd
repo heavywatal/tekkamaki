@@ -19,6 +19,9 @@ write_pop(x, path = "pop.txt")
 \item{path}{A file name or connection to write to}
 }
 \description{
+POP format
+}
+\details{
 \code{as_pop} converts a result data frame to POP format.
 
 \code{write_pop} writes a POP data frame to a file.

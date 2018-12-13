@@ -17,6 +17,9 @@ write_hsp(x, path = "hsp.txt")
 \item{path}{A file name or connection to write to}
 }
 \description{
+HSP format
+}
+\details{
 \code{as_hsp} converts a result data frame to HSP format.
 
 \code{write_hsp} writes a HSP data frame to a file.

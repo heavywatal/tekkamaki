@@ -13,5 +13,8 @@ blackthunnus(args = character(0L))
 \item{args}{command line arguments as a string vector.}
 }
 \description{
+Run C++ simulation.
+}
+\details{
 \code{cpp_blackthunnus} is a Rcpp function to call blackthunnus
 }

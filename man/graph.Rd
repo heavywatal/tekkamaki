@@ -24,6 +24,9 @@ this argument is ignored. \dQuote{all} is a synonym of \dQuote{total}.}
 \item{order}{integer}
 }
 \description{
+Functions for igraph class
+}
+\details{
 \code{as_igraph} converts a result to igraph.
 
 \code{leaf_V} returns vertices with zero degree.

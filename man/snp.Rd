@@ -14,5 +14,8 @@ make_snp(.tbl, lambda, rho = 0)
 \item{rho}{recombination rate per generation}
 }
 \description{
+Functions to process SNPs
+}
+\details{
 \code{make_snp} makes snp table from a result.
 }

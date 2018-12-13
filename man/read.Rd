@@ -23,5 +23,8 @@ vector of greater than length 1.
 Using a value of \code{\link[=clipboard]{clipboard()}} will read from the system clipboard.}
 }
 \description{
+Read functions
+}
+\details{
 \code{read_result} reads a result from blackthunnus.
 }
