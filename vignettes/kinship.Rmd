@@ -1,0 +1,47 @@
+---
+title: "Extract Kinship"
+author: "Watal M. Iwasaki"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Extract Kinship}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#"
+)
+```
+
+Run simulation:
+
+```{r simulation, message=FALSE}
+library(dplyr)
+library(tekkamaki)
+
+result = blackthunnus('--seed=42 -y100 -l5') %>% print()
+sample_family = result$sample_family[[1L]] %>% print()
+demography = result$demography[[1L]] %>% print()
+```
+
+Extract kinship with degree&le;4:
+
+```{r find_kinship}
+kinship = find_kinship(sample_family, 4L) %>% print()
+```
+
+Bind other information to kinship data.frame:
+
+```{r }
+sampled = sample_family %>%
+  dplyr::filter(!is.na(capture_year)) %>%
+  dplyr::transmute(id, location, capture_year, age = capture_year - birth_year) %>%
+  print()
+
+kinship %>%
+  dplyr::left_join(sampled, by = c(from = "id")) %>%
+  dplyr::left_join(sampled, by = c(to = "id"), suffix = c("_from", "_to"))
+```

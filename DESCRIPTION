@@ -19,11 +19,13 @@ Imports:
   tidyr (>= 0.8.1),
   Rcpp (>= 0.12.19)
 Suggests:
-  ggplot2,
-  knitr
+    ggplot2,
+    knitr,
+    rmarkdown
 URL: https://github.com/heavywatal/blackthunnus
 BugReports: https://github.com/heavywatal/blackthunnus/issues
 RoxygenNote: 6.1.1
 Roxygen: list(markdown = TRUE)
 LinkingTo: Rcpp
 SystemRequirements: C++11, CMake (>= 3.1.0)
+VignetteBuilder: knitr
