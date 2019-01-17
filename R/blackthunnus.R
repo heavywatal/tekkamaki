@@ -11,6 +11,6 @@ blackthunnus = function(args = character(0L)) {
   if (length(.out) == 0L) return(invisible(NULL))
   tibble::tibble(
     sample_family = list(read_result(.out[["sample_family"]])),
-    demograhy = list(readr::read_tsv(.out[["demography"]]))
+    demography = list(readr::read_tsv(.out[["demography"]]))
   )
 }
