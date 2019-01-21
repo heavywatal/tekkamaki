@@ -5,6 +5,19 @@
 
 using namespace Rcpp;
 
+// cpp_rnbinom
+std::vector<int> cpp_rnbinom(int n, double size, double mu);
+RcppExport SEXP _tekkamaki_cpp_rnbinom(SEXP nSEXP, SEXP sizeSEXP, SEXP muSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< int >::type n(nSEXP);
+    Rcpp::traits::input_parameter< double >::type size(sizeSEXP);
+    Rcpp::traits::input_parameter< double >::type mu(muSEXP);
+    rcpp_result_gen = Rcpp::wrap(cpp_rnbinom(n, size, mu));
+    return rcpp_result_gen;
+END_RCPP
+}
 // cpp_blackthunnus
 Rcpp::CharacterVector cpp_blackthunnus(const std::vector<std::string>& args);
 RcppExport SEXP _tekkamaki_cpp_blackthunnus(SEXP argsSEXP) {
@@ -18,6 +31,7 @@ END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
+    {"_tekkamaki_cpp_rnbinom", (DL_FUNC) &_tekkamaki_cpp_rnbinom, 3},
     {"_tekkamaki_cpp_blackthunnus", (DL_FUNC) &_tekkamaki_cpp_blackthunnus, 1},
     {NULL, NULL, 0}
 };
