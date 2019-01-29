@@ -22,7 +22,7 @@ Run simulation:
 library(dplyr)
 library(tekkamaki)
 
-result = blackthunnus('--seed=42 -y100 -l5') %>% print()
+result = tekka('--seed=42 -y100 -l5') %>% print()
 sample_family = result$sample_family[[1L]] %>% print()
 demography = result$demography[[1L]] %>% print()
 ```

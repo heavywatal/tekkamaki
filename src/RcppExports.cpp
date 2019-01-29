@@ -18,21 +18,21 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// cpp_blackthunnus
-Rcpp::CharacterVector cpp_blackthunnus(const std::vector<std::string>& args);
-RcppExport SEXP _tekkamaki_cpp_blackthunnus(SEXP argsSEXP) {
+// cpp_tekka
+Rcpp::CharacterVector cpp_tekka(const std::vector<std::string>& args);
+RcppExport SEXP _tekkamaki_cpp_tekka(SEXP argsSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< const std::vector<std::string>& >::type args(argsSEXP);
-    rcpp_result_gen = Rcpp::wrap(cpp_blackthunnus(args));
+    rcpp_result_gen = Rcpp::wrap(cpp_tekka(args));
     return rcpp_result_gen;
 END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
     {"_tekkamaki_cpp_rnbinom", (DL_FUNC) &_tekkamaki_cpp_rnbinom, 3},
-    {"_tekkamaki_cpp_blackthunnus", (DL_FUNC) &_tekkamaki_cpp_blackthunnus, 1},
+    {"_tekkamaki_cpp_tekka", (DL_FUNC) &_tekkamaki_cpp_tekka, 1},
     {NULL, NULL, 0}
 };
 

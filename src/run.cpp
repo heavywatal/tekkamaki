@@ -1,19 +1,19 @@
 // [[Rcpp::plugins(cpp11)]]
 #include <Rcpp.h>
-#include <blackthunnus/program.hpp>
+#include <tekka/program.hpp>
 
 //' @details
-//' `cpp_blackthunnus` is a Rcpp function to call blackthunnus
-//' @rdname blackthunnus
+//' `cpp_tekka` is a Rcpp function to call tekka
+//' @rdname tekka
 // [[Rcpp::export]]
-Rcpp::CharacterVector cpp_blackthunnus(const std::vector<std::string>& args) {
+Rcpp::CharacterVector cpp_tekka(const std::vector<std::string>& args) {
     try {
-        std::streambuf* obuf = pbt::std_cout_rdbuf(Rcpp::Rcout.rdbuf());
-        std::streambuf* ebuf = pbt::std_cerr_rdbuf(Rcpp::Rcerr.rdbuf());
-        pbt::Program program(args);
+        std::streambuf* obuf = pbf::std_cout_rdbuf(Rcpp::Rcout.rdbuf());
+        std::streambuf* ebuf = pbf::std_cerr_rdbuf(Rcpp::Rcerr.rdbuf());
+        pbf::Program program(args);
         program.run();
-        pbt::std_cout_rdbuf(obuf);
-        pbt::std_cout_rdbuf(ebuf);
+        pbf::std_cout_rdbuf(obuf);
+        pbf::std_cout_rdbuf(ebuf);
         return Rcpp::CharacterVector::create(
             Rcpp::Named("sample_family", program.sample_family()),
             Rcpp::Named("demography", program.demography())

@@ -11,9 +11,9 @@ cpp_rnbinom <- function(n, size, mu) {
 }
 
 #' @details
-#' `cpp_blackthunnus` is a Rcpp function to call blackthunnus
-#' @rdname blackthunnus
-cpp_blackthunnus <- function(args) {
-    .Call(`_tekkamaki_cpp_blackthunnus`, args)
+#' `cpp_tekka` is a Rcpp function to call tekka
+#' @rdname tekka
+cpp_tekka <- function(args) {
+    .Call(`_tekkamaki_cpp_tekka`, args)
 }
 

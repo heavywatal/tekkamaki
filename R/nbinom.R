@@ -1,4 +1,4 @@
-#' Test negative_binomial_distribution in blackthunnus simulation
+#' Test negative_binomial_distribution in tekka simulation
 #'
 #' @details
 #' `plot_nbinom` draws distributions with various parameter sets.

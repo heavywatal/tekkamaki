@@ -1,19 +1,19 @@
 cmake_minimum_required(VERSION 3.1)
 project(tekkamaki
-  VERSION 0.4.2
+  VERSION 0.5.0
   LANGUAGES CXX)
 
 message(STATUS "CMAKE_CURRENT_SOURCE_DIR: ${CMAKE_CURRENT_SOURCE_DIR}")
 include(GNUInstallDirs)
 set(CMAKE_VERBOSE_MAKEFILE ON)
 
-find_package(blackthunnus ${PROJECT_VERSION})
-if(blackthunnus_FOUND)
-  get_target_property(INCLUDEDIR blackthunnus::blackthunnus INTERFACE_INCLUDE_DIRECTORIES)
+find_package(tekka ${PROJECT_VERSION})
+if(tekka_FOUND)
+  get_target_property(INCLUDEDIR tekka::tekka INTERFACE_INCLUDE_DIRECTORIES)
   get_filename_component(CMAKE_INSTALL_PREFIX ${INCLUDEDIR}/.. ABSOLUTE)
-  install(CODE "message(STATUS ${blackthunnus_DIR})") # to make target 'install'
+  install(CODE "message(STATUS ${tekka_DIR})") # to make target 'install'
 else()
-  set(package blackthunnus)
+  set(package tekka)
   set(repo heavywatal/${package})
   if(${PROJECT_VERSION} VERSION_LESS 0.1.0)
     set(version HEAD)
@@ -41,7 +41,7 @@ endif()
 set(LIBDIR ${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR})
 set(CPPFLAGS "-I${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_INCLUDEDIR}")
 set(LDFLAGS "-L${LIBDIR} -Wl,-rpath,${LIBDIR}")
-set(LDLIBS "-lblackthunnus")
+set(LDLIBS "-ltekka")
 message(STATUS "CPPFLAGS: ${CPPFLAGS}")
 message(STATUS "LDFLAGS: ${LDFLAGS}")
 configure_file(

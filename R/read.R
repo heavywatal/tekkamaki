@@ -1,7 +1,7 @@
 #' Read functions
 #'
 #' @details
-#' `read_result` reads a result from blackthunnus.
+#' `read_result` reads a result from tekka.
 #' @inheritParams readr::read_tsv
 #' @rdname read
 #' @export
