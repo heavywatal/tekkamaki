@@ -27,5 +27,5 @@ BugReports: https://github.com/heavywatal/tekkamaki/issues
 RoxygenNote: 6.1.1
 Roxygen: list(markdown = TRUE)
 LinkingTo: Rcpp
-SystemRequirements: C++11, CMake (>= 3.1.0)
+SystemRequirements: C++11, CMake (>= 3.4.0)
 VignetteBuilder: knitr
