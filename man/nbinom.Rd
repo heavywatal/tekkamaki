@@ -3,7 +3,7 @@
 \name{cpp_rnbinom}
 \alias{cpp_rnbinom}
 \alias{plot_nbinom}
-\title{Test negative_binomial_distribution in blackthunnus simulation}
+\title{Test negative_binomial_distribution in tekka simulation}
 \usage{
 cpp_rnbinom(n, size, mu)
 
@@ -20,7 +20,7 @@ plot_nbinom(n = 10000L)
 \item{mu}{alternative parametrization via mean: see \sQuote{Details}.}
 }
 \description{
-Test negative_binomial_distribution in blackthunnus simulation
+Test negative_binomial_distribution in tekka simulation
 }
 \details{
 \code{cpp_rnbinom} generates nbinom random numbers.

@@ -26,5 +26,5 @@ Using a value of \code{\link[=clipboard]{clipboard()}} will read from the system
 Read functions
 }
 \details{
-\code{read_result} reads a result from blackthunnus.
+\code{read_result} reads a result from tekka.
 }
