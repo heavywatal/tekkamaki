@@ -5,6 +5,46 @@
 
 using namespace Rcpp;
 
+// migration_matrices
+Rcpp::List migration_matrices();
+RcppExport SEXP _tekkamaki_migration_matrices() {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    rcpp_result_gen = Rcpp::wrap(migration_matrices());
+    return rcpp_result_gen;
+END_RCPP
+}
+// natural_mortality
+Rcpp::NumericVector natural_mortality();
+RcppExport SEXP _tekkamaki_natural_mortality() {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    rcpp_result_gen = Rcpp::wrap(natural_mortality());
+    return rcpp_result_gen;
+END_RCPP
+}
+// fishing_mortality
+Rcpp::NumericVector fishing_mortality();
+RcppExport SEXP _tekkamaki_fishing_mortality() {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    rcpp_result_gen = Rcpp::wrap(fishing_mortality());
+    return rcpp_result_gen;
+END_RCPP
+}
+// weight_for_age
+Rcpp::NumericVector weight_for_age();
+RcppExport SEXP _tekkamaki_weight_for_age() {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    rcpp_result_gen = Rcpp::wrap(weight_for_age());
+    return rcpp_result_gen;
+END_RCPP
+}
 // cpp_rnbinom
 std::vector<int> cpp_rnbinom(int n, double size, double mu);
 RcppExport SEXP _tekkamaki_cpp_rnbinom(SEXP nSEXP, SEXP sizeSEXP, SEXP muSEXP) {
@@ -31,6 +71,10 @@ END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
+    {"_tekkamaki_migration_matrices", (DL_FUNC) &_tekkamaki_migration_matrices, 0},
+    {"_tekkamaki_natural_mortality", (DL_FUNC) &_tekkamaki_natural_mortality, 0},
+    {"_tekkamaki_fishing_mortality", (DL_FUNC) &_tekkamaki_fishing_mortality, 0},
+    {"_tekkamaki_weight_for_age", (DL_FUNC) &_tekkamaki_weight_for_age, 0},
     {"_tekkamaki_cpp_rnbinom", (DL_FUNC) &_tekkamaki_cpp_rnbinom, 3},
     {"_tekkamaki_cpp_tekka", (DL_FUNC) &_tekkamaki_cpp_tekka, 1},
     {NULL, NULL, 0}
