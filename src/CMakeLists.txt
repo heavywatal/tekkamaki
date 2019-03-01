@@ -32,6 +32,7 @@ else()
   message(STATUS "add_subdirectory(${subdir})")
   set(CMAKE_BUILD_TYPE Release)
   set(BUILD_EXECUTABLE OFF CACHE BOOL "")
+  set(BUILD_TESTING OFF CACHE BOOL "")
   add_subdirectory(${subdir} ${subdir}/build)
 endif()
 
