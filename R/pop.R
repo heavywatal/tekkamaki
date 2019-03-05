@@ -30,7 +30,7 @@ pairwise_parent_offspring = function(.tbl, min_adult_age) {
   .tbl = dplyr::filter(.tbl, !is.na(.data$capture_year))
   adults = .tbl %>%
     dplyr::filter(.data$capture_year - .data$birth_year >= min_adult_age) %>%
-    dplyr::transmute(.data$id, .data$capture_year, adult_birth_year = .data$birth_year)
+    dplyr::transmute(.data$id, .data$capture_year, adult_birth_year = .data$birth_year, .data$location)
   juveniles = .tbl %>%
     dplyr::transmute(.data$id, cohort = .data$birth_year, .data$mother_id, .data$father_id)
   tidyr::crossing(id = .tbl$id, adult_id = adults$id) %>%
@@ -44,7 +44,7 @@ pairwise_parent_offspring = function(.tbl, min_adult_age) {
 summarize_pop = function(.tbl) {
   .tbl %>%
     dplyr::mutate(capture_age = .data$capture_year - .data$adult_birth_year) %>%
-    dplyr::group_by(.data$cohort, .data$capture_year, .data$capture_age) %>%
+    dplyr::group_by(.data$cohort, .data$capture_year, .data$capture_age, .data$location) %>%
     dplyr::summarise(pops = sum(.data$is_pop), comps = dplyr::n()) %>%
     dplyr::ungroup() %>%
     tidyr::complete_(c(~cohort, ~capture_year, ~capture_age), fill = list(pops = 0L, comps = 0L))
