@@ -35,9 +35,9 @@ write_hsp = function(x, path = "hsp.txt") {
 pairwise_half_sibling = function(.tbl) {
   .tbl = dplyr::filter(.tbl, !is.na(.data$capture_year))
   tsv_i = .tbl %>%
-    dplyr::transmute(.data$id, mother_i = .data$mother_id, father_i = .data$father_id, cohort_i = .data$birth_year)
+    dplyr::transmute(.data$id, mother_i = .data$mother_id, father_i = .data$father_id, cohort_i = .data$birth_year, location_i = .data$location)
   tsv_j = .tbl %>%
-    dplyr::transmute(.data$id, mother_j = .data$mother_id, father_j = .data$father_id, cohort_j = .data$birth_year)
+    dplyr::transmute(.data$id, mother_j = .data$mother_id, father_j = .data$father_id, cohort_j = .data$birth_year, location_j = .data$location)
   tidyr::crossing(id_i = .tbl$id, id_j = .tbl$id) %>%
     dplyr::filter(.data$id_i < .data$id_j) %>%
     dplyr::left_join(tsv_i, by = c(id_i = "id")) %>%
@@ -47,7 +47,7 @@ pairwise_half_sibling = function(.tbl) {
 
 summarize_hsp = function(.tbl) {
   .tbl %>%
-    dplyr::group_by(.data$cohort_i, .data$cohort_j) %>%
+    dplyr::group_by(.data$cohort_i, .data$cohort_j, .data$location_i, .data$location_j) %>%
     dplyr::summarise(comps = dplyr::n(), hsps = sum(.data$is_hsp)) %>%
     dplyr::ungroup()
 }
