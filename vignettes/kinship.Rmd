@@ -1,7 +1,5 @@
 ---
 title: "Extract Kinship"
-author: "Watal M. Iwasaki"
-date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Extract Kinship}
@@ -12,19 +10,18 @@ vignette: >
 ```{r setup, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#"
+  comment = "#>"
 )
 ```
 
 Run simulation:
 
-```{r simulation, message=FALSE}
+```{r simulation, message = FALSE}
 library(dplyr)
 library(tekkamaki)
 
-result = tekka('--seed=42 -y100 -l5') %>% print()
+result = tekka('--seed=42 -y100 -l5 --sa 10,10 --sj 10,10') %>% print()
 sample_family = result$sample_family[[1L]] %>% print()
-demography = result$demography[[1L]] %>% print()
 ```
 
 Extract kinship with degree&le;4:
