@@ -1,0 +1,16 @@
+destination: docs
+reference:
+- title: Run simulation
+  contents:
+  - tekka
+  - read_result
+  - make_snp
+- title: Kinship
+  contents:
+  - find_kinship
+  - as_hsp
+  - as_pop
+- title: Misc.
+  contents:
+  - ends_with("nbinom")
+  - migration_matrices

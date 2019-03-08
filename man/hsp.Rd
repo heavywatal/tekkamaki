@@ -10,9 +10,9 @@ as_hsp(.tbl)
 write_hsp(x, path = "hsp.txt")
 }
 \arguments{
-\item{.tbl}{A result data frame}
+\item{.tbl}{sample_family}
 
-\item{x}{An outcome of as_hsp()}
+\item{x}{An outcome of \code{\link[=as_hsp]{as_hsp()}}}
 
 \item{path}{A file name or connection to write to}
 }

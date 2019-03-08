@@ -2,7 +2,7 @@
 #'
 #' @details
 #' `as_igraph` converts a result to igraph.
-#' @param .tbl result tibble
+#' @param .tbl sample_family
 #' @rdname graph
 #' @export
 as_igraph = function(.tbl) {

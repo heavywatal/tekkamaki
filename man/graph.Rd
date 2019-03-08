@@ -13,7 +13,7 @@ leaf_V(graph, mode = "out")
 find_kinship(.tbl, order = 4L)
 }
 \arguments{
-\item{.tbl}{result tibble}
+\item{.tbl}{sample_family}
 
 \item{graph}{The graph to analyze.}
 

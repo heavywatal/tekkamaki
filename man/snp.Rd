@@ -7,7 +7,7 @@
 make_snp(.tbl, lambda, rho = 0)
 }
 \arguments{
-\item{.tbl}{result tibble}
+\item{.tbl}{sample_family}
 
 \item{lambda}{mutation rate per haploid per generation}
 

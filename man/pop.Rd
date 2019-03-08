@@ -10,11 +10,11 @@ as_pop(.tbl, min_adult_age = 5L)
 write_pop(x, path = "pop.txt")
 }
 \arguments{
-\item{.tbl}{A result data frame}
+\item{.tbl}{sample_family}
 
 \item{min_adult_age}{integer}
 
-\item{x}{An outcome of as_pop()}
+\item{x}{An outcome of \code{\link[=as_pop]{as_pop()}}}
 
 \item{path}{A file name or connection to write to}
 }
