@@ -21,7 +21,8 @@ Imports:
 Suggests:
     ggplot2,
     knitr,
-    rmarkdown
+    rmarkdown,
+    testthat
 URL: https://github.com/heavywatal/tekkamaki
 BugReports: https://github.com/heavywatal/tekkamaki/issues
 RoxygenNote: 6.1.1
