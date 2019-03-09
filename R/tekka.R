@@ -6,7 +6,6 @@ tekka = function(args = character(0L)) {
   if (length(args) == 1L) {
     args = stringr::str_split(args, "\\s+") %>% purrr::flatten_chr()
   }
-  message(paste(args, collapse = " "))
   .out = cpp_tekka(args)
   if (length(.out) == 0L) return(invisible(NULL))
   tibble::tibble(
