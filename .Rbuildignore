@@ -1,10 +1,11 @@
-^_pkgdown\.yml$
-^Meta$
-^doc$
 ^.*\.Rproj$
 ^\.Rproj\.user$
-^pkgdown$
 ^\.travis\.yml$
 ^\.vscode$
+^Meta$
+^doc$
+^codecov\.yml$
 ^docs$
 ^data-raw$
+^pkgdown$
+^_pkgdown\.yml$

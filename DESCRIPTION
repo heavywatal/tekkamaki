@@ -19,6 +19,7 @@ Imports:
     tidyr (>= 0.8.2),
     Rcpp (>= 1.0.0)
 Suggests:
+    covr,
     ggplot2,
     knitr,
     rmarkdown,
