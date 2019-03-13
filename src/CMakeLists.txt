@@ -7,7 +7,7 @@ message(STATUS "CMAKE_CURRENT_SOURCE_DIR: ${CMAKE_CURRENT_SOURCE_DIR}")
 include(GNUInstallDirs)
 set(CMAKE_VERBOSE_MAKEFILE ON)
 
-find_package(tekka ${PROJECT_VERSION})
+find_package(tekka ${PROJECT_VERSION} QUIET)
 if(tekka_FOUND)
   get_target_property(INCLUDEDIR tekka::tekka INTERFACE_INCLUDE_DIRECTORIES)
   get_filename_component(CMAKE_INSTALL_PREFIX ${INCLUDEDIR}/.. ABSOLUTE)
