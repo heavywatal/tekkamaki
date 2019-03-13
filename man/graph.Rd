@@ -2,24 +2,15 @@
 % Please edit documentation in R/graph.R
 \name{as_igraph}
 \alias{as_igraph}
-\alias{leaf_V}
 \alias{find_kinship}
 \title{Functions for igraph class}
 \usage{
 as_igraph(.tbl)
 
-leaf_V(graph, mode = "out")
-
 find_kinship(.tbl, order = 4L)
 }
 \arguments{
 \item{.tbl}{sample_family}
-
-\item{graph}{The graph to analyze.}
-
-\item{mode}{Character string, \dQuote{out} for out-degree, \dQuote{in} for
-in-degree or \dQuote{total} for the sum of the two. For undirected graphs
-this argument is ignored. \dQuote{all} is a synonym of \dQuote{total}.}
 
 \item{order}{integer}
 }
@@ -28,8 +19,6 @@ Functions for igraph class
 }
 \details{
 \code{as_igraph} converts a result to igraph.
-
-\code{leaf_V} returns vertices with zero degree.
 
 \code{find_kinship} finds kinship below given order.
 }

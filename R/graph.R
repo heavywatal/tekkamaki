@@ -9,16 +9,7 @@ as_igraph = function(.tbl) {
   .tbl %>%
     gather_chromosome() %>%
     dplyr::select(.data$parent_id, .data$id) %>%
-    igraph::graph_from_data_frame()
-}
-
-#' @details
-#' `leaf_V` returns vertices with zero degree.
-#' @inheritParams igraph::degree
-#' @rdname graph
-#' @export
-leaf_V = function(graph, mode = "out") {
-  igraph::V(graph)[igraph::degree(graph, mode = mode) < 1]
+    igraphlite::graph_from_data_frame()
 }
 
 #' @details
@@ -40,11 +31,10 @@ find_kinship = function(.tbl, order = 4L) {
 # find pairs
 find_kinship_impl = function(graph, nodes, order) {
   stopifnot(is.character(nodes))
-  .ego = igraph::ego(graph, order = order, nodes = nodes, mode = "all")
-  tibble::tibble(
-    from = nodes,
-    to = purrr::map(.ego, ~ .x$name[.x$name %in% nodes])
-  ) %>%
+  vids = igraphlite::as_vids(graph, nodes)
+  kins = igraphlite::neighborhood(graph, vids, order = order, mode = 3L) %>%
+    lapply(function(x) x[x %in% vids])
+  tibble::tibble(from = vids, to = kins) %>%
     tidyr::unnest() %>%
     dplyr::filter(.data$from < .data$to) %>%
     dplyr::arrange(.data$from, .data$to)
@@ -52,13 +42,16 @@ find_kinship_impl = function(graph, nodes, order) {
 
 # add columns: path and degree
 find_shortest_paths = function(kinship, graph) {
-  .path = purrr::pmap(kinship, function(from, to, ...) {
-    igraph::all_shortest_paths(graph, from, to, mode = "all", weights = NA)$res %>%
-      purrr::map(igraph::as_ids)
-  })
-  kinship %>%
-    dplyr::mutate(path = .path) %>%
+  .to = split(kinship$to, kinship$from)
+  .from = as.integer(names(.to))
+  .path = purrr::map2(.from, .to, igraphlite::get_all_shortest_paths, graph = graph, mode = 3)
+  tibble::tibble(from = .from, path = .path) %>%
     tidyr::unnest() %>%
+    dplyr::mutate(
+      path = lapply(.data$path, igraphlite::as_vnames, graph = graph),
+      to = purrr::map_chr(.data$path, ~ .x[length(.x)]),
+      from = igraphlite::as_vnames(graph, .data$from)
+    ) %>%
     dplyr::filter(!purrr::map_lgl(.data$path, ~ "0" %in% .x))
 }
 
