@@ -72,6 +72,6 @@ label_kinship = function(kinship) {
       degree = nchar(.data$path),
       path = paste(.data$path, .data$n, sep = "_"),
       n = NULL,
-      label = kinlabels[.data$path]
+      label = factor(kinlabels[.data$path], levels = unique(kinlabels))
     )
 }
