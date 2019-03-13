@@ -59,7 +59,7 @@ find_shortest_paths = function(kinship, graph) {
   kinship %>%
     dplyr::mutate(path = .path) %>%
     tidyr::unnest() %>%
-    dplyr::filter(!purrr::map_lgl(.data$path, ~ "0x0" %in% .x))
+    dplyr::filter(!purrr::map_lgl(.data$path, ~ "0" %in% .x))
 }
 
 label_kinship = function(kinship) {
