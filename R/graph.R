@@ -65,6 +65,7 @@ find_shortest_paths = function(kinship, graph) {
 label_kinship = function(kinship) {
   kinship %>%
     dplyr::mutate(path = purrr::map_chr(.data$path, paste0, collapse = "")) %>%
+    dplyr::filter(stringr::str_detect(.data$path, "01", negate = TRUE)) %>%
     dplyr::count(.data$from, .data$to, .data$path) %>%
     dplyr::ungroup() %>%
     dplyr::mutate(
