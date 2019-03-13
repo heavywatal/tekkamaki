@@ -10,7 +10,11 @@ kinlabels = c(
   `110_2` = "UN",
   `100_2` = "UN",
   `1100_1` = "HC",
-  `1100_2` = "C"
+  `1100_2` = "C",
+  `1110_1` = "HGUN",
+  `1000_1` = "HGUN",
+  `1110_2` = "GUN",
+  `1000_2` = "GUN"
 )
 
 devtools::use_data(kinlabels, overwrite = TRUE, internal = TRUE)
