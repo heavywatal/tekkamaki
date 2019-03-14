@@ -13,7 +13,7 @@ env:
   - _R_CHECK_FORCE_SUGGESTS_=FALSE
   - _R_CHECK_SYSTEM_CLOCK_=FALSE
   - MAKEFLAGS="-j 2"
-before_script:
+before_install:
 - mkdir -p ~/.R
 - echo "CXX = $CXX" > ~/.R/Makevars
 - echo "CXX14 = $CXX" >> ~/.R/Makevars
