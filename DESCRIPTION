@@ -25,7 +25,7 @@ Suggests:
     rmarkdown,
     testthat
 Remotes:
-    github:heavywatal/rigraphlite
+    github::heavywatal/rigraphlite
 URL: https://github.com/heavywatal/tekkamaki
 BugReports: https://github.com/heavywatal/tekkamaki/issues
 RoxygenNote: 6.1.1
