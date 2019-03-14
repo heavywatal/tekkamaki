@@ -7,8 +7,9 @@
 #' @export
 as_igraph = function(.tbl) {
   .tbl %>%
-    gather_chromosome() %>%
-    dplyr::select(.data$parent_id, .data$id) %>%
+    dplyr::select(dplyr::ends_with("id")) %>%
+    tidyr::gather("key", "parent_id", dplyr::ends_with("_id")) %>%
+    dplyr::select("parent_id", "id") %>%
     igraphlite::graph_from_data_frame()
 }
 
@@ -19,9 +20,10 @@ as_igraph = function(.tbl) {
 #' @export
 find_kinship = function(.tbl, order = 4L) {
   graph = as_igraph(.tbl)
-  sampled_nodes = dplyr::filter(.tbl, !is.na(.data$capture_year))$id
+  nodes = dplyr::filter(.tbl, !is.na(.data$capture_year))$id
+  vids = igraphlite::as_vids(graph, nodes)
   birth_year = stats::setNames(.tbl$birth_year, .tbl$id)
-  find_kinship_impl(graph, sampled_nodes, order = order) %>%
+  find_kinship_impl(graph, vids, order = order) %>%
     find_shortest_paths(graph) %>%
     dplyr::mutate(path = purrr::map(.data$path, ~ as.integer(diff(birth_year[.x]) < 0L))) %>%
     dplyr::filter(purrr::map_lgl(.data$path, ~ length(rle(.x)$lengths) < 3L && !identical(.x, c(0L, 1L)))) %>%
@@ -29,9 +31,7 @@ find_kinship = function(.tbl, order = 4L) {
 }
 
 # find pairs
-find_kinship_impl = function(graph, nodes, order) {
-  stopifnot(is.character(nodes))
-  vids = igraphlite::as_vids(graph, nodes)
+find_kinship_impl = function(graph, vids, order) {
   kins = igraphlite::neighborhood(graph, vids, order = order, mode = 3L) %>%
     lapply(function(x) x[x %in% vids])
   tibble::tibble(from = vids, to = kins) %>%
