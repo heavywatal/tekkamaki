@@ -1,9 +1,6 @@
 language: r
 cache: packages
-r:
-- oldrel
-- release
-- devel
+warnings_are_errors: false
 addons:
   apt:
     sources:
@@ -16,6 +13,18 @@ env:
   - _R_CHECK_FORCE_SUGGESTS_=FALSE
   - _R_CHECK_SYSTEM_CLOCK_=FALSE
   - MAKEFLAGS="-j 2"
+before_script:
+- mkdir -p ~/.R
+- echo "CXX = $CXX" > ~/.R/Makevars
+- echo "CXX14 = $CXX" >> ~/.R/Makevars
+- echo "CXX14FLAGS = $(R CMD config CXXFLAGS) -fPIC" >> ~/.R/Makevars
+matrix:
+  include:
+  - r: devel
+  - r: release
+    after_success:
+    - Rscript -e 'covr::codecov()'
+  - r: oldrel
 branches:
   except:
   - /^v?\d+\.\d+/
@@ -23,5 +32,3 @@ notifications:
   email: false
   slack:
     secure: PiP546VeRdbfN9KvdEUaycaOsVYFm23LkT00picRqUDWz8lypdZM5OoqEgmUznz9TTVP30YoRqzgSIdmD+OZe/rnDJvmp7lZNN2qCt8EcoeYWZ7kAKkZvBo6sTCTpsjc4Qw4bIYsOw3IpbSRtfwAg7irMym6nFoSxUGwb0L0oh7zUL3LWH+gYJWlWatMK9HF3F2GAWVgQioK0tNwGKmpSV7NIIqXccaY+SpxqxuHLTx0hjKFkEIV7fIE3BLEx8awMEZ0AT+EFFzhy/IS26yVSI/jiVOIEgy0Ydu7GwBqjvgmGYSSV62Dg/c3AQVGEVqlfu9bkauwsuni/rOGKBM/lVNZ+nhsXlExcjrIXRNESAu5AI4wDHgtlsbd6PJfSGMeKU6kXkmUvARrcICz9yusA+r0cwFPDDL9jrLwtgtpI7U6GBdZ25PCU8XJJ+WXJt4djwv6+YaXGaq74CAVpDLWDYsxDpnt4OBLdMKPrhGunFP0mUv1VH7DEmHHd4VvQ+0/kPfqjSN/OO3PsXaGln3M7BaRmMiLYG64dD8XzPabquUUpJjCmp2azf2TpZDaMQUjzmvPxU2t8nCgqsC3D8rDEK00pT8zWkd5TXR7inp0L3wis2/2y/MSt9S2XbCN5PBcItqNj0cfyC+WphSc15sklpcsDsGLPlh85M+jGgyjKF4=
-after_success:
-- Rscript -e 'covr::codecov()'
