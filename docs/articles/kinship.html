@@ -123,9 +123,9 @@
 <a class="sourceLine" id="cb1-23" title="23"><span class="co">#&gt; # … with 3,857 more rows</span></a></code></pre></div>
 <p>Extract kinship with degree≤4:</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" title="1">kinship =<span class="st"> </span><span class="kw"><a href="../reference/graph.html">find_kinship</a></span>(sample_family, 4L) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/print">print</a></span>()</a>
-<a class="sourceLine" id="cb2-2" title="2"><span class="co">#&gt; # A tibble: 783 x 5</span></a>
+<a class="sourceLine" id="cb2-2" title="2"><span class="co">#&gt; # A tibble: 779 x 5</span></a>
 <a class="sourceLine" id="cb2-3" title="3"><span class="co">#&gt;    from  to    path   degree label</span></a>
-<a class="sourceLine" id="cb2-4" title="4"><span class="co">#&gt;    &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;   &lt;int&gt; &lt;chr&gt;</span></a>
+<a class="sourceLine" id="cb2-4" title="4"><span class="co">#&gt;    &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;   &lt;int&gt; &lt;fct&gt;</span></a>
 <a class="sourceLine" id="cb2-5" title="5"><span class="co">#&gt;  1 1     108   1100_1      4 HC   </span></a>
 <a class="sourceLine" id="cb2-6" title="6"><span class="co">#&gt;  2 1     14    110_1       3 HUN  </span></a>
 <a class="sourceLine" id="cb2-7" title="7"><span class="co">#&gt;  3 1     140   110_1       3 HUN  </span></a>
@@ -136,7 +136,7 @@
 <a class="sourceLine" id="cb2-12" title="12"><span class="co">#&gt;  8 1     182   1100_1      4 HC   </span></a>
 <a class="sourceLine" id="cb2-13" title="13"><span class="co">#&gt;  9 1     184   1100_1      4 HC   </span></a>
 <a class="sourceLine" id="cb2-14" title="14"><span class="co">#&gt; 10 1     66    1100_1      4 HC   </span></a>
-<a class="sourceLine" id="cb2-15" title="15"><span class="co">#&gt; # … with 773 more rows</span></a></code></pre></div>
+<a class="sourceLine" id="cb2-15" title="15"><span class="co">#&gt; # … with 769 more rows</span></a></code></pre></div>
 <p>Bind other information to kinship data.frame:</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" title="1">sampled =<span class="st"> </span>sample_family <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb3-2" title="2"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(<span class="op">!</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/NA">is.na</a></span>(capture_year)) <span class="op">%&gt;%</span></a>
@@ -160,9 +160,9 @@
 <a class="sourceLine" id="cb3-20" title="20">kinship <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb3-21" title="21"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/join.html">left_join</a></span>(sampled, <span class="dt">by =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dt">from =</span> <span class="st">"id"</span>)) <span class="op">%&gt;%</span></a>
 <a class="sourceLine" id="cb3-22" title="22"><span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/join.html">left_join</a></span>(sampled, <span class="dt">by =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dt">to =</span> <span class="st">"id"</span>), <span class="dt">suffix =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"_from"</span>, <span class="st">"_to"</span>))</a>
-<a class="sourceLine" id="cb3-23" title="23"><span class="co">#&gt; # A tibble: 783 x 11</span></a>
+<a class="sourceLine" id="cb3-23" title="23"><span class="co">#&gt; # A tibble: 779 x 11</span></a>
 <a class="sourceLine" id="cb3-24" title="24"><span class="co">#&gt;    from  to    path  degree label location_from capture_year_fr… age_from</span></a>
-<a class="sourceLine" id="cb3-25" title="25"><span class="co">#&gt;    &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;  &lt;int&gt; &lt;chr&gt;         &lt;dbl&gt;            &lt;int&gt;    &lt;dbl&gt;</span></a>
+<a class="sourceLine" id="cb3-25" title="25"><span class="co">#&gt;    &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;  &lt;int&gt; &lt;fct&gt;         &lt;dbl&gt;            &lt;int&gt;    &lt;dbl&gt;</span></a>
 <a class="sourceLine" id="cb3-26" title="26"><span class="co">#&gt;  1 1     108   1100…      4 HC                0               95        0</span></a>
 <a class="sourceLine" id="cb3-27" title="27"><span class="co">#&gt;  2 1     14    110_1      3 HUN               0               95        0</span></a>
 <a class="sourceLine" id="cb3-28" title="28"><span class="co">#&gt;  3 1     140   110_1      3 HUN               0               95        0</span></a>
@@ -173,7 +173,7 @@
 <a class="sourceLine" id="cb3-33" title="33"><span class="co">#&gt;  8 1     182   1100…      4 HC                0               95        0</span></a>
 <a class="sourceLine" id="cb3-34" title="34"><span class="co">#&gt;  9 1     184   1100…      4 HC                0               95        0</span></a>
 <a class="sourceLine" id="cb3-35" title="35"><span class="co">#&gt; 10 1     66    1100…      4 HC                0               95        0</span></a>
-<a class="sourceLine" id="cb3-36" title="36"><span class="co">#&gt; # … with 773 more rows, and 3 more variables: location_to &lt;dbl&gt;,</span></a>
+<a class="sourceLine" id="cb3-36" title="36"><span class="co">#&gt; # … with 769 more rows, and 3 more variables: location_to &lt;dbl&gt;,</span></a>
 <a class="sourceLine" id="cb3-37" title="37"><span class="co">#&gt; #   capture_year_to &lt;int&gt;, age_to &lt;dbl&gt;</span></a></code></pre></div>
   </div>
 

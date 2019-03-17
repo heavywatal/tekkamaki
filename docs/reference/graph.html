@@ -136,8 +136,6 @@
 
     <pre class="usage"><span class='fu'>as_igraph</span>(<span class='no'>.tbl</span>)
 
-<span class='fu'>leaf_V</span>(<span class='no'>graph</span>, <span class='kw'>mode</span> <span class='kw'>=</span> <span class='st'>"out"</span>)
-
 <span class='fu'>find_kinship</span>(<span class='no'>.tbl</span>, <span class='kw'>order</span> <span class='kw'>=</span> <span class='fl'>4L</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -148,16 +146,6 @@
       <td><p>sample_family</p></td>
     </tr>
     <tr>
-      <th>graph</th>
-      <td><p>The graph to analyze.</p></td>
-    </tr>
-    <tr>
-      <th>mode</th>
-      <td><p>Character string, &#8220;out&#8221; for out-degree, &#8220;in&#8221; for
-in-degree or &#8220;total&#8221; for the sum of the two. For undirected graphs
-this argument is ignored. &#8220;all&#8221; is a synonym of &#8220;total&#8221;.</p></td>
-    </tr>
-    <tr>
       <th>order</th>
       <td><p>integer</p></td>
     </tr>
@@ -166,7 +154,6 @@ this argument is ignored. &#8220;all&#8221; is a synonym of &#8220;total&#8221;.
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p><code>as_igraph</code> converts a result to igraph.</p>
-<p><code>leaf_V</code> returns vertices with zero degree.</p>
 <p><code>find_kinship</code> finds kinship below given order.</p>
     
 
