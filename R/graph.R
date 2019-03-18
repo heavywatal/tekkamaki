@@ -16,15 +16,21 @@ as_igraph = function(.tbl) {
 #' @details
 #' `find_kinship` finds kinship below given order.
 #' @param order integer
+#' @param experimental boolean
 #' @rdname graph
 #' @export
-find_kinship = function(.tbl, order = 4L) {
+find_kinship = function(.tbl, order = 4L, experimental = FALSE) {
   graph = as_igraph(.tbl)
   nodes = dplyr::filter(.tbl, !is.na(.data$capture_year))$id
   vids = igraphlite::as_vids(graph, nodes)
   birth_year = stats::setNames(.tbl$birth_year, .tbl$id)
   pairs = neighbor_pairs(graph, vids, order = order)
-  find_shortest_paths(pairs, graph) %>%
+  paths = if (experimental) {
+    find_short_paths(graph, pairs, order - 2L)
+  } else {
+    find_shortest_paths(graph, pairs)
+  }
+  paths %>%
     dplyr::mutate(path = purrr::map(.data$path, ~ as.integer(diff(birth_year[.x]) < 0L))) %>%
     dplyr::filter(purrr::map_lgl(.data$path, ~ length(rle(.x)$lengths) < 3L && !identical(.x, c(0L, 1L)))) %>%
     label_kinship()
@@ -40,7 +46,7 @@ neighbor_pairs = function(graph, vids, order) {
 }
 
 # add columns: path and degree
-find_shortest_paths = function(pairs, graph) {
+find_shortest_paths = function(graph, pairs) {
   .to = split(pairs$to, pairs$from)
   .from = as.integer(names(.to))
   .path = purrr::map2(.from, .to, igraphlite::get_all_shortest_paths, graph = graph, mode = 3)
@@ -52,6 +58,25 @@ find_shortest_paths = function(pairs, graph) {
       from = igraphlite::as_vnames(graph, .data$from)
     ) %>%
     dplyr::filter(!purrr::map_lgl(.data$path, ~ "0" %in% .x))
+}
+
+find_short_paths = function(graph, pairs, order) {
+  .path = purrr::pmap(pairs, get_short_paths, graph = graph, order = order)
+  dplyr::mutate(pairs, path = .path) %>%
+    tidyr::unnest() %>%
+    dplyr::mutate(
+      from = igraphlite::as_vnames(graph, .data$from),
+      to = igraphlite::as_vnames(graph, .data$to)
+    )
+}
+
+get_short_paths = function(graph, from, to, order) {
+  vids = igraphlite::neighborhood(graph, c(from, to), order = order, mode = 2L) %>% unlist() %>% unique()
+  pair_names = igraphlite::as_vnames(graph, c(from, to))
+  subg = igraphlite::induced_subgraph(graph, vids)
+  spair = igraphlite::as_vids(subg, pair_names)
+  paths = igraphlite::get_all_simple_paths(subg, spair[1], spair[2], mode = 3L)
+  lapply(paths[lengths(paths) < 5L], function(x) igraphlite::as_vnames(subg, x))
 }
 
 label_kinship = function(kinship) {

@@ -7,12 +7,14 @@
 \usage{
 as_igraph(.tbl)
 
-find_kinship(.tbl, order = 4L)
+find_kinship(.tbl, order = 4L, experimental = FALSE)
 }
 \arguments{
 \item{.tbl}{sample_family}
 
 \item{order}{integer}
+
+\item{experimental}{boolean}
 }
 \description{
 Functions for igraph class
