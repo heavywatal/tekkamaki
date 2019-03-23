@@ -21,15 +21,13 @@ as_igraph = function(.tbl) {
 #' @export
 find_kinship = function(.tbl, order = 4L, experimental = FALSE) {
   graph = as_igraph(.tbl)
-  nodes = dplyr::filter(.tbl, !is.na(.data$capture_year))$id
-  vids = igraphlite::as_vids(graph, nodes)
-  birth_year = stats::setNames(.tbl$birth_year, .tbl$id)
-  pairs = neighbor_pairs(graph, vids, order = order)
+  pairs = neighbor_pairs(graph, graph$sink, order = order)
   paths = if (experimental) {
     find_short_paths(graph, pairs, order - 2L)
   } else {
     find_shortest_paths(graph, pairs)
   }
+  birth_year = .tbl$birth_year[order(.tbl$id)]
   paths %>%
     dplyr::mutate(path = purrr::map(.data$path, ~ as.integer(diff(birth_year[.x]) < 0L))) %>%
     dplyr::filter(purrr::map_lgl(.data$path, ~ length(rle(.x)$lengths) < 3L && !identical(.x, c(0L, 1L)))) %>%
@@ -47,10 +45,11 @@ neighbor_pairs = function(graph, vids, order) {
 
 # add columns: path and degree
 find_shortest_paths = function(graph, pairs) {
-  .to = split(pairs$to, pairs$from)
-  .from = as.integer(names(.to))
-  .path = purrr::map2(.from, .to, igraphlite::get_all_shortest_paths, graph = graph, mode = 3)
-  tibble::tibble(from = .from, path = .path) %>%
+  nested_pairs = pairs %>%
+    dplyr::group_by(.data$from) %>%
+    dplyr::summarise(to = list(!!as.name("to")))
+  .path = purrr::pmap(nested_pairs, igraphlite::get_all_shortest_paths, graph = graph, mode = 3)
+  tibble::tibble(from = nested_pairs$from, path = .path) %>%
     tidyr::unnest() %>%
     dplyr::mutate(
       path = lapply(.data$path, igraphlite::as_vnames, graph = graph),
