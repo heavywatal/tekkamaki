@@ -54,10 +54,10 @@ find_shortest_paths = function(graph, pairs) {
     tidyr::unnest() %>%
     dplyr::mutate(
       path = lapply(.data$path, igraphlite::as_vnames, graph = graph),
-      to = purrr::map_chr(.data$path, ~ .x[length(.x)]),
+      to = purrr::map_int(.data$path, ~ .x[length(.x)]),
       from = igraphlite::as_vnames(graph, .data$from)
     ) %>%
-    dplyr::filter(!purrr::map_lgl(.data$path, ~ "0" %in% .x))
+    dplyr::filter(!purrr::map_lgl(.data$path, ~ 0L %in% .x))
 }
 
 find_short_paths = function(graph, pairs, order) {
