@@ -35,12 +35,17 @@ find_kinship = function(.tbl, order = 4L, experimental = FALSE) {
 }
 
 neighbor_pairs = function(graph, vids, order) {
-  kins = igraphlite::neighborhood(graph, vids, order = order, mode = 3L) %>%
-    lapply(function(x) {x = as.integer(x); x[x %in% vids][-1L]})
+  kins = igraphlite::neighborhood(graph, vids, order = order, mode = 3L, mindist = 1L) %>%
+    lapply(filter_in_vids, vids = vids)
   tibble::tibble(from = vids, to = kins) %>%
     tidyr::unnest() %>%
     dplyr::filter(.data$from < .data$to) %>%
     dplyr::arrange(.data$from, .data$to)
+}
+
+filter_in_vids = function(x, vids) {
+  x = as.integer(x)
+  x[x %in% vids]
 }
 
 # add columns: path and degree
