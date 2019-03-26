@@ -26,6 +26,15 @@ write_pop = function(x, path = "pop.txt") {
   readr::write_tsv(x, path, na = "", append = TRUE, col_names = FALSE)
 }
 
+#' @rdname pop
+#' @export
+read_pop = function(path) {
+  readr::read_tsv(path,
+    col_names = c("cohort", "capture_year", "capture_age", "location", "pops", "comps"),
+    col_types = "iiiiii", comment = "#"
+  )
+}
+
 pairwise_parent_offspring = function(.tbl, min_adult_age) {
   .tbl = dplyr::filter(.tbl, !is.na(.data$capture_year))
   adults = .tbl %>%

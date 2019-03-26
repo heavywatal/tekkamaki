@@ -3,11 +3,14 @@
 \name{as_pop}
 \alias{as_pop}
 \alias{write_pop}
+\alias{read_pop}
 \title{POP format}
 \usage{
 as_pop(.tbl, min_adult_age = 5L)
 
 write_pop(x, path = "pop.txt")
+
+read_pop(path)
 }
 \arguments{
 \item{.tbl}{sample_family}

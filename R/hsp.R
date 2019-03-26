@@ -32,6 +32,15 @@ write_hsp = function(x, path = "hsp.txt") {
   readr::write_tsv(x, path, na = "", append = TRUE, col_names = FALSE)
 }
 
+#' @rdname hsp
+#' @export
+read_hsp = function(path) {
+  readr::read_tsv(path,
+    col_names = c("cohort_i", "cohort_j", "location_i", "location_j", "comps", "hsps"),
+    col_types = "iiiiii", skip = 5L,
+  )
+}
+
 pairwise_half_sibling = function(.tbl) {
   .tbl = dplyr::filter(.tbl, !is.na(.data$capture_year))
   tsv_i = .tbl %>%

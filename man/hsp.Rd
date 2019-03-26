@@ -3,11 +3,14 @@
 \name{as_hsp}
 \alias{as_hsp}
 \alias{write_hsp}
+\alias{read_hsp}
 \title{HSP format}
 \usage{
 as_hsp(.tbl)
 
 write_hsp(x, path = "hsp.txt")
+
+read_hsp(path)
 }
 \arguments{
 \item{.tbl}{sample_family}
