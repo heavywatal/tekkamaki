@@ -7,15 +7,17 @@ test_that("Graph functions works", {
   expect_s3_class(find_kinship(samples), "data.frame")
 })
 
-test_that("POP and HSP works", {
+test_that("POP and HSP work", {
   result = tekka()
   samples = result$sample_family[[1L]]
-  expect_s3_class("data.frame", {
+  expect_silent({
     hsp = as_hsp(samples)
   })
-  expect_s3_class("data.frame", {
+  expect_silent({
     pop = as_pop(samples)
   })
+  expect_s3_class(hsp, c("hsp", "data.frame"))
+  expect_s3_class(pop, c("pop", "data.frame"))
   path = tempfile(fileext = ".tsv")
   expect_silent(write_hsp(hsp, path))
   expect_equal(read_hsp(path), hsp)
