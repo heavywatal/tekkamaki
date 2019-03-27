@@ -22,6 +22,10 @@ as_igraph = function(.tbl) {
 find_kinship = function(.tbl, order = 4L, experimental = FALSE) {
   graph = as_igraph(.tbl)
   pairs = neighbor_pairs(graph, graph$sink, order = order)
+  if (nrow(pairs) == 0L) {
+    message("No kinship found")
+    return(invisible(pairs))
+  }
   paths = if (experimental) {
     find_short_paths(graph, pairs, order - 2L)
   } else {
