@@ -29,7 +29,7 @@ find_kinship = function(.tbl, order = 4L, experimental = FALSE) {
   if (experimental) {
     find_kinship_common(graph, pairs, order)
   } else {
-    find_kinship_shortest(graph, pairs, order)
+    find_kinship_shortest(.tbl, graph, pairs, order)
   }
 }
 
@@ -47,7 +47,7 @@ filter_in_vids = function(x, vids) {
   x[x %in% vids]
 }
 
-find_kinship_shortest = function(graph, pairs, order) {
+find_kinship_shortest = function(.tbl, graph, pairs, order) {
   paths = find_shortest_paths(graph, pairs)
   birth_year = .tbl$birth_year[order(.tbl$id)]
   paths %>%
