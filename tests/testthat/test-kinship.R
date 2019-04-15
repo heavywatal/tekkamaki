@@ -7,6 +7,9 @@ test_that("Graph functions works", {
   expect_silent({
     kinship = find_kinship(samples)
   })
+  expect_silent({
+    kinship = find_kinship(samples, experimental = TRUE)
+  })
   expect_s3_class(kinship, "data.frame")
   result = tekka("--seed 42 -n80 -y40 -K80 -r1 -l1 --sa 0,0 --sj 0,0")
   samples = result$sample_family[[1L]]
