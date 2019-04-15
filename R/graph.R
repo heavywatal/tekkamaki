@@ -26,16 +26,11 @@ find_kinship = function(.tbl, order = 4L, experimental = FALSE) {
     message("No kinship found")
     return(invisible(pairs))
   }
-  paths = if (experimental) {
-    find_short_paths(graph, pairs, order - 2L)
+  if (experimental) {
+    find_kinship_common(graph, pairs, order)
   } else {
-    find_shortest_paths(graph, pairs)
+    find_kinship_shortest(graph, pairs, order)
   }
-  birth_year = .tbl$birth_year[order(.tbl$id)]
-  paths %>%
-    dplyr::mutate(path = purrr::map(.data$path, ~ as.integer(diff(birth_year[.x]) < 0L))) %>%
-    dplyr::filter(purrr::map_lgl(.data$path, ~ length(rle(.x)$lengths) < 3L && !identical(.x, c(0L, 1L)))) %>%
-    label_kinship()
 }
 
 neighbor_pairs = function(graph, vids, order) {
@@ -50,6 +45,15 @@ neighbor_pairs = function(graph, vids, order) {
 filter_in_vids = function(x, vids) {
   x = as.integer(x)
   x[x %in% vids]
+}
+
+find_kinship_shortest = function(graph, pairs, order) {
+  paths = find_shortest_paths(graph, pairs)
+  birth_year = .tbl$birth_year[order(.tbl$id)]
+  paths %>%
+    dplyr::mutate(path = purrr::map(.data$path, ~ as.integer(diff(birth_year[.x]) < 0L))) %>%
+    dplyr::filter(purrr::map_lgl(.data$path, ~ length(rle(.x)$lengths) < 3L && !identical(.x, c(0L, 1L)))) %>%
+    label_kinship()
 }
 
 # add columns: path and degree
@@ -68,23 +72,41 @@ find_shortest_paths = function(graph, pairs) {
     dplyr::filter(!purrr::map_lgl(.data$path, ~ 0L %in% .x))
 }
 
-find_short_paths = function(graph, pairs, order) {
-  .path = purrr::pmap(pairs, get_short_paths, graph = graph, order = order)
-  dplyr::mutate(pairs, path = .path) %>%
-    tidyr::unnest() %>%
+find_kinship_common = function(graph, pairs, order) {
+  pairs %>%
     dplyr::mutate(
+      data = purrr::pmap(., get_short_paths, graph = graph, order = order),
       from = igraphlite::as_vnames(graph, .data$from),
       to = igraphlite::as_vnames(graph, .data$to)
-    )
+    ) %>%
+    tidyr::unnest()
 }
 
 get_short_paths = function(graph, from, to, order) {
-  vids = igraphlite::neighborhood(graph, c(from, to), order = order, mode = 2L) %>% unlist() %>% unique()
-  pair_names = igraphlite::as_vnames(graph, c(from, to))
-  subg = igraphlite::induced_subgraph(graph, vids)
-  spair = igraphlite::as_vids(subg, pair_names)
-  paths = igraphlite::get_all_simple_paths(subg, spair[1], spair[2], mode = 3L)
-  lapply(paths[lengths(paths) < 5L], function(x) igraphlite::as_vnames(subg, x))
+  count_updown(graph, from, to, order = order) %>%
+    dplyr::mutate(degree = .data$up + .data$down) %>%
+    dplyr::filter(.data$degree <= order) %>%
+    dplyr::transmute(path = encode_updown(.data$up, .data$down), .data$degree)
+}
+
+count_updown = function(graph, from, to, order) {
+  vlist = igraphlite::neighborhood(graph, c(from, to), order = order, mode = 2L)
+  common_ancestors = Reduce(intersect, vlist)
+  igraphlite::shortest_paths(graph, common_ancestors, c(from, to)) %>%
+    as.data.frame() %>%
+    stats::setNames(c("up", "down")) %>%
+    tibble::rownames_to_column("ancestor") %>%
+    dplyr::mutate_all(as.integer) %>%
+    tibble::as_tibble()
+}
+
+encode_updown = function(up, down) {
+  purrr::map2_chr(up, down, .encode_updown_impl)
+}
+
+.encode_updown_impl = function(up, down) {
+  .rle = list(lengths = c(up, down), values = c("1", "0"))
+  paste(inverse.rle(.rle), collapse = "")
 }
 
 label_kinship = function(kinship) {
