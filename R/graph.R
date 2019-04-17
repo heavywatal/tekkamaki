@@ -8,6 +8,7 @@
 as_igraph = function(.tbl) {
   .tbl %>%
     dplyr::select(dplyr::ends_with("id")) %>%
+    dplyr::filter(0L != .data$father_id, 0L != .data$mother_id) %>%
     tidyr::gather("key", "parent_id", dplyr::ends_with("_id")) %>%
     dplyr::select("parent_id", "id") %>%
     igraphlite::graph_from_data_frame()
