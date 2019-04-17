@@ -77,18 +77,17 @@ find_shortest_paths = function(graph, pairs) {
 find_kinship_common = function(graph, pairs, order) {
   pairs %>%
     dplyr::mutate(
-      data = purrr::pmap(., get_short_paths, graph = graph, order = order),
+      data = purrr::pmap(., count_updown, graph = graph, order = order),
       from = igraphlite::as_vnames(graph, .data$from),
       to = igraphlite::as_vnames(graph, .data$to)
     ) %>%
-    tidyr::unnest()
-}
-
-get_short_paths = function(graph, from, to, order) {
-  count_updown(graph, from, to, order = order) %>%
+    tidyr::unnest() %>%
     dplyr::mutate(degree = .data$up + .data$down) %>%
-    dplyr::filter(.data$degree <= order) %>%
+    dplyr::filter(.data$up + .data$down <= order) %>%
+    dplyr::mutate_all(as.integer) %>%
     dplyr::transmute(
+      .data$from,
+      .data$to,
       ancestor = igraphlite::as_vnames(graph, .data$ancestor),
       path = encode_updown(.data$up, .data$down),
       .data$degree
@@ -97,17 +96,17 @@ get_short_paths = function(graph, from, to, order) {
 
 count_updown = function(graph, from, to, order) {
   vlist = igraphlite::neighborhood(graph, c(from, to), order = order, mode = 2L)
-  common_ancestors = Reduce(intersect, vlist)
-  if (length(common_ancestors) > 0L) {
-    distances = igraphlite::shortest_paths(graph, common_ancestors, c(from, to))
-    tibble::tibble(
-      ancestor = common_ancestors,
-      up = distances[, 1L],
-      down = distances[, 2L]) %>%
-      dplyr::mutate_all(as.integer)
+  common_ancestors = intersect(vlist[[1L]], vlist[[2L]])
+  distances = if (length(common_ancestors) > 0L) {
+    igraphlite::shortest_paths(graph, common_ancestors, c(from, to))
   } else {
-    tibble::tibble(ancestor = integer(0), up = integer(0), down = integer(0))
+    matrix(numeric(0L), nrow = 0L, ncol = 2L)
   }
+  tibble::tibble(
+    ancestor = common_ancestors,
+    up = distances[, 1L],
+    down = distances[, 2L]
+  )
 }
 
 encode_updown = function(up, down) {
