@@ -2,10 +2,11 @@
 #'
 #' @details
 #' `as_igraph` converts a result to igraph.
+#' @importFrom igraphlite as_igraph
 #' @param .tbl sample_family
 #' @rdname graph
 #' @export
-as_igraph = function(.tbl) {
+as_igraph.sample_family = function(.tbl) {
   .tbl %>%
     dplyr::select(dplyr::ends_with("id")) %>%
     dplyr::filter(0L != .data$father_id, 0L != .data$mother_id) %>%
