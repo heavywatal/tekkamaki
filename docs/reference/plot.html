@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Run C++ simulation. — cpp_blackthunnus • tekkamaki</title>
+<title>Methods for quick visualization — augment.sample_family • tekkamaki</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -37,9 +37,9 @@
 
 
 
-<meta property="og:title" content="Run C++ simulation. — cpp_blackthunnus" />
+<meta property="og:title" content="Methods for quick visualization — augment.sample_family" />
 
-<meta property="og:description" content="Run C++ simulation." />
+<meta property="og:description" content="Methods for quick visualization" />
 
 <meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">tekkamaki</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.4.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.4</span>
       </span>
     </div>
 
@@ -83,6 +83,9 @@
     <span class="fa fa-home fa-lg"></span>
      
   </a>
+</li>
+<li>
+  <a href="../articles/tekkamaki.html">Get started</a>
 </li>
 <li>
   <a href="../reference/index.html">Reference</a>
@@ -103,7 +106,7 @@
       
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="https://github.com/heavywatal/blackthunnus">
+  <a href="https://github.com/heavywatal/tekkamaki">
     <span class="fa fa-github fa-lg"></span>
      
   </a>
@@ -120,33 +123,50 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Run C++ simulation.</h1>
-    <small class="dont-index">Source: <a href='https://github.com/heavywatal/blackthunnus/blob/master/R/RcppExports.R'><code>R/RcppExports.R</code></a>, <a href='https://github.com/heavywatal/blackthunnus/blob/master/R/blackthunnus.R'><code>R/blackthunnus.R</code></a></small>
-    <div class="hidden name"><code>blackthunnus.Rd</code></div>
+    <h1>Methods for quick visualization</h1>
+    <small class="dont-index">Source: <a href='https://github.com/heavywatal/tekkamaki/blob/master/R/plot.R'><code>R/plot.R</code></a></small>
+    <div class="hidden name"><code>plot.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Run C++ simulation.</p>
+    <p>Methods for quick visualization</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>cpp_blackthunnus</span>(<span class='no'>args</span>)
+    <pre class="usage"><span class='co'># S3 method for sample_family</span>
+<span class='fu'><a href='https://www.rdocumentation.org/packages/generics/topics/augment'>augment</a></span>(<span class='no'>x</span>, <span class='kw'>layout</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)
 
-<span class='fu'>blackthunnus</span>(<span class='kw'>args</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/character'>character</a></span>(<span class='fl'>0L</span>))</pre>
+<span class='fu'>layout_demography</span>(<span class='no'>x</span>)
+
+<span class='co'># S3 method for sample_family</span>
+<span class='fu'><a href='https://www.rdocumentation.org/packages/graphics/topics/plot'>plot</a></span>(<span class='no'>x</span>, <span class='no'>...</span>, <span class='kw'>lwd</span> <span class='kw'>=</span> <span class='fl'>0.5</span>, <span class='kw'>cex</span> <span class='kw'>=</span> <span class='fl'>5</span>,
+  <span class='kw'>col</span> <span class='kw'>=</span> <span class='st'>"#cccccc"</span>, <span class='kw'>pch</span> <span class='kw'>=</span> <span class='fl'>16</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>args</th>
-      <td><p>command line arguments as a string vector.</p></td>
+      <th>x</th>
+      <td><p>sample_family data.frame.</p></td>
+    </tr>
+    <tr>
+      <th>layout</th>
+      <td><p>A data.frame.</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>passed to layout function.</p></td>
+    </tr>
+    <tr>
+      <th>lwd</th>
+      <td><p>passed to <a href='https://www.rdocumentation.org/packages/ggplot2/topics/geom_segment'>ggplot2::geom_segment</a>.</p></td>
+    </tr>
+    <tr>
+      <th>cex, col, pch</th>
+      <td><p>passed to <a href='https://www.rdocumentation.org/packages/ggplot2/topics/geom_point'>ggplot2::geom_point</a> and <a href='https://www.rdocumentation.org/packages/ggplot2/topics/geom_text'>ggplot2::geom_text</a>.</p></td>
     </tr>
     </table>
-    
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
-
-    <p><code>cpp_blackthunnus</code> is a Rcpp function to call blackthunnus</p>
     
 
   </div>
@@ -154,9 +174,7 @@
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-      
-      <li><a href="#details">Details</a></li>
-          </ul>
+                </ul>
 
   </div>
 </div>
