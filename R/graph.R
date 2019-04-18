@@ -1,18 +1,25 @@
-#' Functions for igraph class
+#' Analyze kinship with igraph
 #'
 #' @details
 #' `as_igraph` converts a result to igraph.
-#' @importFrom igraphlite as_igraph
 #' @param .tbl sample_family
 #' @rdname graph
 #' @export
 as_igraph.sample_family = function(.tbl) {
+  as_edgelist(.tbl) %>%
+    igraphlite::graph_from_data_frame()
+}
+
+#' @importFrom igraphlite as_igraph
+#' @export
+igraphlite::as_igraph
+
+as_edgelist = function(.tbl) {
   .tbl %>%
     dplyr::select(dplyr::ends_with("id")) %>%
     dplyr::filter(0L != .data$father_id, 0L != .data$mother_id) %>%
-    tidyr::gather("key", "parent_id", dplyr::ends_with("_id")) %>%
-    dplyr::select("parent_id", "id") %>%
-    igraphlite::graph_from_data_frame()
+    tidyr::gather("key", "from", dplyr::ends_with("_id")) %>%
+    dplyr::transmute(.data$from, to = .data$id)
 }
 
 #' @details

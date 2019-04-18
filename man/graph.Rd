@@ -3,7 +3,7 @@
 \name{as_igraph.sample_family}
 \alias{as_igraph.sample_family}
 \alias{find_kinship}
-\title{Functions for igraph class}
+\title{Analyze kinship with igraph}
 \usage{
 \method{as_igraph}{sample_family}(.tbl)
 
@@ -17,7 +17,7 @@ find_kinship(.tbl, order = 4L, experimental = FALSE)
 \item{experimental}{boolean}
 }
 \description{
-Functions for igraph class
+Analyze kinship with igraph
 }
 \details{
 \code{as_igraph} converts a result to igraph.
