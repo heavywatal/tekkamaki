@@ -9,6 +9,7 @@ Encoding: UTF-8
 LazyData: true
 Imports:
     dplyr (>= 0.8.0),
+    generics (>= 0.0.2),
     igraphlite,
     magrittr (>= 1.5),
     purrr (>= 0.3.2),
