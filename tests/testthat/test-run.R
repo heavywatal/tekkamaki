@@ -1,5 +1,3 @@
-context("test-run")
-
 test_that("tekka runs", {
   expect_silent({
     result = tekka()
