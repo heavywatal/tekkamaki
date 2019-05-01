@@ -15,6 +15,6 @@ R interface to [tekka](https://github.com/heavywatal/tekka).
 ## Installation
 
 ```r
-# install.packages("remotes")
-remotes::install_github("heavywatal/tekkamaki")
+# install.packages("devtools")
+devtools::install_github("heavywatal/tekkamaki")
 ```
