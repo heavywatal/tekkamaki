@@ -3,10 +3,11 @@ Title: Individual-based simulator of pacific bluefin tuna
 Version: 0.5.5
 Authors@R: person("Watal M.", "Iwasaki", email = "heavy.watal@gmail.com", role = c("aut", "cre"), comment = c(ORCID="0000-0002-4718-7605"))
 Description: Individual-based simulator of pacific bluefin tuna.
-Depends: R (>= 3.4.0)
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
+Depends:
+    R (>= 3.5.0)
 Imports:
     dplyr (>= 0.8.0),
     generics (>= 0.0.2),
@@ -18,7 +19,7 @@ Imports:
     stringr (>= 1.4.0),
     tibble (>= 2.1.1),
     tidyr (>= 0.8.3),
-    Rcpp (>= 1.0.0)
+    Rcpp (>= 1.0.1)
 Suggests:
     covr,
     ggplot2,
