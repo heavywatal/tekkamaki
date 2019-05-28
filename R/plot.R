@@ -44,13 +44,13 @@ layout_demography = function(x) {
 }
 
 #' @param lwd passed to [ggplot2::geom_segment].
-#' @param cex,col,pch passed to [ggplot2::geom_point] and [ggplot2::geom_text].
+#' @param cex,pch passed to [ggplot2::geom_point] and [ggplot2::geom_text].
 #' @rdname plot
 #' @export
-plot.sample_family = function(x, ..., lwd = 0.5, cex = 5, col = "#cccccc", pch = 16) {
+plot.sample_family = function(x, ..., lwd = 0.5, cex = 5, pch = 16) {
   data = augment(x, ...)
   ggplot2::ggplot(data, ggplot2::aes_(~x, ~y)) +
-    ggplot2::geom_segment(ggplot2::aes_(xend = ~xend, yend = ~yend), size = lwd) +
-    ggplot2::geom_point(shape = pch, size = cex, colour = col) +
-    ggplot2::geom_text(ggplot2::aes_(label = ~label), size = cex * 0.6)
+    ggplot2::geom_segment(ggplot2::aes_(xend = ~xend, yend = ~yend), size = lwd, alpha = 0.5) +
+    ggplot2::geom_point(ggplot2::aes_(colour = ~sampled), shape = pch, size = cex) +
+    ggplot2::geom_text(ggplot2::aes_(label = ~label), size = cex * 0.5)
 }

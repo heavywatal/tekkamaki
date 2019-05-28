@@ -10,8 +10,7 @@
 
 layout_demography(x)
 
-\method{plot}{sample_family}(x, ..., lwd = 0.5, cex = 5,
-  col = "#cccccc", pch = 16)
+\method{plot}{sample_family}(x, ..., lwd = 0.5, cex = 5, pch = 16)
 }
 \arguments{
 \item{x}{sample_family data.frame.}
@@ -22,7 +21,7 @@ layout_demography(x)
 
 \item{lwd}{passed to \link[ggplot2:geom_segment]{ggplot2::geom_segment}.}
 
-\item{cex, col, pch}{passed to \link[ggplot2:geom_point]{ggplot2::geom_point} and \link[ggplot2:geom_text]{ggplot2::geom_text}.}
+\item{cex, pch}{passed to \link[ggplot2:geom_point]{ggplot2::geom_point} and \link[ggplot2:geom_text]{ggplot2::geom_text}.}
 }
 \description{
 Methods for quick visualization

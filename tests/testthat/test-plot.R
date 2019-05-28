@@ -1,5 +1,5 @@
 test_that("augment/plot methods work", {
-  result = tekka("--seed 42 -n80 -y40 -K80 -r1 -l4 --sa 8,8 --sj 8,8")
+  result = tekka("--seed 42 -n80 -y40 -K90 -r1 -l2 --sa 2,2 --sj 2,2")
   samples = result$sample_family[[1L]]
   .colnames = c("from", "to", "x", "y", "xend", "yend", "label", "sampled")
   expect_named(augment(samples), .colnames)
