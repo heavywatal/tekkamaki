@@ -21,10 +21,21 @@ make_snp = function(.tbl, lambda, rho = 0) {
 # row chromosome
 gather_chromosome = function(.tbl) {
   .tbl %>%
-    dplyr::transmute(.data$id, .data$father_id, .data$mother_id, is_sampled = !is.na(.data$capture_year)) %>%
-    tidyr::gather("chr", "parent_id", -"id", -"is_sampled") %>%
-    dplyr::mutate(chr = c(father_id = 1L, mother_id = 2L)[.data$chr]) %>%
+    dplyr::select(-"location") %>%
+    tidyr::gather("chr", "parent_id", -"id", -"birth_year", -"capture_year") %>%
+    dplyr::mutate(chr = c(mother_id = 1L, father_id = 2L)[.data$chr]) %>%
     dplyr::arrange(.data$id, .data$chr)
+}
+
+make_gene_genealogy = function(.tbl) {
+  n = nrow(.tbl)
+  dplyr::transmute(
+    .tbl,
+    parent = paste(parent_id, sample.int(2L, n, replace = TRUE), sep = "-"),
+    id = paste(id, chr, sep = "-"),
+    .data$birth_year,
+    is_sampled = !is.na(.data$capture_year)
+  )
 }
 
 # choose random mutation positions [0, 1)
@@ -54,7 +65,7 @@ sprinkle_mutations = function(.tbl, lambda) {
 # trace back ancestors to collect mutation positions
 accumulate_mutations = function(.tbl) {
   .tbl %>%
-    dplyr::filter(.data$is_sampled) %>%
+    dplyr::filter(!is.na(.data$capture_year)) %>%
     dplyr::transmute(
       .data$id,
       .data$chr,
