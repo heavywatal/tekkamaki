@@ -100,6 +100,9 @@
     <li>
       <a href="../articles/kinship.html">Extract Kinship</a>
     </li>
+    <li>
+      <a href="../articles/snp.html">Simulate SNP pattern</a>
+    </li>
   </ul>
 </li>
       </ul>
@@ -137,11 +140,16 @@
     <pre class="usage"><span class='co'># S3 method for sample_family</span>
 <span class='fu'><a href='https://www.rdocumentation.org/packages/generics/topics/augment'>augment</a></span>(<span class='no'>x</span>, <span class='kw'>layout</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)
 
+<span class='co'># S3 method for genealogy</span>
+<span class='fu'><a href='https://www.rdocumentation.org/packages/generics/topics/augment'>augment</a></span>(<span class='no'>x</span>, <span class='kw'>layout</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)
+
 <span class='fu'>layout_demography</span>(<span class='no'>x</span>)
 
+<span class='co'># S3 method for genealogy</span>
+<span class='fu'><a href='https://www.rdocumentation.org/packages/graphics/topics/plot'>plot</a></span>(<span class='no'>x</span>, <span class='no'>...</span>, <span class='kw'>lwd</span> <span class='kw'>=</span> <span class='fl'>0.5</span>, <span class='kw'>cex</span> <span class='kw'>=</span> <span class='fl'>5</span>, <span class='kw'>pch</span> <span class='kw'>=</span> <span class='fl'>16</span>)
+
 <span class='co'># S3 method for sample_family</span>
-<span class='fu'><a href='https://www.rdocumentation.org/packages/graphics/topics/plot'>plot</a></span>(<span class='no'>x</span>, <span class='no'>...</span>, <span class='kw'>lwd</span> <span class='kw'>=</span> <span class='fl'>0.5</span>, <span class='kw'>cex</span> <span class='kw'>=</span> <span class='fl'>5</span>,
-  <span class='kw'>col</span> <span class='kw'>=</span> <span class='st'>"#cccccc"</span>, <span class='kw'>pch</span> <span class='kw'>=</span> <span class='fl'>16</span>)</pre>
+<span class='fu'><a href='https://www.rdocumentation.org/packages/graphics/topics/plot'>plot</a></span>(<span class='no'>x</span>, <span class='no'>...</span>, <span class='kw'>lwd</span> <span class='kw'>=</span> <span class='fl'>0.5</span>, <span class='kw'>cex</span> <span class='kw'>=</span> <span class='fl'>5</span>, <span class='kw'>pch</span> <span class='kw'>=</span> <span class='fl'>16</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -163,7 +171,7 @@
       <td><p>passed to <a href='https://www.rdocumentation.org/packages/ggplot2/topics/geom_segment'>ggplot2::geom_segment</a>.</p></td>
     </tr>
     <tr>
-      <th>cex, col, pch</th>
+      <th>cex, pch</th>
       <td><p>passed to <a href='https://www.rdocumentation.org/packages/ggplot2/topics/geom_point'>ggplot2::geom_point</a> and <a href='https://www.rdocumentation.org/packages/ggplot2/topics/geom_text'>ggplot2::geom_text</a>.</p></td>
     </tr>
     </table>
