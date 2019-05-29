@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Functions to process SNPs — make_snp • tekkamaki</title>
+<title>Functions to generate gene genealogy and SNP matrix — make_snp • tekkamaki</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -37,9 +37,9 @@
 
 
 
-<meta property="og:title" content="Functions to process SNPs — make_snp" />
+<meta property="og:title" content="Functions to generate gene genealogy and SNP matrix — make_snp" />
 
-<meta property="og:description" content="Functions to process SNPs" />
+<meta property="og:description" content="Functions to generate gene genealogy and SNP matrix" />
 
 <meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
@@ -100,6 +100,9 @@
     <li>
       <a href="../articles/kinship.html">Extract Kinship</a>
     </li>
+    <li>
+      <a href="../articles/snp.html">Simulate SNP pattern</a>
+    </li>
   </ul>
 </li>
       </ul>
@@ -123,39 +126,46 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Functions to process SNPs</h1>
+    <h1>Functions to generate gene genealogy and SNP matrix</h1>
     <small class="dont-index">Source: <a href='https://github.com/heavywatal/tekkamaki/blob/master/R/snp.R'><code>R/snp.R</code></a></small>
     <div class="hidden name"><code>snp.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Functions to process SNPs</p>
+    <p>Functions to generate gene genealogy and SNP matrix</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>make_snp</span>(<span class='no'>.tbl</span>, <span class='no'>lambda</span>, <span class='kw'>rho</span> <span class='kw'>=</span> <span class='fl'>0</span>)</pre>
+    <pre class="usage"><span class='fu'>make_snp</span>(<span class='no'>.tbl</span>, <span class='kw'>segsites</span> <span class='kw'>=</span> <span class='fl'>1L</span>)
+
+<span class='fu'>gather_chromosome</span>(<span class='no'>.tbl</span>)
+
+<span class='fu'>make_gene_genealogy</span>(<span class='no'>chromosomes</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>.tbl</th>
-      <td><p>sample_family</p></td>
+      <td><p><code>sample_family</code> data.frame</p></td>
     </tr>
     <tr>
-      <th>lambda</th>
-      <td><p>mutation rate per haploid per generation</p></td>
+      <th>segsites</th>
+      <td><p>number of segregating sites</p></td>
     </tr>
     <tr>
-      <th>rho</th>
-      <td><p>recombination rate per generation</p></td>
+      <th>chromosomes</th>
+      <td><p>The output from <code>gather_chromosome()</code></p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p><code>make_snp</code> makes snp table from a result.</p>
+    <p><code>make_snp()</code> generates a SNP matrix.</p>
+<p><code>gather_chromosome()</code> transform individual-based <code>sample_family</code> into
+chromosome-based table.</p>
+<p><code>make_gene_genealogy()</code> generates random gene genealogy.</p>
     
 
   </div>

@@ -12,5 +12,7 @@ reference:
   - as_pop
 - title: Misc.
   contents:
+  - starts_with("as_igraph")
+  - starts_with("augment")
   - ends_with("nbinom")
   - migration_matrices
