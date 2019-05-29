@@ -139,9 +139,9 @@
 
     <pre class="usage"><span class='fu'>make_snp</span>(<span class='no'>.tbl</span>, <span class='kw'>segsites</span> <span class='kw'>=</span> <span class='fl'>1L</span>)
 
-<span class='fu'>gather_chromosome</span>(<span class='no'>.tbl</span>)
+<span class='fu'>gather_segments</span>(<span class='no'>.tbl</span>)
 
-<span class='fu'>make_gene_genealogy</span>(<span class='no'>chromosomes</span>)</pre>
+<span class='fu'>make_gene_genealogy</span>(<span class='no'>segments</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -155,16 +155,16 @@
       <td><p>number of segregating sites</p></td>
     </tr>
     <tr>
-      <th>chromosomes</th>
-      <td><p>The output from <code>gather_chromosome()</code></p></td>
+      <th>segments</th>
+      <td><p>The output from <code>gather_segments()</code></p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p><code>make_snp()</code> generates a SNP matrix.</p>
-<p><code>gather_chromosome()</code> transform individual-based <code>sample_family</code> into
-chromosome-based table.</p>
+<p><code>gather_segments()</code> transform individual-based <code>sample_family</code> into
+segment-based table.</p>
 <p><code>make_gene_genealogy()</code> generates random gene genealogy.</p>
     
 
