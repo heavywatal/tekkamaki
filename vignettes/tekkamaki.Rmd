@@ -2,7 +2,7 @@
 title: "Basic usage of tekkamaki"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{demography}
+  %\VignetteIndexEntry{Basic usage of tekkamaki}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---

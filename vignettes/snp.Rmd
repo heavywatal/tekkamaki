@@ -1,0 +1,39 @@
+---
+title: "Simulate SNP pattern"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Simulate SNP pattern}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup, message = FALSE}
+library(tekkamaki)
+library(ggplot2)
+set.seed(666L)
+```
+
+## Generate a SNP matrix
+
+```{r snp}
+result = tekka("--seed 42 -n80 -y40 -K90 -r1 -l2 --sa 2,2 --sj 2,2")
+samples = result$sample_family[[1L]]
+make_snp(samples, segsites = 3L)
+```
+
+## Visualize a generated gene genealogy
+
+```{r plot, fig.height = 8, fig.width = 10}
+chromosomes = gather_chromosome(samples)
+genealogy = make_gene_genealogy(chromosomes)
+plot(genealogy) +
+  theme_void() +
+  theme(legend.position = "top")
+```
