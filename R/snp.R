@@ -35,7 +35,18 @@ make_gene_genealogy = function(.tbl) {
     id = paste(id, chr, sep = "-"),
     .data$birth_year,
     is_sampled = !is.na(.data$capture_year)
-  )
+  ) %>%
+  filter_connected()
+}
+
+filter_connected = function(.tbl) {
+  g = .tbl %>%
+    dplyr::filter(!stringr::str_detect(.data$parent, "^0")) %>%
+    igraphlite::graph_from_data_frame()
+  v_sampled = g$to[g$Eattr[["is_sampled"]]]
+  v_genealogy = igraphlite::upstream_vertices(g, v_sampled)
+  v_genealogy = igraphlite::as_vnames(g, v_genealogy)
+  dplyr::filter(.tbl, .data$id %in% v_genealogy)
 }
 
 # choose random mutation positions [0, 1)
