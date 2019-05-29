@@ -1,8 +1,8 @@
-#' Functions to process SNPs
+#' Functions to generate gene genealogy and SNP matrix
 #'
 #' @details
-#' `make_snp` makes snp table from a result.
-#' @param .tbl sample_family
+#' [make_snp()] generates a SNP matrix.
+#' @param .tbl `sample_family` data.frame
 #' @param segsites number of segregating sites
 #' @rdname snp
 #' @export
@@ -11,7 +11,11 @@ make_snp = function(.tbl, segsites = 1L) {
   replicate(segsites, make_gene_genealogy(chromosomes) %>% extract_snp())
 }
 
-# row chromosome
+#' @details
+#' [gather_chromosome()] transform individual-based `sample_family` into
+#' chromosome-based table.
+#' @rdname snp
+#' @export
 gather_chromosome = function(.tbl) {
   .tbl %>%
     dplyr::select(-"location") %>%
@@ -21,18 +25,23 @@ gather_chromosome = function(.tbl) {
     dplyr::mutate(id = paste(.data$id, .data$chr, sep = "-"), chr = NULL)
 }
 
-make_gene_genealogy = function(.tbl) {
-  n = nrow(.tbl)
-  .tbl = dplyr::transmute(
-      .tbl,
+#' @details
+#' [make_gene_genealogy()] generates random gene genealogy.
+#' @param chromosomes The output from [gather_chromosome()]
+#' @rdname snp
+#' @export
+make_gene_genealogy = function(chromosomes) {
+  n = nrow(chromosomes)
+  df = dplyr::transmute(
+      chromosomes,
       from = paste(.data$parent_id, sample.int(2L, n, replace = TRUE), sep = "-"),
       to = .data$id,
       .data$birth_year,
       .data$capture_year
     ) %>%
     mark_upstream()
-  class(.tbl) = c("genealogy", "tbl_df", "tbl", "data.frame")
-  .tbl
+  class(df) = c("genealogy", "tbl_df", "tbl", "data.frame")
+  df
 }
 
 mark_upstream = function(.tbl) {

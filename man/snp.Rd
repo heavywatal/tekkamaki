@@ -2,18 +2,31 @@
 % Please edit documentation in R/snp.R
 \name{make_snp}
 \alias{make_snp}
-\title{Functions to process SNPs}
+\alias{gather_chromosome}
+\alias{make_gene_genealogy}
+\title{Functions to generate gene genealogy and SNP matrix}
 \usage{
 make_snp(.tbl, segsites = 1L)
+
+gather_chromosome(.tbl)
+
+make_gene_genealogy(chromosomes)
 }
 \arguments{
-\item{.tbl}{sample_family}
+\item{.tbl}{\code{sample_family} data.frame}
 
 \item{segsites}{number of segregating sites}
+
+\item{chromosomes}{The output from \code{\link[=gather_chromosome]{gather_chromosome()}}}
 }
 \description{
-Functions to process SNPs
+Functions to generate gene genealogy and SNP matrix
 }
 \details{
-\code{make_snp} makes snp table from a result.
+\code{\link[=make_snp]{make_snp()}} generates a SNP matrix.
+
+\code{\link[=gather_chromosome]{gather_chromosome()}} transform individual-based \code{sample_family} into
+chromosome-based table.
+
+\code{\link[=make_gene_genealogy]{make_gene_genealogy()}} generates random gene genealogy.
 }
