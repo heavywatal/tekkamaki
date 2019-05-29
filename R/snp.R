@@ -3,19 +3,12 @@
 #' @details
 #' `make_snp` makes snp table from a result.
 #' @param .tbl sample_family
-#' @param lambda mutation rate per haploid per generation
-#' @param rho recombination rate per generation
+#' @param segsites number of segregating sites
 #' @rdname snp
 #' @export
-make_snp = function(.tbl, lambda, rho = 0) {
-  if (!missing(rho)) {
-    stop("Recombination has not been implemented yet")
-  }
-  .tbl %>%
-    gather_chromosome() %>%
-    sprinkle_mutations(lambda = lambda) %>%
-    accumulate_mutations() %>%
-    complete_genotype()
+make_snp = function(.tbl, segsites = 1L) {
+  chromosomes = gather_chromosome(.tbl)
+  replicate(segsites, make_gene_genealogy(chromosomes) %>% extract_snp())
 }
 
 # row chromosome
@@ -43,62 +36,22 @@ make_gene_genealogy = function(.tbl) {
 }
 
 mark_upstream = function(.tbl) {
-  g = .tbl %>%
+  graph = .tbl %>%
     dplyr::filter(!stringr::str_detect(.data$from, "^0")) %>%
     igraphlite::graph_from_data_frame()
-  v_sampled = g$to[!is.na(g$Eattr[["capture_year"]])]
-  v_genealogy = igraphlite::upstream_vertices(g, v_sampled)
-  v_genealogy = igraphlite::as_vnames(g, v_genealogy)
+  v_sampled = graph$to[!is.na(graph$Eattr[["capture_year"]])]
+  v_genealogy = igraphlite::upstream_vertices(graph, v_sampled)
+  origin = sample(v_genealogy, 1L)
+  mutants = igraphlite::neighborhood(graph, origin, order = 1073741824L, mode = 1L)[[1L]]
+  mutants = igraphlite::as_vnames(graph, mutants)
+  v_genealogy = igraphlite::as_vnames(graph, v_genealogy)
   .tbl$sampled = ifelse(.tbl$to %in% v_genealogy, !is.na(.tbl$capture_year), NA)
+  .tbl$mutated = (.tbl$to %in% mutants)
   .tbl
 }
 
-# choose random mutation positions [0, 1)
-sprinkle_mutations = function(.tbl, lambda) {
-  stopifnot(all(c("chr", "parent_id") %in% names(.tbl)))
-  dplyr::mutate(
-    .tbl,
-    num_mutation = stats::rpois(dplyr::n(), lambda),
-    pos = purrr::map(.data$num_mutation, stats::runif, min = 0.0, max = 1.0),
-    num_mutation = NULL
-  )
+extract_snp = function(genealogy) {
+  as.integer(genealogy$mutated[areTRUE(genealogy$sampled)])
 }
 
-.accumulate_mutations_f = function(.id, .chr, .tbl) {
-  .row = dplyr::filter(.tbl, .data$id == .id, .data$chr == .chr)
-  .pos = .row$pos
-  .id = .row$parent_id
-  while (.id != 0L) {
-    .chr = sample.int(2L, 1L)
-    .row = dplyr::filter(.tbl, .data$id == .id, .data$chr == .chr)
-    .pos = c(.pos, .row$pos)
-    .id = .row$parent_id
-  }
-  purrr::flatten_dbl(.pos)
-}
-
-# trace back ancestors to collect mutation positions
-accumulate_mutations = function(.tbl) {
-  .tbl %>%
-    dplyr::filter(!is.na(.data$capture_year)) %>%
-    dplyr::transmute(
-      .data$id,
-      .data$chr,
-      pos = purrr::map2(.data$id, .data$chr, .accumulate_mutations_f, .tbl = .tbl)
-    )
-}
-
-# complete genotypes for all the positions
-complete_genotype = function(.tbl) {
-  .tbl %>%
-    dplyr::mutate(genotype = 1L) %>%
-    tidyr::unnest() %>%
-    tidyr::complete_(c("id", "chr", "pos"), fill = list(genotype = 0L))
-}
-
-# spread data frame to wide format
-spread_genotype = function(.tbl) {
-  .tbl %>%
-    dplyr::mutate(pos = sprintf("snp%04d", .data$pos %>% as.factor() %>% as.integer())) %>%
-    tidyr::spread("pos", "genotype", fill = 0L)
-}
+areTRUE = function(x) !is.na(x) & x

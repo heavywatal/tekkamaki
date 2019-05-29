@@ -4,14 +4,12 @@
 \alias{make_snp}
 \title{Functions to process SNPs}
 \usage{
-make_snp(.tbl, lambda, rho = 0)
+make_snp(.tbl, segsites = 1L)
 }
 \arguments{
 \item{.tbl}{sample_family}
 
-\item{lambda}{mutation rate per haploid per generation}
-
-\item{rho}{recombination rate per generation}
+\item{segsites}{number of segregating sites}
 }
 \description{
 Functions to process SNPs
