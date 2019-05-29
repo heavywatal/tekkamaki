@@ -24,29 +24,33 @@ gather_chromosome = function(.tbl) {
     dplyr::select(-"location") %>%
     tidyr::gather("chr", "parent_id", -"id", -"birth_year", -"capture_year") %>%
     dplyr::mutate(chr = c(mother_id = 1L, father_id = 2L)[.data$chr]) %>%
-    dplyr::arrange(.data$id, .data$chr)
+    dplyr::arrange(.data$id, .data$chr) %>%
+    dplyr::mutate(id = paste(.data$id, .data$chr, sep = "-"), chr = NULL)
 }
 
 make_gene_genealogy = function(.tbl) {
   n = nrow(.tbl)
-  dplyr::transmute(
-    .tbl,
-    parent = paste(parent_id, sample.int(2L, n, replace = TRUE), sep = "-"),
-    id = paste(id, chr, sep = "-"),
-    .data$birth_year,
-    is_sampled = !is.na(.data$capture_year)
-  ) %>%
-  filter_connected()
+  .tbl = dplyr::transmute(
+      .tbl,
+      from = paste(.data$parent_id, sample.int(2L, n, replace = TRUE), sep = "-"),
+      to = .data$id,
+      .data$birth_year,
+      .data$capture_year
+    ) %>%
+    mark_upstream()
+  class(.tbl) = c("genealogy", "tbl_df", "tbl", "data.frame")
+  .tbl
 }
 
-filter_connected = function(.tbl) {
+mark_upstream = function(.tbl) {
   g = .tbl %>%
-    dplyr::filter(!stringr::str_detect(.data$parent, "^0")) %>%
+    dplyr::filter(!stringr::str_detect(.data$from, "^0")) %>%
     igraphlite::graph_from_data_frame()
-  v_sampled = g$to[g$Eattr[["is_sampled"]]]
+  v_sampled = g$to[!is.na(g$Eattr[["capture_year"]])]
   v_genealogy = igraphlite::upstream_vertices(g, v_sampled)
   v_genealogy = igraphlite::as_vnames(g, v_genealogy)
-  dplyr::filter(.tbl, .data$id %in% v_genealogy)
+  .tbl$sampled = ifelse(.tbl$to %in% v_genealogy, !is.na(.tbl$capture_year), NA)
+  .tbl
 }
 
 # choose random mutation positions [0, 1)

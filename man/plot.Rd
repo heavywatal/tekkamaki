@@ -2,13 +2,19 @@
 % Please edit documentation in R/plot.R
 \name{augment.sample_family}
 \alias{augment.sample_family}
+\alias{augment.genealogy}
 \alias{layout_demography}
+\alias{plot.genealogy}
 \alias{plot.sample_family}
 \title{Methods for quick visualization}
 \usage{
 \method{augment}{sample_family}(x, layout = NULL, ...)
 
+\method{augment}{genealogy}(x, layout = NULL, ...)
+
 layout_demography(x)
+
+\method{plot}{genealogy}(x, ..., lwd = 0.5, cex = 5, pch = 16)
 
 \method{plot}{sample_family}(x, ..., lwd = 0.5, cex = 5, pch = 16)
 }
