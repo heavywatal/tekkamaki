@@ -2,25 +2,16 @@
 % Please edit documentation in R/graph.R
 \name{as_igraph.sample_family}
 \alias{as_igraph.sample_family}
-\alias{find_kinship}
-\title{Analyze kinship with igraph}
+\title{Convert genealogy to igraph}
 \usage{
-\method{as_igraph}{sample_family}(.tbl)
-
-find_kinship(.tbl, order = 4L, experimental = FALSE)
+\method{as_igraph}{sample_family}(x)
 }
 \arguments{
-\item{.tbl}{sample_family}
-
-\item{order}{integer}
-
-\item{experimental}{boolean}
+\item{x}{\code{sample_family} table}
 }
 \description{
-Analyze kinship with igraph
+Convert genealogy to igraph
 }
 \details{
 \code{as_igraph} converts a result to igraph.
-
-\code{find_kinship} finds kinship below given order.
 }

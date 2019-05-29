@@ -26,8 +26,8 @@ augment.genealogy = function(x, layout = NULL, ...) {
   }
   add_coordinates(x, layout) %>%
     dplyr::mutate(
-      xend = ifelse(is.na(sampled), NA, xend),
-      yend = ifelse(is.na(sampled), NA, yend),
+      xend = ifelse(is.na(.data$sampled), NA, .data$xend),
+      yend = ifelse(is.na(.data$sampled), NA, .data$yend),
       label = .data$to
     )
 }
@@ -59,7 +59,7 @@ as_genealogy = function(x) {
 #' @rdname plot
 #' @export
 layout_demography = function(x) {
-  if (hasName(x, "to")) x = dplyr::rename(x, id = .data$to)
+  if (utils::hasName(x, "to")) x = dplyr::rename(x, id = .data$to)
   x %>%
     dplyr::distinct(.data$id, .data$birth_year) %>%
     dplyr::group_by(.data$birth_year) %>%
@@ -74,7 +74,7 @@ layout_demography = function(x) {
 #' @export
 plot.genealogy = function(x, ..., lwd = 0.5, cex = 5, pch = 16) {
   data = augment(x, ...)
-  f = function(x) dplyr::filter(x, !is.na(xend))
+  f = function(x) dplyr::filter(x, !is.na(.data$xend))
   ggplot2::ggplot(data, ggplot2::aes_(~x, ~y)) +
     ggplot2::geom_segment(data = f, ggplot2::aes_(xend = ~xend, yend = ~yend), size = lwd, alpha = 0.5) +
     ggplot2::geom_point(ggplot2::aes_(colour = ~sampled), shape = pch, size = cex) +
