@@ -2,10 +2,10 @@ test_that("genealogy methods and make_snp() work", {
   result = tekka("--seed 42 -n80 -y40 -K90 -r1 -l2 --sa 2,2 --sj 2,2")
   samples = result$sample_family[[1L]]
   expect_silent({
-    chromosomes = gather_chromosome(samples)
+    segments = gather_segments(samples)
   })
   expect_silent({
-    genealogy = make_gene_genealogy(chromosomes)
+    genealogy = make_gene_genealogy(segments)
   })
   expect_silent({
     df = augment(genealogy)

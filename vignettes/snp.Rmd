@@ -31,8 +31,8 @@ make_snp(samples, segsites = 3L)
 ## Visualize a generated gene genealogy
 
 ```{r plot, fig.height = 8, fig.width = 10}
-chromosomes = gather_chromosome(samples)
-genealogy = make_gene_genealogy(chromosomes)
+segments = gather_segments(samples)
+genealogy = make_gene_genealogy(segments)
 plot(genealogy) +
   theme_void() +
   theme(legend.position = "top")

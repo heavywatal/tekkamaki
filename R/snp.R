@@ -7,33 +7,33 @@
 #' @rdname snp
 #' @export
 make_snp = function(.tbl, segsites = 1L) {
-  chromosomes = gather_chromosome(.tbl)
-  replicate(segsites, make_gene_genealogy(chromosomes) %>% extract_snp())
+  segments = gather_segments(.tbl)
+  replicate(segsites, make_gene_genealogy(segments) %>% extract_snp())
 }
 
 #' @details
-#' [gather_chromosome()] transform individual-based `sample_family` into
-#' chromosome-based table.
+#' [gather_segments()] transform individual-based `sample_family` into
+#' segment-based table.
 #' @rdname snp
 #' @export
-gather_chromosome = function(.tbl) {
+gather_segments = function(.tbl) {
   .tbl %>%
     dplyr::select(-"location") %>%
-    tidyr::gather("chr", "parent_id", -"id", -"birth_year", -"capture_year") %>%
-    dplyr::mutate(chr = c(mother_id = 1L, father_id = 2L)[.data$chr]) %>%
-    dplyr::arrange(.data$id, .data$chr) %>%
-    dplyr::mutate(id = paste(.data$id, .data$chr, sep = "-"), chr = NULL)
+    tidyr::gather("homolog", "parent_id", -"id", -"birth_year", -"capture_year") %>%
+    dplyr::mutate(homolog = c(mother_id = 1L, father_id = 2L)[.data$homolog]) %>%
+    dplyr::arrange(.data$id, .data$homolog) %>%
+    dplyr::mutate(id = paste(.data$id, .data$homolog, sep = "-"), homolog = NULL)
 }
 
 #' @details
 #' [make_gene_genealogy()] generates random gene genealogy.
-#' @param chromosomes The output from [gather_chromosome()]
+#' @param segments The output from [gather_segments()]
 #' @rdname snp
 #' @export
-make_gene_genealogy = function(chromosomes) {
-  n = nrow(chromosomes)
+make_gene_genealogy = function(segments) {
+  n = nrow(segments)
   df = dplyr::transmute(
-      chromosomes,
+      segments,
       from = paste(.data$parent_id, sample.int(2L, n, replace = TRUE), sep = "-"),
       to = .data$id,
       .data$birth_year,
