@@ -30,7 +30,9 @@ as_edgelist = function(.tbl) {
 #' @export
 find_kinship = function(.tbl, order = 4L, experimental = FALSE) {
   graph = as_igraph(.tbl)
-  pairs = neighbor_pairs(graph, graph$sink, order = order)
+  nodes = dplyr::filter(.tbl, !is.na(.data$capture_year))$id
+  vids = igraphlite::as_vids(graph, nodes)
+  pairs = neighbor_pairs(graph, vids, order = order)
   if (nrow(pairs) == 0L) {
     message("No kinship found")
     return(invisible(pairs))

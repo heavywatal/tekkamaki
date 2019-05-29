@@ -5,6 +5,7 @@ test_that("Graph functions works", {
   expect_silent({
     kinship = find_kinship(samples)
   })
+  expect_s3_class(kinship, "data.frame")
   expect_silent({
     kinship = find_kinship(samples, experimental = TRUE)
   })
