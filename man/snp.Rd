@@ -4,6 +4,7 @@
 \alias{make_snp}
 \alias{gather_segments}
 \alias{make_gene_genealogy}
+\alias{count_uncoalesced}
 \title{Functions to generate gene genealogy and SNP matrix}
 \usage{
 make_snp(.tbl, segsites = 1L)
@@ -11,6 +12,8 @@ make_snp(.tbl, segsites = 1L)
 gather_segments(.tbl)
 
 make_gene_genealogy(segments)
+
+count_uncoalesced(genealogy)
 }
 \arguments{
 \item{.tbl}{\code{sample_family} data.frame}
@@ -18,6 +21,8 @@ make_gene_genealogy(segments)
 \item{segsites}{number of segregating sites}
 
 \item{segments}{The output from \code{\link[=gather_segments]{gather_segments()}}}
+
+\item{genealogy}{The output from \code{\link[=make_gene_genealogy]{make_gene_genealogy()}}}
 }
 \description{
 Functions to generate gene genealogy and SNP matrix
@@ -29,4 +34,6 @@ Functions to generate gene genealogy and SNP matrix
 segment-based table.
 
 \code{\link[=make_gene_genealogy]{make_gene_genealogy()}} generates random gene genealogy.
+
+\code{\link[=count_uncoalesced]{count_uncoalesced()}} counts uncoalesced lineages in a gene genealogy
 }

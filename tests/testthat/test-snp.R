@@ -7,6 +7,7 @@ test_that("genealogy methods and make_snp() work", {
   expect_silent({
     genealogy = make_gene_genealogy(segments)
   })
+  expect_type(count_uncoalesced(genealogy), "integer")
   expect_silent({
     df = augment(genealogy)
   })

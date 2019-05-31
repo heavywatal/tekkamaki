@@ -44,6 +44,17 @@ make_gene_genealogy = function(segments) {
   df
 }
 
+#' @details
+#' [count_uncoalesced()] counts uncoalesced lineages in a gene genealogy
+#' @param genealogy The output from [make_gene_genealogy()]
+#' @rdname snp
+#' @export
+count_uncoalesced = function(genealogy) {
+  origins = stringr::str_detect(genealogy[["from"]], "^0")
+  on_tree = !is.na(genealogy[["sampled"]])
+  sum(origins & on_tree)
+}
+
 mark_upstream = function(.tbl) {
   graph = .tbl %>%
     dplyr::filter(!stringr::str_detect(.data$from, "^0")) %>%
