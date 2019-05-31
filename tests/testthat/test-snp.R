@@ -19,9 +19,9 @@ test_that("genealogy methods and make_snp() work", {
   expect_s3_class(p, c("gg", "ggplot"))
 
   nsam = sum(!is.na(samples$capture_year))
-  segsites = 3L
+  ss = c(2L, 3L)
   expect_silent({
-    m = make_snp(samples, segsites = segsites)
+    m = make_snp(samples, ss = ss)
   })
-  expect_equal(dim(m), c(nsam * 2L, segsites))
+  expect_equal(dim(m), c(nsam * 2L, sum(ss)))
 })

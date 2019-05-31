@@ -25,7 +25,7 @@ set.seed(666L)
 ```{r snp}
 result = tekka("--seed 42 -n80 -y40 -K90 -r1 -l2 --sa 2,2 --sj 2,2")
 samples = result$sample_family[[1L]]
-make_snp(samples, segsites = 3L)
+make_snp(samples, ss = c(1L, 2L))
 ```
 
 ## Visualize a generated gene genealogy
