@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">tekkamaki</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.5</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.7</span>
       </span>
     </div>
 
@@ -137,11 +137,11 @@
     
     </div>
 
-    <pre class="usage"><span class='fu'>make_snp</span>(<span class='no'>.tbl</span>, <span class='kw'>segsites</span> <span class='kw'>=</span> <span class='fl'>1L</span>)
+    <pre class="usage"><span class='fu'>make_snp</span>(<span class='no'>.tbl</span>, <span class='kw'>ss</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>2L</span>, <span class='fl'>2L</span>))
 
 <span class='fu'>gather_segments</span>(<span class='no'>.tbl</span>)
 
-<span class='fu'>make_gene_genealogy</span>(<span class='no'>segments</span>)
+<span class='fu'>make_gene_genealogy</span>(<span class='no'>segments</span>, <span class='kw'>segsites</span> <span class='kw'>=</span> <span class='fl'>0L</span>)
 
 <span class='fu'>count_uncoalesced</span>(<span class='no'>genealogy</span>)</pre>
     
@@ -150,19 +150,25 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>.tbl</th>
-      <td><p><code>sample_family</code> data.frame</p></td>
+      <td><p><code>sample_family</code> data.frame.</p></td>
     </tr>
     <tr>
-      <th>segsites</th>
-      <td><p>number of segregating sites</p></td>
+      <th>ss</th>
+      <td><p>A sequence of <code>segsites</code>;
+its length is the number of segments;
+each element is the number of segsites on a segment.</p></td>
     </tr>
     <tr>
       <th>segments</th>
-      <td><p>The output from <code>gather_segments()</code></p></td>
+      <td><p>An output from <code>gather_segments()</code>.</p></td>
+    </tr>
+    <tr>
+      <th>segsites</th>
+      <td><p>The number of segregating sites on a segment.</p></td>
     </tr>
     <tr>
       <th>genealogy</th>
-      <td><p>The output from <code>make_gene_genealogy()</code></p></td>
+      <td><p>An output from <code>make_gene_genealogy()</code>.</p></td>
     </tr>
     </table>
     

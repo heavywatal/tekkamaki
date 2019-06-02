@@ -37,7 +37,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">tekkamaki</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.5</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.7</span>
       </span>
     </div>
 
@@ -106,9 +106,9 @@
 <div id="generate-a-snp-matrix" class="section level2">
 <h2 class="hasAnchor">
 <a href="#generate-a-snp-matrix" class="anchor"></a>Generate a SNP matrix</h2>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" title="1">result =<span class="st"> </span><span class="kw"><a href="../reference/tekka.html">tekka</a></span>(<span class="st">"--seed 42 -n80 -y40 -K90 -r1 -l2 --sa 2,2 --sj 2,2"</span>)</a>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" title="1">result =<span class="st"> </span><span class="kw"><a href="../reference/tekka.html">tekka</a></span>(<span class="st">"--seed 42 -y40 -K90 -r1 -l2 --sa 2,2 --sj 2,2"</span>)</a>
 <a class="sourceLine" id="cb2-2" title="2">samples =<span class="st"> </span>result<span class="op">$</span>sample_family[[1L]]</a>
-<a class="sourceLine" id="cb2-3" title="3"><span class="kw"><a href="../reference/snp.html">make_snp</a></span>(samples, <span class="dt">segsites =</span> 3L)</a>
+<a class="sourceLine" id="cb2-3" title="3"><span class="kw"><a href="../reference/snp.html">make_snp</a></span>(samples, <span class="dt">ss =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(1L, 2L))</a>
 <a class="sourceLine" id="cb2-4" title="4"><span class="co">#&gt;       [,1] [,2] [,3]</span></a>
 <a class="sourceLine" id="cb2-5" title="5"><span class="co">#&gt;  [1,]    0    0    0</span></a>
 <a class="sourceLine" id="cb2-6" title="6"><span class="co">#&gt;  [2,]    0    0    0</span></a>
@@ -119,19 +119,19 @@
 <a class="sourceLine" id="cb2-11" title="11"><span class="co">#&gt;  [7,]    0    0    0</span></a>
 <a class="sourceLine" id="cb2-12" title="12"><span class="co">#&gt;  [8,]    0    0    0</span></a>
 <a class="sourceLine" id="cb2-13" title="13"><span class="co">#&gt;  [9,]    0    0    0</span></a>
-<a class="sourceLine" id="cb2-14" title="14"><span class="co">#&gt; [10,]    0    0    0</span></a>
-<a class="sourceLine" id="cb2-15" title="15"><span class="co">#&gt; [11,]    0    1    0</span></a>
-<a class="sourceLine" id="cb2-16" title="16"><span class="co">#&gt; [12,]    1    0    0</span></a>
+<a class="sourceLine" id="cb2-14" title="14"><span class="co">#&gt; [10,]    0    0    1</span></a>
+<a class="sourceLine" id="cb2-15" title="15"><span class="co">#&gt; [11,]    0    0    0</span></a>
+<a class="sourceLine" id="cb2-16" title="16"><span class="co">#&gt; [12,]    0    0    0</span></a>
 <a class="sourceLine" id="cb2-17" title="17"><span class="co">#&gt; [13,]    0    0    0</span></a>
-<a class="sourceLine" id="cb2-18" title="18"><span class="co">#&gt; [14,]    0    0    0</span></a>
-<a class="sourceLine" id="cb2-19" title="19"><span class="co">#&gt; [15,]    0    0    0</span></a>
+<a class="sourceLine" id="cb2-18" title="18"><span class="co">#&gt; [14,]    0    1    0</span></a>
+<a class="sourceLine" id="cb2-19" title="19"><span class="co">#&gt; [15,]    1    0    0</span></a>
 <a class="sourceLine" id="cb2-20" title="20"><span class="co">#&gt; [16,]    0    0    0</span></a>
 <a class="sourceLine" id="cb2-21" title="21"><span class="co">#&gt; [17,]    0    0    0</span></a>
 <a class="sourceLine" id="cb2-22" title="22"><span class="co">#&gt; [18,]    0    0    0</span></a>
 <a class="sourceLine" id="cb2-23" title="23"><span class="co">#&gt; [19,]    0    0    0</span></a>
 <a class="sourceLine" id="cb2-24" title="24"><span class="co">#&gt; [20,]    0    0    0</span></a>
-<a class="sourceLine" id="cb2-25" title="25"><span class="co">#&gt; [21,]    0    0    1</span></a>
-<a class="sourceLine" id="cb2-26" title="26"><span class="co">#&gt; [22,]    0    0    0</span></a>
+<a class="sourceLine" id="cb2-25" title="25"><span class="co">#&gt; [21,]    0    0    0</span></a>
+<a class="sourceLine" id="cb2-26" title="26"><span class="co">#&gt; [22,]    1    0    0</span></a>
 <a class="sourceLine" id="cb2-27" title="27"><span class="co">#&gt; [23,]    0    0    0</span></a>
 <a class="sourceLine" id="cb2-28" title="28"><span class="co">#&gt; [24,]    0    0    0</span></a>
 <a class="sourceLine" id="cb2-29" title="29"><span class="co">#&gt; [25,]    0    0    0</span></a>
@@ -139,7 +139,7 @@
 <a class="sourceLine" id="cb2-31" title="31"><span class="co">#&gt; [27,]    0    0    0</span></a>
 <a class="sourceLine" id="cb2-32" title="32"><span class="co">#&gt; [28,]    0    0    0</span></a>
 <a class="sourceLine" id="cb2-33" title="33"><span class="co">#&gt; [29,]    0    0    0</span></a>
-<a class="sourceLine" id="cb2-34" title="34"><span class="co">#&gt; [30,]    0    0    0</span></a>
+<a class="sourceLine" id="cb2-34" title="34"><span class="co">#&gt; [30,]    0    1    0</span></a>
 <a class="sourceLine" id="cb2-35" title="35"><span class="co">#&gt; [31,]    0    0    0</span></a>
 <a class="sourceLine" id="cb2-36" title="36"><span class="co">#&gt; [32,]    0    0    0</span></a></code></pre></div>
 </div>
