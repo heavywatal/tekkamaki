@@ -45,6 +45,16 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// read_json
+void read_json(const std::string& file);
+RcppExport SEXP _tekkamaki_read_json(SEXP fileSEXP) {
+BEGIN_RCPP
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const std::string& >::type file(fileSEXP);
+    read_json(file);
+    return R_NilValue;
+END_RCPP
+}
 // cpp_rnbinom
 std::vector<int> cpp_rnbinom(int n, double size, double mu);
 RcppExport SEXP _tekkamaki_cpp_rnbinom(SEXP nSEXP, SEXP sizeSEXP, SEXP muSEXP) {
@@ -75,6 +85,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_tekkamaki_natural_mortality", (DL_FUNC) &_tekkamaki_natural_mortality, 0},
     {"_tekkamaki_fishing_mortality", (DL_FUNC) &_tekkamaki_fishing_mortality, 0},
     {"_tekkamaki_weight_for_age", (DL_FUNC) &_tekkamaki_weight_for_age, 0},
+    {"_tekkamaki_read_json", (DL_FUNC) &_tekkamaki_read_json, 1},
     {"_tekkamaki_cpp_rnbinom", (DL_FUNC) &_tekkamaki_cpp_rnbinom, 3},
     {"_tekkamaki_cpp_tekka", (DL_FUNC) &_tekkamaki_cpp_tekka, 1},
     {NULL, NULL, 0}

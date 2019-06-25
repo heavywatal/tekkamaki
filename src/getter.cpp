@@ -2,6 +2,8 @@
 #include <Rcpp.h>
 #include <tekka/individual.hpp>
 
+#include <fstream>
+
 Rcpp::NumericMatrix matrix_byrow(const std::vector<std::vector<double>>& vvd) {
     const size_t nrow = vvd.size();
     const size_t ncol = vvd.at(0u).size();
@@ -15,10 +17,6 @@ Rcpp::NumericMatrix matrix_byrow(const std::vector<std::vector<double>>& vvd) {
     return mat;
 }
 
-//' Parameter getter
-//'
-//' @rdname param-getter
-//' @export
 // [[Rcpp::export]]
 Rcpp::List migration_matrices() {
   const auto& matrices = pbf::Individual::migration_matrices();
@@ -30,23 +28,28 @@ Rcpp::List migration_matrices() {
   return output;
 }
 
-//' @rdname param-getter
-//' @export
 // [[Rcpp::export]]
 Rcpp::NumericVector natural_mortality() {
   return Rcpp::wrap(pbf::Individual::natural_mortality());
 }
 
-//' @rdname param-getter
-//' @export
 // [[Rcpp::export]]
 Rcpp::NumericVector fishing_mortality() {
   return Rcpp::wrap(pbf::Individual::fishing_mortality());
 }
 
-//' @rdname param-getter
-//' @export
 // [[Rcpp::export]]
 Rcpp::NumericVector weight_for_age() {
   return Rcpp::wrap(pbf::Individual::weight_for_age());
+}
+
+// [[Rcpp::export]]
+void read_json(const std::string& file) {
+  if (file.empty()) {
+    std::istringstream iss(pbf::Individual::default_json());
+    pbf::Individual::read_json(iss);
+  } else {
+    std::ifstream ifs(file);
+    pbf::Individual::read_json(ifs);
+  }
 }

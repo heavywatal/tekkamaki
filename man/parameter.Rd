@@ -4,7 +4,7 @@
 \alias{plot_parameters_json}
 \title{Visualize parameter json file}
 \usage{
-plot_parameters_json(file = NULL)
+plot_parameters_json(file = "")
 }
 \arguments{
 \item{file}{path to a json file}

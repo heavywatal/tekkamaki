@@ -3,17 +3,16 @@
 #' @param file path to a json file
 #' @rdname parameter
 #' @export
-plot_parameters_json = function(file = NULL) {
-  if (!is.null(file)) {
-    message("TODO")
-  }
+plot_parameters_json = function(file = "") {
+  read_json(file)
   p_vec = read_vectors() %>%
     tidyr::gather(parameter, value, -age) %>%
     ggplot2::ggplot(ggplot2::aes_(~age, ~value)) +
     ggplot2::geom_line() +
+    ggplot2::labs(y = NULL) +
     ggplot2::facet_wrap(~ parameter, scale = "free_y", ncol = 1L)
   p_mat = read_migration_matrices() %>%
-    ggplot2::ggplot(ggplot2::aes_(~to, ~from, fill = ~value)) +
+    ggplot2::ggplot(ggplot2::aes_(~to, ~from, fill = ~probability)) +
     ggplot2::geom_raster() +
     ggplot2::scale_y_reverse() +
     ggplot2::coord_fixed() +
@@ -37,7 +36,7 @@ read_migration_matrices = function() {
 }
 
 gather_migration_matrix = function(x) {
-  reshape2::melt(x) %>%
+  reshape2::melt(x, value.name = "probability") %>%
     tibble::as_tibble() %>%
     dplyr::rename(from = .data$Var1, to = .data$Var2)
 }
