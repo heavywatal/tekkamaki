@@ -22,8 +22,10 @@ Imports:
     Rcpp (>= 1.0.1)
 Suggests:
     covr,
+    cowplot,
     ggplot2,
     knitr,
+    reshape2,
     rmarkdown,
     testthat (>= 2.1.0)
 Remotes:
