@@ -25,7 +25,6 @@ Suggests:
     cowplot,
     ggplot2,
     knitr,
-    reshape2,
     rmarkdown,
     testthat (>= 2.1.0)
 Remotes:

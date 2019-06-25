@@ -36,7 +36,8 @@ read_migration_matrices = function() {
 }
 
 gather_migration_matrix = function(x) {
-  reshape2::melt(x, value.name = "probability") %>%
-    tibble::as_tibble() %>%
-    dplyr::rename(from = .data$Var1, to = .data$Var2)
+  dim_x = dim(x)
+  dimnames(x) = list(from = seq_len(dim_x[1L]), to = seq_len(dim_x[2L]))
+  dplyr::as.tbl_cube(x, met_name = "probability") %>%
+    tibble::as_tibble()
 }
