@@ -15,4 +15,4 @@ reference:
   - starts_with("as_igraph")
   - starts_with("augment")
   - ends_with("nbinom")
-  - migration_matrices
+  - plot_parameters_json
