@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>HSP format — as_hsp • tekkamaki</title>
+<title>Visualize parameter json file — plot_parameters_json • tekkamaki</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -37,9 +37,9 @@
 
 
 
-<meta property="og:title" content="HSP format — as_hsp" />
+<meta property="og:title" content="Visualize parameter json file — plot_parameters_json" />
 
-<meta property="og:description" content="HSP format" />
+<meta property="og:description" content="Visualize parameter json file" />
 
 <meta property="og:image" content="/logo.png" />
 <meta name="twitter:card" content="summary" />
@@ -126,44 +126,27 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>HSP format</h1>
-    <small class="dont-index">Source: <a href='https://github.com/heavywatal/tekkamaki/blob/master/R/hsp.R'><code>R/hsp.R</code></a></small>
-    <div class="hidden name"><code>hsp.Rd</code></div>
+    <h1>Visualize parameter json file</h1>
+    <small class="dont-index">Source: <a href='https://github.com/heavywatal/tekkamaki/blob/master/R/parameter.R'><code>R/parameter.R</code></a></small>
+    <div class="hidden name"><code>parameter.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>HSP format</p>
+    <p>Visualize parameter json file</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>as_hsp</span>(<span class='no'>.tbl</span>)
-
-<span class='fu'>write_hsp</span>(<span class='no'>x</span>, <span class='kw'>path</span> <span class='kw'>=</span> <span class='st'>"hsp.txt"</span>)
-
-<span class='fu'>read_hsp</span>(<span class='no'>path</span>)</pre>
+    <pre class="usage"><span class='fu'>plot_parameters_json</span>(<span class='kw'>file</span> <span class='kw'>=</span> <span class='st'>""</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>.tbl</th>
-      <td><p>sample_family</p></td>
-    </tr>
-    <tr>
-      <th>x</th>
-      <td><p>An outcome of <code>as_hsp()</code></p></td>
-    </tr>
-    <tr>
-      <th>path</th>
-      <td><p>A file name or connection to write to</p></td>
+      <th>file</th>
+      <td><p>path to a json file</p></td>
     </tr>
     </table>
-    
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
-
-    <p><code>as_hsp</code> converts a result data frame to HSP format.</p>
-<p><code>write_hsp</code> writes a HSP data frame to a file.</p>
     
 
   </div>
@@ -171,9 +154,7 @@
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-      
-      <li><a href="#details">Details</a></li>
-          </ul>
+                </ul>
 
   </div>
 </div>
