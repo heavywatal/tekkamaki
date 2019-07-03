@@ -6,7 +6,7 @@
 plot_parameters_json = function(file = "") {
   read_json(file)
   p_vec = read_vectors() %>%
-    tidyr::gather(parameter, value, -age) %>%
+    tidyr::gather("parameter", "value", -"age") %>%
     ggplot2::ggplot(ggplot2::aes_(~age, ~value)) +
     ggplot2::geom_line() +
     ggplot2::labs(y = NULL) +
