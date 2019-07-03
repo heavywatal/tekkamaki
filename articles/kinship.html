@@ -37,7 +37,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">tekkamaki</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.0</span>
       </span>
     </div>
 
@@ -104,79 +104,94 @@
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(dplyr)</span>
 <span id="cb1-2"><a href="#cb1-2"></a><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(tekkamaki)</span>
 <span id="cb1-3"><a href="#cb1-3"></a></span>
-<span id="cb1-4"><a href="#cb1-4"></a>result =<span class="st"> </span><span class="kw"><a href="../reference/tekka.html">tekka</a></span>(<span class="st">'--seed=42 -y100 -l5 --sa 10,10 --sj 10,10'</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/print">print</a></span>()</span>
+<span id="cb1-4"><a href="#cb1-4"></a>result =<span class="st"> </span><span class="kw"><a href="../reference/tekka.html">tekka</a></span>(<span class="st">"--seed=42 -y100 -l3 --sa 10,10 --sj 10,10"</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/print">print</a></span>()</span>
 <span id="cb1-5"><a href="#cb1-5"></a><span class="co">#&gt; # A tibble: 1 x 2</span></span>
-<span id="cb1-6"><a href="#cb1-6"></a><span class="co">#&gt;   sample_family         demography          </span></span>
-<span id="cb1-7"><a href="#cb1-7"></a><span class="co">#&gt;   &lt;list&gt;                &lt;list&gt;              </span></span>
-<span id="cb1-8"><a href="#cb1-8"></a><span class="co">#&gt; 1 &lt;tibble [13,779 × 6]&gt; &lt;tibble [9,645 × 5]&gt;</span></span>
+<span id="cb1-6"><a href="#cb1-6"></a><span class="co">#&gt;   sample_family        demography          </span></span>
+<span id="cb1-7"><a href="#cb1-7"></a><span class="co">#&gt;   &lt;list&gt;               &lt;list&gt;              </span></span>
+<span id="cb1-8"><a href="#cb1-8"></a><span class="co">#&gt; 1 &lt;tibble [7,479 × 6]&gt; &lt;tibble [4,483 × 5]&gt;</span></span>
 <span id="cb1-9"><a href="#cb1-9"></a>sample_family =<span class="st"> </span>result<span class="op">$</span>sample_family[[1L]] <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/print">print</a></span>()</span>
-<span id="cb1-10"><a href="#cb1-10"></a><span class="co">#&gt; # A tibble: 13,779 x 6</span></span>
+<span id="cb1-10"><a href="#cb1-10"></a><span class="co">#&gt; # A tibble: 7,479 x 6</span></span>
 <span id="cb1-11"><a href="#cb1-11"></a><span class="co">#&gt;       id father_id mother_id birth_year location capture_year</span></span>
 <span id="cb1-12"><a href="#cb1-12"></a><span class="co">#&gt;    &lt;int&gt;     &lt;int&gt;     &lt;int&gt;      &lt;int&gt;    &lt;int&gt;        &lt;int&gt;</span></span>
-<span id="cb1-13"><a href="#cb1-13"></a><span class="co">#&gt;  1   213         0         0         -4        1           NA</span></span>
-<span id="cb1-14"><a href="#cb1-14"></a><span class="co">#&gt;  2   214         0         0         -4        1           NA</span></span>
-<span id="cb1-15"><a href="#cb1-15"></a><span class="co">#&gt;  3   212       213       214          5        0           NA</span></span>
-<span id="cb1-16"><a href="#cb1-16"></a><span class="co">#&gt;  4   217         0         0         -4        1           NA</span></span>
-<span id="cb1-17"><a href="#cb1-17"></a><span class="co">#&gt;  5   218         0         0         -4        0           NA</span></span>
-<span id="cb1-18"><a href="#cb1-18"></a><span class="co">#&gt;  6   216       217       218          0        1           NA</span></span>
-<span id="cb1-19"><a href="#cb1-19"></a><span class="co">#&gt;  7   219         0         0         -4        1           NA</span></span>
-<span id="cb1-20"><a href="#cb1-20"></a><span class="co">#&gt;  8   215       216       219          6        0           NA</span></span>
-<span id="cb1-21"><a href="#cb1-21"></a><span class="co">#&gt;  9   211       212       215         11        1           NA</span></span>
-<span id="cb1-22"><a href="#cb1-22"></a><span class="co">#&gt; 10   222         0         0         -4        1           NA</span></span>
-<span id="cb1-23"><a href="#cb1-23"></a><span class="co">#&gt; # … with 13,769 more rows</span></span></code></pre></div>
+<span id="cb1-13"><a href="#cb1-13"></a><span class="co">#&gt;  1   134         0         0         -4        0           NA</span></span>
+<span id="cb1-14"><a href="#cb1-14"></a><span class="co">#&gt;  2   135         0         0         -4        0           NA</span></span>
+<span id="cb1-15"><a href="#cb1-15"></a><span class="co">#&gt;  3   133       134       135          1        0           NA</span></span>
+<span id="cb1-16"><a href="#cb1-16"></a><span class="co">#&gt;  4   137         0         0         -4        0           NA</span></span>
+<span id="cb1-17"><a href="#cb1-17"></a><span class="co">#&gt;  5   138         0         0         -4        0           NA</span></span>
+<span id="cb1-18"><a href="#cb1-18"></a><span class="co">#&gt;  6   136       137       138          1        1           NA</span></span>
+<span id="cb1-19"><a href="#cb1-19"></a><span class="co">#&gt;  7   132       133       136          5        1           NA</span></span>
+<span id="cb1-20"><a href="#cb1-20"></a><span class="co">#&gt;  8   141         0         0         -4        0           NA</span></span>
+<span id="cb1-21"><a href="#cb1-21"></a><span class="co">#&gt;  9   142         0         0         -4        0           NA</span></span>
+<span id="cb1-22"><a href="#cb1-22"></a><span class="co">#&gt; 10   140       141       142          1        0           NA</span></span>
+<span id="cb1-23"><a href="#cb1-23"></a><span class="co">#&gt; # … with 7,469 more rows</span></span></code></pre></div>
 <p>Extract kinship with degree≤4:</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a>kinship =<span class="st"> </span><span class="kw"><a href="../reference/kinship.html">find_kinship</a></span>(sample_family, 4L) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/print">print</a></span>()</span>
-<span id="cb2-2"><a href="#cb2-2"></a><span class="co">#&gt; # A tibble: 255 x 5</span></span>
+<span id="cb2-2"><a href="#cb2-2"></a><span class="co">#&gt; # A tibble: 194 x 5</span></span>
 <span id="cb2-3"><a href="#cb2-3"></a><span class="co">#&gt;     from    to path   degree label</span></span>
 <span id="cb2-4"><a href="#cb2-4"></a><span class="co">#&gt;    &lt;int&gt; &lt;int&gt; &lt;chr&gt;   &lt;int&gt; &lt;fct&gt;</span></span>
-<span id="cb2-5"><a href="#cb2-5"></a><span class="co">#&gt;  1     1    40 1110_1      4 HGUN </span></span>
-<span id="cb2-6"><a href="#cb2-6"></a><span class="co">#&gt;  2     1    62 1100_1      4 HC   </span></span>
-<span id="cb2-7"><a href="#cb2-7"></a><span class="co">#&gt;  3     2    10 1100_1      4 HC   </span></span>
-<span id="cb2-8"><a href="#cb2-8"></a><span class="co">#&gt;  4     2    71 110_1       3 HUN  </span></span>
-<span id="cb2-9"><a href="#cb2-9"></a><span class="co">#&gt;  5     2   130 100_1       3 HUN  </span></span>
-<span id="cb2-10"><a href="#cb2-10"></a><span class="co">#&gt;  6     3    73 10_1        2 HS   </span></span>
-<span id="cb2-11"><a href="#cb2-11"></a><span class="co">#&gt;  7     3   126 100_1       3 HUN  </span></span>
-<span id="cb2-12"><a href="#cb2-12"></a><span class="co">#&gt;  8     4    16 1100_1      4 HC   </span></span>
-<span id="cb2-13"><a href="#cb2-13"></a><span class="co">#&gt;  9     4    31 110_1       3 HUN  </span></span>
-<span id="cb2-14"><a href="#cb2-14"></a><span class="co">#&gt; 10     4    58 110_1       3 HUN  </span></span>
-<span id="cb2-15"><a href="#cb2-15"></a><span class="co">#&gt; # … with 245 more rows</span></span></code></pre></div>
+<span id="cb2-5"><a href="#cb2-5"></a><span class="co">#&gt;  1     1    26 10_1        2 HS   </span></span>
+<span id="cb2-6"><a href="#cb2-6"></a><span class="co">#&gt;  2     1    52 100_1       3 HUN  </span></span>
+<span id="cb2-7"><a href="#cb2-7"></a><span class="co">#&gt;  3     1    75 1000_1      4 HGUN </span></span>
+<span id="cb2-8"><a href="#cb2-8"></a><span class="co">#&gt;  4     1    82 100_1       3 HUN  </span></span>
+<span id="cb2-9"><a href="#cb2-9"></a><span class="co">#&gt;  5     1    87 10_1        2 HS   </span></span>
+<span id="cb2-10"><a href="#cb2-10"></a><span class="co">#&gt;  6     1   102 100_1       3 HUN  </span></span>
+<span id="cb2-11"><a href="#cb2-11"></a><span class="co">#&gt;  7     1   115 10_1        2 HS   </span></span>
+<span id="cb2-12"><a href="#cb2-12"></a><span class="co">#&gt;  8     2    65 1110_1      4 HGUN </span></span>
+<span id="cb2-13"><a href="#cb2-13"></a><span class="co">#&gt;  9     2   103 1110_1      4 HGUN </span></span>
+<span id="cb2-14"><a href="#cb2-14"></a><span class="co">#&gt; 10     3     5 1100_1      4 HC   </span></span>
+<span id="cb2-15"><a href="#cb2-15"></a><span class="co">#&gt; # … with 184 more rows</span></span>
+<span id="cb2-16"><a href="#cb2-16"></a>kinship <span class="op">%&gt;%</span><span class="st"> </span>dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/tally.html">count</a></span>(label, <span class="dt">.drop =</span> <span class="ot">FALSE</span>)</span>
+<span id="cb2-17"><a href="#cb2-17"></a><span class="co">#&gt; # A tibble: 11 x 2</span></span>
+<span id="cb2-18"><a href="#cb2-18"></a><span class="co">#&gt;    label     n</span></span>
+<span id="cb2-19"><a href="#cb2-19"></a><span class="co">#&gt;    &lt;fct&gt; &lt;int&gt;</span></span>
+<span id="cb2-20"><a href="#cb2-20"></a><span class="co">#&gt;  1 PO        6</span></span>
+<span id="cb2-21"><a href="#cb2-21"></a><span class="co">#&gt;  2 HS       23</span></span>
+<span id="cb2-22"><a href="#cb2-22"></a><span class="co">#&gt;  3 FS        0</span></span>
+<span id="cb2-23"><a href="#cb2-23"></a><span class="co">#&gt;  4 GG        3</span></span>
+<span id="cb2-24"><a href="#cb2-24"></a><span class="co">#&gt;  5 GGG       0</span></span>
+<span id="cb2-25"><a href="#cb2-25"></a><span class="co">#&gt;  6 HUN      58</span></span>
+<span id="cb2-26"><a href="#cb2-26"></a><span class="co">#&gt;  7 UN        0</span></span>
+<span id="cb2-27"><a href="#cb2-27"></a><span class="co">#&gt;  8 HC       75</span></span>
+<span id="cb2-28"><a href="#cb2-28"></a><span class="co">#&gt;  9 C         0</span></span>
+<span id="cb2-29"><a href="#cb2-29"></a><span class="co">#&gt; 10 HGUN     27</span></span>
+<span id="cb2-30"><a href="#cb2-30"></a><span class="co">#&gt; 11 GUN       2</span></span></code></pre></div>
 <p>Bind other information to kinship data.frame:</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a>sampled =<span class="st"> </span>sample_family <span class="op">%&gt;%</span></span>
 <span id="cb3-2"><a href="#cb3-2"></a><span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(<span class="op">!</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/NA">is.na</a></span>(capture_year)) <span class="op">%&gt;%</span></span>
 <span id="cb3-3"><a href="#cb3-3"></a><span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/mutate.html">transmute</a></span>(id, location, capture_year, <span class="dt">age =</span> capture_year <span class="op">-</span><span class="st"> </span>birth_year) <span class="op">%&gt;%</span></span>
 <span id="cb3-4"><a href="#cb3-4"></a><span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/print">print</a></span>()</span>
-<span id="cb3-5"><a href="#cb3-5"></a><span class="co">#&gt; # A tibble: 200 x 4</span></span>
+<span id="cb3-5"><a href="#cb3-5"></a><span class="co">#&gt; # A tibble: 120 x 4</span></span>
 <span id="cb3-6"><a href="#cb3-6"></a><span class="co">#&gt;       id location capture_year   age</span></span>
 <span id="cb3-7"><a href="#cb3-7"></a><span class="co">#&gt;    &lt;int&gt;    &lt;int&gt;        &lt;int&gt; &lt;int&gt;</span></span>
-<span id="cb3-8"><a href="#cb3-8"></a><span class="co">#&gt;  1     1        0           95     0</span></span>
-<span id="cb3-9"><a href="#cb3-9"></a><span class="co">#&gt;  2     2        1           95     0</span></span>
-<span id="cb3-10"><a href="#cb3-10"></a><span class="co">#&gt;  3     3        1           95     0</span></span>
-<span id="cb3-11"><a href="#cb3-11"></a><span class="co">#&gt;  4     4        0           95     0</span></span>
-<span id="cb3-12"><a href="#cb3-12"></a><span class="co">#&gt;  5     5        0           95     0</span></span>
-<span id="cb3-13"><a href="#cb3-13"></a><span class="co">#&gt;  6     6        0           95     4</span></span>
-<span id="cb3-14"><a href="#cb3-14"></a><span class="co">#&gt;  7     7        1           95     0</span></span>
-<span id="cb3-15"><a href="#cb3-15"></a><span class="co">#&gt;  8     8        1           95     0</span></span>
-<span id="cb3-16"><a href="#cb3-16"></a><span class="co">#&gt;  9     9        0           95     0</span></span>
-<span id="cb3-17"><a href="#cb3-17"></a><span class="co">#&gt; 10    10        0           95     0</span></span>
-<span id="cb3-18"><a href="#cb3-18"></a><span class="co">#&gt; # … with 190 more rows</span></span>
+<span id="cb3-8"><a href="#cb3-8"></a><span class="co">#&gt;  1     1        1           98     0</span></span>
+<span id="cb3-9"><a href="#cb3-9"></a><span class="co">#&gt;  2     2        0           98     0</span></span>
+<span id="cb3-10"><a href="#cb3-10"></a><span class="co">#&gt;  3     3        0           98     0</span></span>
+<span id="cb3-11"><a href="#cb3-11"></a><span class="co">#&gt;  4     4        1           98     0</span></span>
+<span id="cb3-12"><a href="#cb3-12"></a><span class="co">#&gt;  5     5        1           98     0</span></span>
+<span id="cb3-13"><a href="#cb3-13"></a><span class="co">#&gt;  6     6        0           98     0</span></span>
+<span id="cb3-14"><a href="#cb3-14"></a><span class="co">#&gt;  7     7        1           98     0</span></span>
+<span id="cb3-15"><a href="#cb3-15"></a><span class="co">#&gt;  8     8        0           98     0</span></span>
+<span id="cb3-16"><a href="#cb3-16"></a><span class="co">#&gt;  9     9        0           98     0</span></span>
+<span id="cb3-17"><a href="#cb3-17"></a><span class="co">#&gt; 10    10        1           98     0</span></span>
+<span id="cb3-18"><a href="#cb3-18"></a><span class="co">#&gt; # … with 110 more rows</span></span>
 <span id="cb3-19"><a href="#cb3-19"></a></span>
 <span id="cb3-20"><a href="#cb3-20"></a>kinship <span class="op">%&gt;%</span></span>
 <span id="cb3-21"><a href="#cb3-21"></a><span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/join.html">left_join</a></span>(sampled, <span class="dt">by =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dt">from =</span> <span class="st">"id"</span>)) <span class="op">%&gt;%</span></span>
 <span id="cb3-22"><a href="#cb3-22"></a><span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/join.html">left_join</a></span>(sampled, <span class="dt">by =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dt">to =</span> <span class="st">"id"</span>), <span class="dt">suffix =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"_from"</span>, <span class="st">"_to"</span>))</span>
-<span id="cb3-23"><a href="#cb3-23"></a><span class="co">#&gt; # A tibble: 255 x 11</span></span>
+<span id="cb3-23"><a href="#cb3-23"></a><span class="co">#&gt; # A tibble: 194 x 11</span></span>
 <span id="cb3-24"><a href="#cb3-24"></a><span class="co">#&gt;     from    to path  degree label location_from capture_year_fr… age_from</span></span>
 <span id="cb3-25"><a href="#cb3-25"></a><span class="co">#&gt;    &lt;int&gt; &lt;int&gt; &lt;chr&gt;  &lt;int&gt; &lt;fct&gt;         &lt;int&gt;            &lt;int&gt;    &lt;int&gt;</span></span>
-<span id="cb3-26"><a href="#cb3-26"></a><span class="co">#&gt;  1     1    40 1110…      4 HGUN              0               95        0</span></span>
-<span id="cb3-27"><a href="#cb3-27"></a><span class="co">#&gt;  2     1    62 1100…      4 HC                0               95        0</span></span>
-<span id="cb3-28"><a href="#cb3-28"></a><span class="co">#&gt;  3     2    10 1100…      4 HC                1               95        0</span></span>
-<span id="cb3-29"><a href="#cb3-29"></a><span class="co">#&gt;  4     2    71 110_1      3 HUN               1               95        0</span></span>
-<span id="cb3-30"><a href="#cb3-30"></a><span class="co">#&gt;  5     2   130 100_1      3 HUN               1               95        0</span></span>
-<span id="cb3-31"><a href="#cb3-31"></a><span class="co">#&gt;  6     3    73 10_1       2 HS                1               95        0</span></span>
-<span id="cb3-32"><a href="#cb3-32"></a><span class="co">#&gt;  7     3   126 100_1      3 HUN               1               95        0</span></span>
-<span id="cb3-33"><a href="#cb3-33"></a><span class="co">#&gt;  8     4    16 1100…      4 HC                0               95        0</span></span>
-<span id="cb3-34"><a href="#cb3-34"></a><span class="co">#&gt;  9     4    31 110_1      3 HUN               0               95        0</span></span>
-<span id="cb3-35"><a href="#cb3-35"></a><span class="co">#&gt; 10     4    58 110_1      3 HUN               0               95        0</span></span>
-<span id="cb3-36"><a href="#cb3-36"></a><span class="co">#&gt; # … with 245 more rows, and 3 more variables: location_to &lt;int&gt;,</span></span>
+<span id="cb3-26"><a href="#cb3-26"></a><span class="co">#&gt;  1     1    26 10_1       2 HS                1               98        0</span></span>
+<span id="cb3-27"><a href="#cb3-27"></a><span class="co">#&gt;  2     1    52 100_1      3 HUN               1               98        0</span></span>
+<span id="cb3-28"><a href="#cb3-28"></a><span class="co">#&gt;  3     1    75 1000…      4 HGUN              1               98        0</span></span>
+<span id="cb3-29"><a href="#cb3-29"></a><span class="co">#&gt;  4     1    82 100_1      3 HUN               1               98        0</span></span>
+<span id="cb3-30"><a href="#cb3-30"></a><span class="co">#&gt;  5     1    87 10_1       2 HS                1               98        0</span></span>
+<span id="cb3-31"><a href="#cb3-31"></a><span class="co">#&gt;  6     1   102 100_1      3 HUN               1               98        0</span></span>
+<span id="cb3-32"><a href="#cb3-32"></a><span class="co">#&gt;  7     1   115 10_1       2 HS                1               98        0</span></span>
+<span id="cb3-33"><a href="#cb3-33"></a><span class="co">#&gt;  8     2    65 1110…      4 HGUN              0               98        0</span></span>
+<span id="cb3-34"><a href="#cb3-34"></a><span class="co">#&gt;  9     2   103 1110…      4 HGUN              0               98        0</span></span>
+<span id="cb3-35"><a href="#cb3-35"></a><span class="co">#&gt; 10     3     5 1100…      4 HC                0               98        0</span></span>
+<span id="cb3-36"><a href="#cb3-36"></a><span class="co">#&gt; # … with 184 more rows, and 3 more variables: location_to &lt;int&gt;,</span></span>
 <span id="cb3-37"><a href="#cb3-37"></a><span class="co">#&gt; #   capture_year_to &lt;int&gt;, age_to &lt;int&gt;</span></span></code></pre></div>
   </div>
 
