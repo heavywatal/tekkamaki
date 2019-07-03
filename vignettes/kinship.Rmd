@@ -20,7 +20,7 @@ Run simulation:
 library(dplyr)
 library(tekkamaki)
 
-result = tekka('--seed=42 -y100 -l5 --sa 10,10 --sj 10,10') %>% print()
+result = tekka("--seed=42 -y100 -l3 --sa 10,10 --sj 10,10") %>% print()
 sample_family = result$sample_family[[1L]] %>% print()
 ```
 
@@ -28,6 +28,7 @@ Extract kinship with degree&le;4:
 
 ```{r find_kinship}
 kinship = find_kinship(sample_family, 4L) %>% print()
+kinship %>% dplyr::count(label, .drop = FALSE)
 ```
 
 Bind other information to kinship data.frame:

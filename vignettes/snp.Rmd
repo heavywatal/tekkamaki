@@ -23,7 +23,7 @@ set.seed(666L)
 ## Generate a SNP matrix
 
 ```{r snp}
-result = tekka("--seed 42 -y40 -K40 -r1 -l2 --sa 2,2 --sj 2,2")
+result = tekka("--seed 42 -y40 -K100 -r2 -l2 --sa 2,2 --sj 2,2")
 samples = result$sample_family[[1L]]
 make_snp(samples, ss = c(1L, 2L))
 ```

@@ -1,5 +1,5 @@
 test_that("Graph functions works", {
-  result = tekka("--seed 42 -y40 -K80 -r1 -l4 --sa 8,8 --sj 8,8")
+  result = tekka("--seed 42 -y40 -K100 -r2 -l2 --sa 2,2 --sj 2,2")
   samples = result$sample_family[[1L]]
   expect_s4_class(as_igraph(samples), "Rcpp_IGraph")
   expect_silent({
@@ -10,13 +10,13 @@ test_that("Graph functions works", {
     kinship = find_kinship(samples, experimental = TRUE)
   })
   expect_s3_class(kinship, "data.frame")
-  result = tekka("--seed 42 -y40 -K80 -r1 -l1 --sa 0,0 --sj 0,0")
+  result = tekka("--seed 42 -y10 -K100 -r1 -l1 --sa 0,0 --sj 0,0")
   samples = result$sample_family[[1L]]
   expect_message(find_kinship(samples), "No kinship found")
 })
 
 test_that("POP and HSP work", {
-  result = tekka("--seed 42 -y40 -K80 -r1 -l4 --sa 8,8 --sj 8,8")
+  result = tekka("--seed 42 -y40 -K100 -r2 -l2 --sa 2,2 --sj 2,2")
   samples = result$sample_family[[1L]]
   expect_silent({
     hsp = as_hsp(samples)

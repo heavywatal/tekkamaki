@@ -1,5 +1,5 @@
 test_that("augment/plot methods work", {
-  result = tekka("--seed 42 -y40 -K90 -r1 -l2 --sa 2,2 --sj 2,2")
+  result = tekka("--seed 42 -y40 -K100 -r2 -l2 --sa 2,2 --sj 2,2")
   samples = result$sample_family[[1L]]
 
   expect_silent({
