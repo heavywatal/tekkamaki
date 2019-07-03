@@ -1,6 +1,6 @@
 Package: tekkamaki
 Title: Individual-based simulator of pacific bluefin tuna
-Version: 0.6.2
+Version: 0.7.0
 Authors@R: person("Watal M.", "Iwasaki", email = "heavy.watal@gmail.com", role = c("aut", "cre"), comment = c(ORCID="0000-0002-4718-7605"))
 Description: Individual-based simulator of pacific bluefin tuna.
 License: MIT + file LICENSE
@@ -9,7 +9,7 @@ LazyData: true
 Depends:
     R (>= 3.5.0)
 Imports:
-    dplyr (>= 0.8.0),
+    dplyr (>= 0.8.2),
     generics (>= 0.0.2),
     igraphlite,
     magrittr (>= 1.5),

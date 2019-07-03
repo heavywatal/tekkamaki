@@ -37,7 +37,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">tekkamaki</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.0</span>
       </span>
     </div>
 
@@ -105,42 +105,42 @@
 <span id="cb1-2"><a href="#cb1-2"></a><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(ggplot2)</span>
 <span id="cb1-3"><a href="#cb1-3"></a><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(tekkamaki)</span>
 <span id="cb1-4"><a href="#cb1-4"></a></span>
-<span id="cb1-5"><a href="#cb1-5"></a>result =<span class="st"> </span><span class="kw"><a href="../reference/tekka.html">tekka</a></span>(<span class="st">'--seed=42 -y100 -l5'</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/print">print</a></span>()</span>
+<span id="cb1-5"><a href="#cb1-5"></a>result =<span class="st"> </span><span class="kw"><a href="../reference/tekka.html">tekka</a></span>(<span class="st">"--seed=42 -y100 -l3"</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/print">print</a></span>()</span>
 <span id="cb1-6"><a href="#cb1-6"></a><span class="co">#&gt; # A tibble: 1 x 2</span></span>
-<span id="cb1-7"><a href="#cb1-7"></a><span class="co">#&gt;   sample_family         demography          </span></span>
-<span id="cb1-8"><a href="#cb1-8"></a><span class="co">#&gt;   &lt;list&gt;                &lt;list&gt;              </span></span>
-<span id="cb1-9"><a href="#cb1-9"></a><span class="co">#&gt; 1 &lt;tibble [13,779 × 6]&gt; &lt;tibble [9,645 × 5]&gt;</span></span></code></pre></div>
+<span id="cb1-7"><a href="#cb1-7"></a><span class="co">#&gt;   sample_family        demography          </span></span>
+<span id="cb1-8"><a href="#cb1-8"></a><span class="co">#&gt;   &lt;list&gt;               &lt;list&gt;              </span></span>
+<span id="cb1-9"><a href="#cb1-9"></a><span class="co">#&gt; 1 &lt;tibble [7,479 × 6]&gt; &lt;tibble [4,483 × 5]&gt;</span></span></code></pre></div>
 <p>A result is a nested tibble with two columns: <code>sample_family</code> and <code>demography</code>:</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a>sample_family =<span class="st"> </span>result<span class="op">$</span>sample_family[[1L]] <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/print">print</a></span>()</span>
-<span id="cb2-2"><a href="#cb2-2"></a><span class="co">#&gt; # A tibble: 13,779 x 6</span></span>
+<span id="cb2-2"><a href="#cb2-2"></a><span class="co">#&gt; # A tibble: 7,479 x 6</span></span>
 <span id="cb2-3"><a href="#cb2-3"></a><span class="co">#&gt;       id father_id mother_id birth_year location capture_year</span></span>
 <span id="cb2-4"><a href="#cb2-4"></a><span class="co">#&gt;    &lt;int&gt;     &lt;int&gt;     &lt;int&gt;      &lt;int&gt;    &lt;int&gt;        &lt;int&gt;</span></span>
-<span id="cb2-5"><a href="#cb2-5"></a><span class="co">#&gt;  1   213         0         0         -4        1           NA</span></span>
-<span id="cb2-6"><a href="#cb2-6"></a><span class="co">#&gt;  2   214         0         0         -4        1           NA</span></span>
-<span id="cb2-7"><a href="#cb2-7"></a><span class="co">#&gt;  3   212       213       214          5        0           NA</span></span>
-<span id="cb2-8"><a href="#cb2-8"></a><span class="co">#&gt;  4   217         0         0         -4        1           NA</span></span>
-<span id="cb2-9"><a href="#cb2-9"></a><span class="co">#&gt;  5   218         0         0         -4        0           NA</span></span>
-<span id="cb2-10"><a href="#cb2-10"></a><span class="co">#&gt;  6   216       217       218          0        1           NA</span></span>
-<span id="cb2-11"><a href="#cb2-11"></a><span class="co">#&gt;  7   219         0         0         -4        1           NA</span></span>
-<span id="cb2-12"><a href="#cb2-12"></a><span class="co">#&gt;  8   215       216       219          6        0           NA</span></span>
-<span id="cb2-13"><a href="#cb2-13"></a><span class="co">#&gt;  9   211       212       215         11        1           NA</span></span>
-<span id="cb2-14"><a href="#cb2-14"></a><span class="co">#&gt; 10   222         0         0         -4        1           NA</span></span>
-<span id="cb2-15"><a href="#cb2-15"></a><span class="co">#&gt; # … with 13,769 more rows</span></span>
+<span id="cb2-5"><a href="#cb2-5"></a><span class="co">#&gt;  1   134         0         0         -4        0           NA</span></span>
+<span id="cb2-6"><a href="#cb2-6"></a><span class="co">#&gt;  2   135         0         0         -4        0           NA</span></span>
+<span id="cb2-7"><a href="#cb2-7"></a><span class="co">#&gt;  3   133       134       135          1        0           NA</span></span>
+<span id="cb2-8"><a href="#cb2-8"></a><span class="co">#&gt;  4   137         0         0         -4        0           NA</span></span>
+<span id="cb2-9"><a href="#cb2-9"></a><span class="co">#&gt;  5   138         0         0         -4        0           NA</span></span>
+<span id="cb2-10"><a href="#cb2-10"></a><span class="co">#&gt;  6   136       137       138          1        1           NA</span></span>
+<span id="cb2-11"><a href="#cb2-11"></a><span class="co">#&gt;  7   132       133       136          5        1           NA</span></span>
+<span id="cb2-12"><a href="#cb2-12"></a><span class="co">#&gt;  8   141         0         0         -4        0           NA</span></span>
+<span id="cb2-13"><a href="#cb2-13"></a><span class="co">#&gt;  9   142         0         0         -4        0           NA</span></span>
+<span id="cb2-14"><a href="#cb2-14"></a><span class="co">#&gt; 10   140       141       142          1        0           NA</span></span>
+<span id="cb2-15"><a href="#cb2-15"></a><span class="co">#&gt; # … with 7,469 more rows</span></span>
 <span id="cb2-16"><a href="#cb2-16"></a>demography =<span class="st"> </span>result<span class="op">$</span>demography[[1L]] <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/print">print</a></span>()</span>
-<span id="cb2-17"><a href="#cb2-17"></a><span class="co">#&gt; # A tibble: 9,645 x 5</span></span>
+<span id="cb2-17"><a href="#cb2-17"></a><span class="co">#&gt; # A tibble: 4,483 x 5</span></span>
 <span id="cb2-18"><a href="#cb2-18"></a><span class="co">#&gt;     year season location   age count</span></span>
 <span id="cb2-19"><a href="#cb2-19"></a><span class="co">#&gt;    &lt;dbl&gt;  &lt;dbl&gt;    &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;</span></span>
-<span id="cb2-20"><a href="#cb2-20"></a><span class="co">#&gt;  1     0      0        0     4  1000</span></span>
-<span id="cb2-21"><a href="#cb2-21"></a><span class="co">#&gt;  2     0      1        0     0  9598</span></span>
-<span id="cb2-22"><a href="#cb2-22"></a><span class="co">#&gt;  3     0      1        0     4   737</span></span>
-<span id="cb2-23"><a href="#cb2-23"></a><span class="co">#&gt;  4     0      1        1     0     0</span></span>
-<span id="cb2-24"><a href="#cb2-24"></a><span class="co">#&gt;  5     0      2        0     0  5859</span></span>
-<span id="cb2-25"><a href="#cb2-25"></a><span class="co">#&gt;  6     0      2        0     4   700</span></span>
-<span id="cb2-26"><a href="#cb2-26"></a><span class="co">#&gt;  7     0      2        1     0     0</span></span>
-<span id="cb2-27"><a href="#cb2-27"></a><span class="co">#&gt;  8     0      3        0     0  2716</span></span>
-<span id="cb2-28"><a href="#cb2-28"></a><span class="co">#&gt;  9     0      3        0     4   626</span></span>
-<span id="cb2-29"><a href="#cb2-29"></a><span class="co">#&gt; 10     0      3        1     0     0</span></span>
-<span id="cb2-30"><a href="#cb2-30"></a><span class="co">#&gt; # … with 9,635 more rows</span></span></code></pre></div>
+<span id="cb2-20"><a href="#cb2-20"></a><span class="co">#&gt;  1     0      3        0     4   200</span></span>
+<span id="cb2-21"><a href="#cb2-21"></a><span class="co">#&gt;  2     1      0        0     0  8466</span></span>
+<span id="cb2-22"><a href="#cb2-22"></a><span class="co">#&gt;  3     1      3        0     0  1491</span></span>
+<span id="cb2-23"><a href="#cb2-23"></a><span class="co">#&gt;  4     1      3        2     0  1491</span></span>
+<span id="cb2-24"><a href="#cb2-24"></a><span class="co">#&gt;  5     2      0        2     1  1491</span></span>
+<span id="cb2-25"><a href="#cb2-25"></a><span class="co">#&gt;  6     2      3        2     1   242</span></span>
+<span id="cb2-26"><a href="#cb2-26"></a><span class="co">#&gt;  7     2      3        3     1   275</span></span>
+<span id="cb2-27"><a href="#cb2-27"></a><span class="co">#&gt;  8     3      0        2     2   242</span></span>
+<span id="cb2-28"><a href="#cb2-28"></a><span class="co">#&gt;  9     3      0        3     2   275</span></span>
+<span id="cb2-29"><a href="#cb2-29"></a><span class="co">#&gt; 10     3      3        2     2   174</span></span>
+<span id="cb2-30"><a href="#cb2-30"></a><span class="co">#&gt; # … with 4,473 more rows</span></span></code></pre></div>
 <p>Here is an example of visualizing demography:</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(ggplot2)</span>
 <span id="cb3-2"><a href="#cb3-2"></a>df =<span class="st"> </span>demography <span class="op">%&gt;%</span></span>
@@ -154,6 +154,19 @@
 <span id="cb3-10"><a href="#cb3-10"></a><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_bw</a></span>() <span class="op">+</span></span>
 <span id="cb3-11"><a href="#cb3-11"></a><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme</a></span>(<span class="dt">legend.position =</span> <span class="st">"top"</span>)</span></code></pre></div>
 <p><img src="tekkamaki_files/figure-html/demography-1.png" width="700"></p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a><span class="kw">load_all</span>(<span class="dt">compile =</span> <span class="ot">TRUE</span>)</span>
+<span id="cb4-2"><a href="#cb4-2"></a>result =<span class="st"> </span><span class="kw"><a href="../reference/tekka.html">tekka</a></span>(<span class="st">"-y200"</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/print">print</a></span>()</span>
+<span id="cb4-3"><a href="#cb4-3"></a>demography =<span class="st"> </span>result<span class="op">$</span>demography[[1L]] <span class="op">%&gt;%</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/print">print</a></span>()</span>
+<span id="cb4-4"><a href="#cb4-4"></a>df =<span class="st"> </span>demography <span class="op">%&gt;%</span></span>
+<span id="cb4-5"><a href="#cb4-5"></a><span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="dt">time =</span> year <span class="op">+</span><span class="st"> </span><span class="fl">0.25</span> <span class="op">*</span><span class="st"> </span>season) <span class="op">%&gt;%</span></span>
+<span id="cb4-6"><a href="#cb4-6"></a><span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span>(time, location, <span class="dt">age =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/ifelse">ifelse</a></span>(age <span class="op">&gt;=</span><span class="st"> </span><span class="dv">4</span>, <span class="st">"adult"</span>, <span class="st">"juvenile"</span>)) <span class="op">%&gt;%</span></span>
+<span id="cb4-7"><a href="#cb4-7"></a><span class="st">  </span>dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarise</a></span>(<span class="dt">count =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/sum">sum</a></span>(count))</span>
+<span id="cb4-8"><a href="#cb4-8"></a></span>
+<span id="cb4-9"><a href="#cb4-9"></a><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span>(df, <span class="kw"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(time, count)) <span class="op">+</span></span>
+<span id="cb4-10"><a href="#cb4-10"></a><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_path</a></span>(<span class="kw"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(<span class="dt">colour =</span> age, <span class="dt">group =</span> age)) <span class="op">+</span></span>
+<span id="cb4-11"><a href="#cb4-11"></a><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/facet_grid.html">facet_grid</a></span>(location <span class="op">~</span><span class="st"> </span>.) <span class="op">+</span></span>
+<span id="cb4-12"><a href="#cb4-12"></a><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_bw</a></span>() <span class="op">+</span></span>
+<span id="cb4-13"><a href="#cb4-13"></a><span class="st">  </span><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme</a></span>(<span class="dt">legend.position =</span> <span class="st">"top"</span>)</span></code></pre></div>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
