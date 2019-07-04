@@ -46,19 +46,3 @@ ggplot(df, aes(time, count)) +
   theme_bw() +
   theme(legend.position = "top")
 ```
-
-```r
-load_all(compile = TRUE)
-result = tekka("-y200") %>% print()
-demography = result$demography[[1L]] %>% print()
-df = demography %>%
-  dplyr::mutate(time = year + 0.25 * season) %>%
-  dplyr::group_by(time, location, age = ifelse(age >= 4, "adult", "juvenile")) %>%
-  dplyr::summarise(count = sum(count))
-
-ggplot(df, aes(time, count)) +
-  geom_path(aes(colour = age, group = age)) +
-  facet_grid(location ~ .) +
-  theme_bw() +
-  theme(legend.position = "top")
-```
