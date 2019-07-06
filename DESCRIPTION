@@ -9,7 +9,7 @@ LazyData: true
 Depends:
     R (>= 3.5.0)
 Imports:
-    dplyr (>= 0.8.2),
+    dplyr (>= 0.8.3),
     generics (>= 0.0.2),
     igraphlite,
     magrittr (>= 1.5),
