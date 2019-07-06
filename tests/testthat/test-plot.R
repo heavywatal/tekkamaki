@@ -15,3 +15,10 @@ test_that("augment/plot methods work", {
   })
   expect_s3_class(p, c("gg", "ggplot"))
 })
+
+test_that("plot_parameters_json() works", {
+  expect_silent({
+    p = plot_parameters_json()
+  })
+  expect_s3_class(p, c("gg", "ggplot"))
+})
