@@ -21,6 +21,7 @@ test_that("POP and HSP work", {
   expect_silent({
     hsp = as_hsp(samples)
   })
+  as_pop(samples)
   expect_silent({
     pop = as_pop(samples)
   })

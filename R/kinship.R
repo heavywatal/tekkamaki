@@ -28,7 +28,7 @@ neighbor_pairs = function(graph, vids, order) {
   kins = igraphlite::neighborhood(graph, vids, order = order, mode = 3L, mindist = 1L) %>%
     lapply(filter_in_vids, vids = vids)
   tibble::tibble(from = vids, to = kins) %>%
-    tidyr::unnest() %>%
+    tidyr::unnest("to") %>%
     dplyr::filter(.data$from < .data$to) %>%
     dplyr::arrange(.data$from, .data$to)
 }
@@ -54,7 +54,7 @@ find_shortest_paths = function(graph, pairs) {
     dplyr::summarise(to = list(!!as.name("to")))
   .path = purrr::pmap(nested_pairs, igraphlite::get_all_shortest_paths, graph = graph, mode = 3)
   tibble::tibble(from = nested_pairs$from, path = .path) %>%
-    tidyr::unnest() %>%
+    tidyr::unnest("path") %>%
     dplyr::mutate(
       path = lapply(.data$path, igraphlite::as_vnames, graph = graph),
       to = purrr::map_int(.data$path, ~ .x[length(.x)]),
@@ -70,7 +70,7 @@ find_kinship_common = function(graph, pairs, order) {
       from = igraphlite::as_vnames(graph, .data$from),
       to = igraphlite::as_vnames(graph, .data$to)
     ) %>%
-    tidyr::unnest() %>%
+    tidyr::unnest("data") %>%
     dplyr::mutate(degree = .data$up + .data$down) %>%
     dplyr::filter(.data$up + .data$down <= order) %>%
     dplyr::mutate_all(as.integer) %>%

@@ -38,6 +38,6 @@ read_migration_matrices = function() {
 gather_migration_matrix = function(x) {
   dim_x = dim(x)
   dimnames(x) = list(from = seq_len(dim_x[1L]), to = seq_len(dim_x[2L]))
-  dplyr::as.tbl_cube(x, met_name = "probability") %>%
+  cubelyr::as.tbl_cube(x, met_name = "probability") %>%
     tibble::as_tibble()
 }

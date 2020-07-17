@@ -35,10 +35,12 @@ write_hsp = function(x, path = "hsp.txt") {
 #' @rdname hsp
 #' @export
 read_hsp = function(path) {
-  readr::read_tsv(path,
+  x = readr::read_tsv(path,
     col_names = c("cohort_i", "cohort_j", "location_i", "location_j", "comps", "hsps"),
     col_types = "iiiiii", skip = 5L,
-  )
+  )[]
+  class(x) = c(class(x), "hsp")
+  x
 }
 
 pairwise_half_sibling = function(.tbl) {

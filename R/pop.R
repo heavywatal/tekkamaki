@@ -29,10 +29,12 @@ write_pop = function(x, path = "pop.txt") {
 #' @rdname pop
 #' @export
 read_pop = function(path) {
-  readr::read_tsv(path,
+  x = readr::read_tsv(path,
     col_names = c("cohort", "capture_year", "capture_age", "location", "pops", "comps"),
     col_types = "iiiiii", comment = "#"
-  )
+  )[]
+  class(x) = c(class(x), "pop")
+  x
 }
 
 pairwise_parent_offspring = function(.tbl, min_adult_age) {
@@ -57,5 +59,5 @@ summarize_pop = function(.tbl) {
     dplyr::group_by(.data$cohort, .data$capture_year, .data$capture_age, .data$location) %>%
     dplyr::summarise(pops = sum(!!as.name("is_pop")), comps = n()) %>%
     dplyr::ungroup() %>%
-    tidyr::complete_(c(~cohort, ~capture_year, ~capture_age), fill = list(pops = 0L, comps = 0L))
+    tidyr::complete(.data$cohort, .data$capture_year, .data$capture_age, fill = list(pops = 0L, comps = 0L))
 }

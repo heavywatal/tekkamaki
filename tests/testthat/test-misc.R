@@ -3,7 +3,7 @@ test_that("nbinom test runs", {
 })
 
 test_that("getter functions work", {
-  expect_equal(class(migration_matrices()[[1]]), "matrix")
+  expect_true(is.matrix(migration_matrices()[[1]]))
   expect_type(natural_mortality(), "double")
   expect_type(fishing_mortality(), "double")
   expect_type(weight_for_age(), "double")

@@ -12,7 +12,7 @@ plot_nbinom = function(n = 10000L) {
   )
   df = dplyr::mutate(df, x = purrr::pmap(df, cpp_rnbinom)) %>%
     dplyr::rename(k = !!"size") %>%
-    tidyr::unnest()
+    tidyr::unnest("x")
   df_summary = dplyr::group_by(df, .data$k, .data$mu) %>% dplyr::summarise_all(mean)
   ggplot2::ggplot(df, ggplot2::aes_string("x")) +
     ggplot2::geom_vline(data = df_summary, ggplot2::aes_string(xintercept = "mu"), colour = "tomato") +
