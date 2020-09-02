@@ -1,7 +1,9 @@
 # tekkamaki <img src="man/figures/logo.svg" align="right" height=140/>
 
-[![Build Status](https://travis-ci.com/heavywatal/tekkamaki.svg?branch=master)](https://travis-ci.com/heavywatal/tekkamaki)
-[![codecov](https://codecov.io/gh/heavywatal/tekkamaki/branch/master/graph/badge.svg)](https://codecov.io/gh/heavywatal/tekkamaki)
+<!-- badges: start -->
+[![R build status](https://github.com/heavywatal/kappamaki/workflows/R-CMD-check/badge.svg)](https://github.com/heavywatal/kappamaki/actions)
+<!-- badges: end -->
+[![codecov](https://codecov.io/gh/heavywatal/kappamaki/branch/master/graph/badge.svg)](https://codecov.io/gh/heavywatal/kappamaki)
 [![CRAN Status Badge](https://www.r-pkg.org/badges/version/tekkamaki)](http://cran.r-project.org/package=tekkamaki)
 
 R interface to [tekka](https://github.com/heavywatal/tekka).
