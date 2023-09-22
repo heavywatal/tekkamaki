@@ -23,8 +23,8 @@ make_snp = function(.tbl, ss = c(2L, 2L)) {
 #' @export
 gather_segments = function(.tbl) {
   .tbl |>
-    dplyr::select(-"location") |>
-    tidyr::gather("homolog", "parent_id", -"id", -"birth_year", -"capture_year") |>
+    dplyr::select(!"location") |>
+    tidyr::pivot_longer(dplyr::ends_with("_id"), names_to = "homolog", values_to = "parent_id") |>
     dplyr::mutate(homolog = c(mother_id = 1L, father_id = 2L)[.data$homolog]) |>
     dplyr::arrange(.data$id, .data$homolog) |>
     dplyr::mutate(id = paste(.data$id, .data$homolog, sep = "-"), homolog = NULL)

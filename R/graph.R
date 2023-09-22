@@ -18,6 +18,6 @@ as_edgelist = function(x) {
   x |>
     dplyr::select(dplyr::ends_with("id")) |>
     dplyr::filter(.data$father_id != 0L, .data$mother_id != 0L) |>
-    tidyr::gather("key", "from", dplyr::ends_with("_id")) |>
-    dplyr::select("from", to = "id")
+    tidyr::pivot_longer(dplyr::ends_with("_id")) |>
+    dplyr::select(from = "value", to = "id")
 }

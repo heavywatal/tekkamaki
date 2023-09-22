@@ -42,9 +42,9 @@ add_coordinates = function(x, layout) {
 
 as_genealogy = function(x) {
   x = x |>
-    tidyr::gather("key", "from", dplyr::ends_with("_id")) |>
+    tidyr::pivot_longer(dplyr::ends_with("_id")) |>
     dplyr::mutate(sampled = !is.na(.data$capture_year)) |>
-    dplyr::select("from", to = "id", "birth_year", "capture_year", "sampled")
+    dplyr::select(from = "value", to = "id", "birth_year", "capture_year", "sampled")
   class(x) = c("genealogy", "tbl_df", "tbl", "data.frame")
   x
 }

@@ -43,7 +43,7 @@ pairwise_parent_offspring = function(.tbl, min_adult_age) {
     dplyr::filter(.data$capture_year - .data$birth_year >= min_adult_age) |>
     dplyr::select("id", "capture_year", adult_birth_year = "birth_year", "location")
   juveniles = .tbl |>
-    dplyr::mutate("id", cohort = "birth_year", "mother_id", "father_id")
+    dplyr::select("id", cohort = "birth_year", "mother_id", "father_id")
   tidyr::crossing(id = .tbl$id, adult_id = adults$id) |>
     dplyr::filter(.data$id > .data$adult_id) |>
     dplyr::left_join(juveniles, by = "id") |>

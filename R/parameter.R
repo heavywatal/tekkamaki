@@ -6,7 +6,7 @@
 plot_parameters_json = function(file = "") {
   read_json(file)
   p_vec = read_vectors() |>
-    tidyr::gather("parameter", "value", -"age") |>
+    tidyr::pivot_longer(!"age", names_to = "parameter") |>
     ggplot2::ggplot() +
     ggplot2::aes(.data$age, .data$value) +
     ggplot2::geom_line() +
