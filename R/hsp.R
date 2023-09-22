@@ -6,8 +6,8 @@
 #' @rdname hsp
 #' @export
 as_hsp = function(.tbl) {
-  .tbl = .tbl %>%
-    pairwise_half_sibling() %>%
+  .tbl = .tbl |>
+    pairwise_half_sibling() |>
     summarize_hsp()
   class(.tbl) = c(class(.tbl), "hsp")
   .tbl
@@ -37,28 +37,28 @@ write_hsp = function(x, path = "hsp.txt") {
 read_hsp = function(path) {
   x = readr::read_tsv(path,
     col_names = c("cohort_i", "cohort_j", "location_i", "location_j", "comps", "hsps"),
-    col_types = "iiiiii", skip = 5L,
-  )[]
+    col_types = "iiiiii", skip = 5L, show_col_types = FALSE
+  )
   class(x) = c(class(x), "hsp")
   x
 }
 
 pairwise_half_sibling = function(.tbl) {
   .tbl = dplyr::filter(.tbl, !is.na(.data$capture_year))
-  tsv_i = .tbl %>%
+  tsv_i = .tbl |>
     dplyr::transmute(.data$id, mother_i = .data$mother_id, father_i = .data$father_id, cohort_i = .data$birth_year, location_i = .data$location)
-  tsv_j = .tbl %>%
+  tsv_j = .tbl |>
     dplyr::transmute(.data$id, mother_j = .data$mother_id, father_j = .data$father_id, cohort_j = .data$birth_year, location_j = .data$location)
-  tidyr::crossing(id_i = .tbl$id, id_j = .tbl$id) %>%
-    dplyr::filter(.data$id_i < .data$id_j) %>%
-    dplyr::left_join(tsv_i, by = c(id_i = "id")) %>%
-    dplyr::left_join(tsv_j, by = c(id_j = "id")) %>%
+  tidyr::crossing(id_i = .tbl$id, id_j = .tbl$id) |>
+    dplyr::filter(.data$id_i < .data$id_j) |>
+    dplyr::left_join(tsv_i, by = c(id_i = "id")) |>
+    dplyr::left_join(tsv_j, by = c(id_j = "id")) |>
     dplyr::mutate(is_hsp = (.data$mother_i == .data$mother_j) | (.data$father_i == .data$father_j))
 }
 
 summarize_hsp = function(.tbl) {
-  .tbl %>%
-    dplyr::group_by(.data$cohort_i, .data$cohort_j, .data$location_i, .data$location_j) %>%
-    dplyr::summarise(comps = dplyr::n(), hsps = sum(.data$is_hsp)) %>%
+  .tbl |>
+    dplyr::group_by(.data$cohort_i, .data$cohort_j, .data$location_i, .data$location_j) |>
+    dplyr::summarise(comps = dplyr::n(), hsps = sum(.data$is_hsp)) |>
     dplyr::ungroup()
 }

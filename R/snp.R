@@ -11,7 +11,7 @@
 make_snp = function(.tbl, ss = c(2L, 2L)) {
   segments = gather_segments(.tbl)
   matrices = lapply(ss, function(segsites) {
-    make_gene_genealogy(segments, segsites = segsites) %>% extract_snp()
+    make_gene_genealogy(segments, segsites = segsites) |> extract_snp()
   })
   unname(Reduce(cbind, matrices))
 }
@@ -22,11 +22,11 @@ make_snp = function(.tbl, ss = c(2L, 2L)) {
 #' @rdname snp
 #' @export
 gather_segments = function(.tbl) {
-  .tbl %>%
-    dplyr::select(-"location") %>%
-    tidyr::gather("homolog", "parent_id", -"id", -"birth_year", -"capture_year") %>%
-    dplyr::mutate(homolog = c(mother_id = 1L, father_id = 2L)[.data$homolog]) %>%
-    dplyr::arrange(.data$id, .data$homolog) %>%
+  .tbl |>
+    dplyr::select(-"location") |>
+    tidyr::gather("homolog", "parent_id", -"id", -"birth_year", -"capture_year") |>
+    dplyr::mutate(homolog = c(mother_id = 1L, father_id = 2L)[.data$homolog]) |>
+    dplyr::arrange(.data$id, .data$homolog) |>
     dplyr::mutate(id = paste(.data$id, .data$homolog, sep = "-"), homolog = NULL)
 }
 
@@ -39,12 +39,12 @@ gather_segments = function(.tbl) {
 make_gene_genealogy = function(segments, segsites = 0L) {
   n = nrow(segments)
   df = dplyr::transmute(
-      segments,
-      from = paste(.data$parent_id, sample.int(2L, n, replace = TRUE), sep = "-"),
-      to = .data$id,
-      .data$birth_year,
-      .data$capture_year
-    ) %>%
+    segments,
+    from = paste(.data$parent_id, sample.int(2L, n, replace = TRUE), sep = "-"),
+    to = .data$id,
+    .data$birth_year,
+    .data$capture_year
+  ) |>
     mark_upstream(segsites = segsites)
   class(df) = c("genealogy", "tbl_df", "tbl", "data.frame")
   df
@@ -56,14 +56,14 @@ make_gene_genealogy = function(segments, segsites = 0L) {
 #' @rdname snp
 #' @export
 count_uncoalesced = function(genealogy) {
-  origins = stringr::str_detect(genealogy[["from"]], "^0")
+  origins = stringr::str_starts(genealogy[["from"]], "0")
   on_tree = !is.na(genealogy[["sampled"]])
   sum(origins & on_tree)
 }
 
 mark_upstream = function(.tbl, segsites) {
-  graph = .tbl %>%
-    dplyr::filter(!stringr::str_detect(.data$from, "^0")) %>%
+  graph = .tbl |>
+    dplyr::filter(!stringr::str_starts(.data$from, "0")) |>
     igraphlite::graph_from_data_frame()
   v_sampled = graph$to[!is.na(graph$Eattr[["capture_year"]])]
   v_genealogy = igraphlite::upstream_vertices(graph, v_sampled)

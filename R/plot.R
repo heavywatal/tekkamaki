@@ -24,7 +24,7 @@ augment.genealogy = function(x, layout = NULL, ...) {
   } else {
     stop("Invalid type '", typeof(layout), "' for argument 'layout'")
   }
-  add_coordinates(x, layout) %>%
+  add_coordinates(x, layout) |>
     dplyr::mutate(
       xend = ifelse(is.na(.data$sampled), NA, .data$xend),
       yend = ifelse(is.na(.data$sampled), NA, .data$yend),
@@ -35,14 +35,14 @@ augment.genealogy = function(x, layout = NULL, ...) {
 add_coordinates = function(x, layout) {
   stopifnot(utils::hasName(layout, c("id", "x", "y")))
   lo_end = dplyr::rename_all(layout, function(x) paste0(x, "end"))
-  x %>%
-    dplyr::left_join(layout, by = c(to = "id")) %>%
+  x |>
+    dplyr::left_join(layout, by = c(to = "id")) |>
     dplyr::left_join(lo_end, by = c(from = "idend"))
 }
 
 as_genealogy = function(x) {
-  x = x %>%
-    tidyr::gather("key", "from", dplyr::ends_with("_id")) %>%
+  x = x |>
+    tidyr::gather("key", "from", dplyr::ends_with("_id")) |>
     dplyr::transmute(
       .data$from,
       to = .data$id,
@@ -60,11 +60,11 @@ as_genealogy = function(x) {
 #' @export
 layout_demography = function(x) {
   if (utils::hasName(x, "to")) x = dplyr::rename(x, id = "to")
-  x %>%
-    dplyr::distinct(.data$id, .data$birth_year) %>%
-    dplyr::group_by(.data$birth_year) %>%
-    dplyr::mutate(x = dplyr::row_number()) %>%
-    dplyr::ungroup() %>%
+  x |>
+    dplyr::distinct(.data$id, .data$birth_year) |>
+    dplyr::group_by(.data$birth_year) |>
+    dplyr::mutate(x = dplyr::row_number()) |>
+    dplyr::ungroup() |>
     dplyr::transmute(.data$id, .data$x, y = .data$birth_year)
 }
 
@@ -75,7 +75,8 @@ layout_demography = function(x) {
 plot.genealogy = function(x, ..., lwd = 0.5, cex = 5, pch = 16) {
   data = augment(x, ...)
   f = function(x) dplyr::filter(x, !is.na(.data$xend))
-  ggplot2::ggplot(data, ggplot2::aes(.data$x, .data$y)) +
+  ggplot2::ggplot(data) +
+    ggplot2::aes(.data$x, .data$y) +
     ggplot2::geom_segment(data = f, ggplot2::aes(xend = .data$xend, yend = .data$yend), linewidth = lwd, alpha = 0.5) +
     ggplot2::geom_point(ggplot2::aes(colour = .data$sampled), shape = pch, size = cex) +
     ggplot2::geom_text(ggplot2::aes(label = .data$label), size = cex * 0.5)

@@ -21,26 +21,27 @@ library(dplyr)
 library(ggplot2)
 library(tekkamaki)
 
-result = tekka("--seed=42 -y100 -l3") %>% print()
+result = tekka("--seed=42 -y100 -l3") |> print()
 ```
 
 A result is a nested tibble with two columns: `sample_family` and `demography`:
 
 ```{r result}
-sample_family = result$sample_family[[1L]] %>% print()
-demography = result$demography[[1L]] %>% print()
+sample_family = result$sample_family[[1L]] |> print()
+demography = result$demography[[1L]] |> print()
 ```
 
 Here is an example of visualizing demography:
 
 ```{r demography}
 library(ggplot2)
-df = demography %>%
-  dplyr::mutate(time = year + 0.25 * season) %>%
-  dplyr::group_by(time, location, age = ifelse(age > 4, "adult", "juvenile")) %>%
+df = demography |>
+  dplyr::mutate(time = year + 0.25 * season) |>
+  dplyr::group_by(time, location, age = ifelse(age > 4, "adult", "juvenile")) |>
   dplyr::summarise(count = sum(count))
 
-ggplot(df, aes(time, count)) +
+ggplot(df) +
+  aes(time, count) +
   geom_path(aes(colour = age, group = age)) +
   facet_grid(location ~ .) +
   theme_bw() +

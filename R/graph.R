@@ -6,7 +6,7 @@
 #' @rdname graph
 #' @export
 as_igraph.sample_family = function(x) {
-  as_edgelist(x) %>%
+  as_edgelist(x) |>
     igraphlite::graph_from_data_frame()
 }
 
@@ -15,9 +15,9 @@ as_igraph.sample_family = function(x) {
 igraphlite::as_igraph
 
 as_edgelist = function(x) {
-  x %>%
-    dplyr::select(dplyr::ends_with("id")) %>%
-    dplyr::filter(0L != .data$father_id, 0L != .data$mother_id) %>%
-    tidyr::gather("key", "from", dplyr::ends_with("_id")) %>%
+  x |>
+    dplyr::select(dplyr::ends_with("id")) |>
+    dplyr::filter(.data$father_id != 0L, .data$mother_id != 0L) |>
+    tidyr::gather("key", "from", dplyr::ends_with("_id")) |>
     dplyr::transmute(.data$from, to = .data$id)
 }
