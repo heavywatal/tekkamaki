@@ -34,7 +34,7 @@ augment.genealogy = function(x, layout = NULL, ...) {
 
 add_coordinates = function(x, layout) {
   stopifnot(utils::hasName(layout, c("id", "x", "y")))
-  lo_end = dplyr::rename_all(layout, function(x) paste0(x, "end"))
+  lo_end = dplyr::rename_with(layout, \(x) paste0(x, "end"))
   x |>
     dplyr::left_join(layout, by = c(to = "id")) |>
     dplyr::left_join(lo_end, by = c(from = "idend"))

@@ -42,8 +42,8 @@ find_kinship_shortest = function(.tbl, graph, pairs, order) {
   paths = find_shortest_paths(graph, pairs)
   birth_year = .tbl$birth_year[order(.tbl$id)]
   paths |>
-    dplyr::mutate(path = purrr::map(.data$path, ~ as.integer(diff(birth_year[.x]) < 0L))) |>
-    dplyr::filter(purrr::map_lgl(.data$path, ~ length(rle(.x)$lengths) < 3L && !identical(.x, c(0L, 1L)))) |>
+    dplyr::mutate(path = purrr::map(.data$path, \(x) as.integer(diff(birth_year[x]) < 0L))) |>
+    dplyr::filter(purrr::map_lgl(.data$path, \(x) length(rle(x)$lengths) < 3L && !identical(x, c(0L, 1L)))) |>
     label_kinship()
 }
 
@@ -57,10 +57,10 @@ find_shortest_paths = function(graph, pairs) {
     tidyr::unnest("path") |>
     dplyr::mutate(
       path = lapply(.data$path, igraphlite::as_vnames, graph = graph),
-      to = purrr::map_int(.data$path, ~ .x[length(.x)]),
+      to = purrr::map_int(.data$path, \(x) x[length(x)]),
       from = igraphlite::as_vnames(graph, .data$from)
     ) |>
-    dplyr::filter(!purrr::map_lgl(.data$path, ~ 0L %in% .x))
+    dplyr::filter(!purrr::map_lgl(.data$path, \(x) 0L %in% x))
 }
 
 find_kinship_common = function(graph, pairs, order) {
@@ -73,7 +73,7 @@ find_kinship_common = function(graph, pairs, order) {
     tidyr::unnest("data") |>
     dplyr::mutate(degree = .data$up + .data$down) |>
     dplyr::filter(.data$up + .data$down <= order) |>
-    dplyr::mutate_all(as.integer) |>
+    purrr::modify(as.integer) |>
     dplyr::mutate(
       ancestor = igraphlite::as_vnames(graph, .data$ancestor),
       path = encode_updown(.data$up, .data$down)

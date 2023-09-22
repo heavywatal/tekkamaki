@@ -43,7 +43,7 @@ df = demography |>
 ggplot(df) +
   aes(time, count) +
   geom_path(aes(colour = age, group = age)) +
-  facet_grid(location ~ .) +
+  facet_grid(vars(location)) +
   theme_bw() +
   theme(legend.position = "top")
 ```

@@ -11,14 +11,14 @@ plot_parameters_json = function(file = "") {
     ggplot2::aes(.data$age, .data$value) +
     ggplot2::geom_line() +
     ggplot2::labs(y = NULL) +
-    ggplot2::facet_wrap(~parameter, scale = "free_y", ncol = 1L)
+    ggplot2::facet_wrap(ggplot2::vars(.data$parameter), scale = "free_y", ncol = 1L)
   p_mat = read_migration_matrices() |>
     ggplot2::ggplot() +
     ggplot2::aes(.data$to, .data$from, fill = .data$probability) +
     ggplot2::geom_raster() +
     ggplot2::scale_y_reverse() +
     ggplot2::coord_fixed() +
-    ggplot2::facet_wrap(~age)
+    ggplot2::facet_wrap(ggplot2::vars(.data$age))
   cowplot::plot_grid(p_vec, p_mat, nrow = 1L)
 }
 
@@ -33,8 +33,9 @@ read_vectors = function() {
 
 read_migration_matrices = function() {
   migration_matrices() |>
-    purrr::map_dfr(gather_migration_matrix, .id = "age") |>
-    dplyr::mutate(age = as.integer(.data$age) - 1L)
+    purrr::map(gather_migration_matrix) |>
+    purrr::list_rbind(names_to = "age") |>
+    dplyr::mutate(age = .data$age - 1L)
 }
 
 gather_migration_matrix = function(x) {

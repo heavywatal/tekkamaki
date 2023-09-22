@@ -69,9 +69,9 @@ mark_upstream = function(.tbl, segsites) {
     origins = sample(v_genealogy, segsites)
     mutants = igraphlite::neighborhood(graph, origins, order = 1073741824L, mode = 1L)
     names(mutants) = seq_along(mutants)
-    .tbl$ss = purrr::map_dfc(mutants, function(.x) {
+    .tbl$ss = purrr::map(mutants, \(.x) {
       as.integer(.tbl$to %in% igraphlite::as_vnames(graph, .x))
-    })
+    }) |> dplyr::bind_cols()
   }
   .tbl
 }
