@@ -74,13 +74,11 @@ find_kinship_common = function(graph, pairs, order) {
     dplyr::mutate(degree = .data$up + .data$down) |>
     dplyr::filter(.data$up + .data$down <= order) |>
     dplyr::mutate_all(as.integer) |>
-    dplyr::transmute(
-      .data$from,
-      .data$to,
+    dplyr::mutate(
       ancestor = igraphlite::as_vnames(graph, .data$ancestor),
-      path = encode_updown(.data$up, .data$down),
-      .data$degree
-    )
+      path = encode_updown(.data$up, .data$down)
+    ) |>
+    dplyr::select("from", "to", "ancestor", "path", "degree")
 }
 
 count_updown = function(graph, from, to, order) {

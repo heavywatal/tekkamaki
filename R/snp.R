@@ -38,13 +38,9 @@ gather_segments = function(.tbl) {
 #' @export
 make_gene_genealogy = function(segments, segsites = 0L) {
   n = nrow(segments)
-  df = dplyr::transmute(
-    segments,
-    from = paste(.data$parent_id, sample.int(2L, n, replace = TRUE), sep = "-"),
-    to = .data$id,
-    .data$birth_year,
-    .data$capture_year
-  ) |>
+  df = segments |>
+    dplyr::mutate(from = paste(.data$parent_id, sample.int(2L, n, replace = TRUE), sep = "-")) |>
+    dplyr::select("from", to = "id", "birth_year", "capture_year") |>
     mark_upstream(segsites = segsites)
   class(df) = c("genealogy", "tbl_df", "tbl", "data.frame")
   df

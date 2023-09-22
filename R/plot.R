@@ -43,13 +43,8 @@ add_coordinates = function(x, layout) {
 as_genealogy = function(x) {
   x = x |>
     tidyr::gather("key", "from", dplyr::ends_with("_id")) |>
-    dplyr::transmute(
-      .data$from,
-      to = .data$id,
-      .data$birth_year,
-      .data$capture_year,
-      sampled = !is.na(.data$capture_year)
-    )
+    dplyr::mutate(sampled = !is.na(.data$capture_year)) |>
+    dplyr::select("from", to = "id", "birth_year", "capture_year", "sampled")
   class(x) = c("genealogy", "tbl_df", "tbl", "data.frame")
   x
 }
@@ -65,7 +60,7 @@ layout_demography = function(x) {
     dplyr::group_by(.data$birth_year) |>
     dplyr::mutate(x = dplyr::row_number()) |>
     dplyr::ungroup() |>
-    dplyr::transmute(.data$id, .data$x, y = .data$birth_year)
+    dplyr::select("id", "x", y = "birth_year")
 }
 
 #' @param lwd passed to [ggplot2::geom_segment].

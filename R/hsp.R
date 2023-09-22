@@ -45,10 +45,20 @@ read_hsp = function(path) {
 
 pairwise_half_sibling = function(.tbl) {
   .tbl = dplyr::filter(.tbl, !is.na(.data$capture_year))
-  tsv_i = .tbl |>
-    dplyr::transmute(.data$id, mother_i = .data$mother_id, father_i = .data$father_id, cohort_i = .data$birth_year, location_i = .data$location)
-  tsv_j = .tbl |>
-    dplyr::transmute(.data$id, mother_j = .data$mother_id, father_j = .data$father_id, cohort_j = .data$birth_year, location_j = .data$location)
+  tsv_i = .tbl |> dplyr::select(
+    "id",
+    mother_i = "mother_id",
+    father_i = "father_id",
+    cohort_i = "birth_year",
+    location_i = "location"
+  )
+  tsv_j = .tbl |> dplyr::select(
+    "id",
+    mother_j = "mother_id",
+    father_j = "father_id",
+    cohort_j = "birth_year",
+    location_j = "location"
+  )
   tidyr::crossing(id_i = .tbl$id, id_j = .tbl$id) |>
     dplyr::filter(.data$id_i < .data$id_j) |>
     dplyr::left_join(tsv_i, by = c(id_i = "id")) |>

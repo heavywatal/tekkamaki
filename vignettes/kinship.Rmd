@@ -36,7 +36,8 @@ Bind other information to kinship data.frame:
 ```{r }
 sampled = sample_family |>
   dplyr::filter(!is.na(capture_year)) |>
-  dplyr::transmute(id, location, capture_year, age = capture_year - birth_year) |>
+  dplyr::mutate(age = capture_year - birth_year) |>
+  dplyr::select("id", "location", "capture_year", "age") |>
   print()
 
 kinship |>
