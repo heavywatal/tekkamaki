@@ -5,7 +5,6 @@ Authors@R: person("Watal M.", "Iwasaki", email = "heavywatal@gmail.com", role = 
 Description: Individual-based simulator of pacific bluefin tuna.
 License: MIT + file LICENSE
 Encoding: UTF-8
-LazyData: true
 Depends:
     R (>= 3.6.0)
 Imports:
@@ -29,12 +28,12 @@ Suggests:
     rmarkdown,
     testthat (>= 2.3.2)
 Remotes:
-    github::heavywatal/rigraphlite
+    igraphlite=heavywatal/rigraphlite
 URL: https://github.com/heavywatal/tekkamaki
 BugReports: https://github.com/heavywatal/tekkamaki/issues
-RoxygenNote: 7.1.1
+RoxygenNote: 7.2.3
 Roxygen: list(markdown = TRUE)
 LinkingTo: Rcpp
-SystemRequirements: C++11, CMake (>= 3.8.0)
+SystemRequirements: CMake (>= 3.8.0)
 VignetteBuilder: knitr
 StagedInstall: no

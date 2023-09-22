@@ -59,7 +59,7 @@ as_genealogy = function(x) {
 #' @rdname plot
 #' @export
 layout_demography = function(x) {
-  if (utils::hasName(x, "to")) x = dplyr::rename(x, id = .data$to)
+  if (utils::hasName(x, "to")) x = dplyr::rename(x, id = "to")
   x %>%
     dplyr::distinct(.data$id, .data$birth_year) %>%
     dplyr::group_by(.data$birth_year) %>%
@@ -75,10 +75,10 @@ layout_demography = function(x) {
 plot.genealogy = function(x, ..., lwd = 0.5, cex = 5, pch = 16) {
   data = augment(x, ...)
   f = function(x) dplyr::filter(x, !is.na(.data$xend))
-  ggplot2::ggplot(data, ggplot2::aes_(~x, ~y)) +
-    ggplot2::geom_segment(data = f, ggplot2::aes_(xend = ~xend, yend = ~yend), size = lwd, alpha = 0.5) +
-    ggplot2::geom_point(ggplot2::aes_(colour = ~sampled), shape = pch, size = cex) +
-    ggplot2::geom_text(ggplot2::aes_(label = ~label), size = cex * 0.5)
+  ggplot2::ggplot(data, ggplot2::aes(.data$x, .data$y)) +
+    ggplot2::geom_segment(data = f, ggplot2::aes(xend = .data$xend, yend = .data$yend), linewidth = lwd, alpha = 0.5) +
+    ggplot2::geom_point(ggplot2::aes(colour = .data$sampled), shape = pch, size = cex) +
+    ggplot2::geom_text(ggplot2::aes(label = .data$label), size = cex * 0.5)
 }
 
 #' @rdname plot

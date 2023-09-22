@@ -14,9 +14,10 @@ plot_nbinom = function(n = 10000L) {
     dplyr::rename(k = !!"size") %>%
     tidyr::unnest("x")
   df_summary = dplyr::group_by(df, .data$k, .data$mu) %>% dplyr::summarise_all(mean)
-  ggplot2::ggplot(df, ggplot2::aes_string("x")) +
-    ggplot2::geom_vline(data = df_summary, ggplot2::aes_string(xintercept = "mu"), colour = "tomato") +
-    ggplot2::geom_vline(data = df_summary, ggplot2::aes_string(xintercept = "x"), colour = "dodgerblue") +
+  ggplot2::ggplot(df) +
+    ggplot2::aes(.data$x) +
+    ggplot2::geom_vline(data = df_summary, ggplot2::aes(xintercept = .data$mu), colour = "tomato") +
+    ggplot2::geom_vline(data = df_summary, ggplot2::aes(xintercept = .data$x), colour = "dodgerblue") +
     ggplot2::geom_histogram(bins = 50L) +
     ggplot2::facet_grid(k ~ mu, scale = "free_x", labeller = ggplot2::label_both)
 }
