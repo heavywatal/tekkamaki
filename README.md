@@ -1,7 +1,7 @@
 # tekkamaki <img src="man/figures/logo.svg" align="right" height=140/>
 
-[![R build status](https://github.com/heavywatal/tekkamaki/workflows/R-CMD-check/badge.svg)](https://github.com/heavywatal/tekkamaki/actions)
-[![codecov](https://codecov.io/gh/heavywatal/tekkamaki/branch/master/graph/badge.svg)](https://codecov.io/gh/heavywatal/tekkamaki)
+[![R-CMD-check](https://github.com/heavywatal/rigraphlite/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/heavywatal/rigraphlite/actions/workflows/R-CMD-check.yaml)
+[![codecov](https://codecov.io/gh/heavywatal/tekkamaki/graph/badge.svg?token=IRpj1vyfrZ)](https://codecov.io/gh/heavywatal/tekkamaki)
 
 R interface to [tekka](https://github.com/heavywatal/tekka).
 
