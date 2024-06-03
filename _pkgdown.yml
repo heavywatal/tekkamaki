@@ -5,6 +5,7 @@ reference:
 - title: Run simulation
   contents:
   - tekka
+  - tekka_path
   - read_result
   - make_snp
 - title: Kinship

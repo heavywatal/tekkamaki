@@ -7,6 +7,9 @@
     <loc>/LICENSE-text.html</loc>
   </url>
   <url>
+    <loc>/LICENSE.html</loc>
+  </url>
+  <url>
     <loc>/articles/index.html</loc>
   </url>
   <url>
@@ -40,10 +43,10 @@
     <loc>/reference/nbinom.html</loc>
   </url>
   <url>
-    <loc>/reference/param-getter.html</loc>
+    <loc>/reference/parameter.html</loc>
   </url>
   <url>
-    <loc>/reference/parameter.html</loc>
+    <loc>/reference/path.html</loc>
   </url>
   <url>
     <loc>/reference/plot.html</loc>
