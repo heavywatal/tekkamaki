@@ -1,7 +1,10 @@
 #' Test negative_binomial_distribution in tekka simulation
 #'
+#' `cpp_rnbinom()` generates nbinom random numbers.
 #' @details
-#' `plot_nbinom` draws distributions with various parameter sets.
+#' `plot_nbinom()` draws distributions with various parameter sets.
+#' @inheritParams stats::rnbinom
+#' @seealso stats::rnbinom
 #' @rdname nbinom
 #' @export
 plot_nbinom = function(n = 10000L) {
