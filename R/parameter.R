@@ -3,16 +3,18 @@
 #' @param file path to a json file
 #' @rdname parameter
 #' @export
-plot_parameters_json = function(file = "") {
-  read_json(file)
-  p_vec = read_vectors() |>
+plot_parameters_json = function(file = system.file("parameters.json", package = "tekkamaki")) {
+  obj = read_parameters_json(file)
+  p_vec = obj |>
+    parameters_to_tbl() |>
     tidyr::pivot_longer(!"age", names_to = "parameter") |>
     ggplot2::ggplot() +
     ggplot2::aes(.data$age, .data$value) +
     ggplot2::geom_line() +
     ggplot2::labs(y = NULL) +
     ggplot2::facet_wrap(ggplot2::vars(.data$parameter), scale = "free_y", ncol = 1L)
-  p_mat = read_migration_matrices() |>
+  p_mat = obj |>
+    parameters_tidy_matrices() |>
     ggplot2::ggplot() +
     ggplot2::aes(.data$to, .data$from, fill = .data$probability) +
     ggplot2::geom_raster() +
@@ -22,17 +24,25 @@ plot_parameters_json = function(file = "") {
   cowplot::plot_grid(p_vec, p_mat, nrow = 1L)
 }
 
-read_vectors = function() {
+read_parameters_json = function(file) {
+  obj = jsonlite::read_json(file, simplifyVector = TRUE)
+  obj[["migration_matrices"]] = obj[["migration_matrices"]] |>
+    apply(1, identity, simplify = FALSE)
+  obj
+}
+
+parameters_to_tbl = function(obj) {
+  nat_mor = obj[["natural_mortality"]]
   tibble::tibble(
-    natural_mortality = natural_mortality(),
-    fishing_mortality = fishing_mortality(),
-    weight_for_age = weight_for_age()[seq_along(natural_mortality)],
-    age = seq_along(natural_mortality) / 4
+    natural_mortality = nat_mor,
+    fishing_mortality = obj[["fishing_mortality"]],
+    weight_for_age = obj[["weight_for_age"]][seq_along(nat_mor)],
+    age = seq_along(nat_mor) / 4
   )
 }
 
-read_migration_matrices = function() {
-  migration_matrices() |>
+parameters_tidy_matrices = function(obj) {
+  obj[["migration_matrices"]] |>
     purrr::map(gather_migration_matrix) |>
     purrr::list_rbind(names_to = "age") |>
     dplyr::mutate(age = .data$age - 1L)

@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.15)
 project(tekkamaki
-  VERSION 0.7.2
+  VERSION 0.7.3
   LANGUAGES CXX)
 
 include(CMakePrintHelpers)
@@ -48,6 +48,7 @@ endif()
 
 set(BINDIR "${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_BINDIR}")
 set(LIBDIR "${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR}")
+set(DATADIR "${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_DATADIR}")
 set(CPPFLAGS "-I${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_INCLUDEDIR}")
 set(LDFLAGS "-L${LIBDIR} -Wl,-rpath,${LIBDIR}")
 set(LDLIBS "-ltekka")
@@ -59,3 +60,6 @@ configure_file(
 )
 get_filename_component(R_PACKAGE_SOURCE ${CMAKE_CURRENT_SOURCE_DIR} DIRECTORY)
 file(WRITE ${R_PACKAGE_SOURCE}/inst/path "${BINDIR}/tekka")
+install(FILES "${DATADIR}/tekka/parameters.json"
+  DESTINATION "${R_PACKAGE_SOURCE}/inst/"
+)

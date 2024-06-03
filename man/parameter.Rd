@@ -4,7 +4,9 @@
 \alias{plot_parameters_json}
 \title{Visualize parameter json file}
 \usage{
-plot_parameters_json(file = "")
+plot_parameters_json(
+  file = system.file("parameters.json", package = "tekkamaki")
+)
 }
 \arguments{
 \item{file}{path to a json file}

@@ -1,6 +1,7 @@
 .Rproj.user
 .Rhistory
 .RData
+/inst/parameters.json
 /inst/path
 /docs/pkgdown.yml
 font.css
