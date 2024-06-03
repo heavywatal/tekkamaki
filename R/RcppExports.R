@@ -30,10 +30,3 @@ cpp_rnbinom <- function(n, size, mu) {
     .Call(`_tekkamaki_cpp_rnbinom`, n, size, mu)
 }
 
-#' @details
-#' `cpp_tekka` is a Rcpp function to call tekka
-#' @rdname tekka
-cpp_tekka <- function(args) {
-    .Call(`_tekkamaki_cpp_tekka`, args)
-}
-
