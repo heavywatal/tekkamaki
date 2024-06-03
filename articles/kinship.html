@@ -33,7 +33,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">tekkamaki</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.3</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -94,12 +94,13 @@
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/heavywatal/tekkamaki" class="external-link">tekkamaki</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">result</span> <span class="op">=</span> <span class="fu"><a href="../reference/tekka.html">tekka</a></span><span class="op">(</span><span class="st">"--seed=42 -y100 -l3 --sa 10,10 --sj 10,10"</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 1 × 2</span></span></span>
-<span><span class="co">#&gt;   sample_family          demography            </span></span>
-<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>                 <span style="color: #949494; font-style: italic;">&lt;list&gt;</span>                </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> <span style="color: #949494;">&lt;smpl_fml [7,485 × 6]&gt;</span> <span style="color: #949494;">&lt;spc_tbl_ [4,601 × 5]&gt;</span></span></span></code></pre></div>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">sample_family</span> <span class="op">=</span> <span class="va">result</span><span class="op">$</span><span class="va">sample_family</span><span class="op">[[</span><span class="fl">1L</span><span class="op">]</span><span class="op">]</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 1 × 13</span></span></span>
+<span><span class="co">#&gt;   carrying_capacity infile  last origin outdir        overdispersion recruitment</span></span>
+<span><span class="co">#&gt;               <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span>              <span style="text-decoration: underline;">1</span>000 <span style="color: #949494;">""</span>         3    0.2 /var/folders…             -<span style="color: #BB0000;">1</span>           2</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 6 more variables: sample_size_adult &lt;list&gt;, sample_size_juvenile &lt;list&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   seed &lt;int&gt;, years &lt;int&gt;, sample_family &lt;list&gt;, demography &lt;list&gt;</span></span></span>
+<span><span class="va">sample_family</span> <span class="op">=</span> <span class="va">result</span><span class="op">$</span><span class="va">sample_family</span><span class="op">[[</span><span class="fl">1L</span><span class="op">]</span><span class="op">]</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 7,485 × 6</span></span></span>
 <span><span class="co">#&gt;       id father_id mother_id birth_year location capture_year</span></span>
 <span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span></span>
@@ -115,7 +116,7 @@
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span>    80        81        82          1       <span style="color: #BB0000;">NA</span>           <span style="color: #BB0000;">NA</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># ℹ 7,475 more rows</span></span></span></code></pre></div>
 <p>Extract kinship with degree≤4:</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">kinship</span> <span class="op">=</span> <span class="fu"><a href="../reference/kinship.html">find_kinship</a></span><span class="op">(</span><span class="va">sample_family</span>, <span class="fl">4L</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 133 × 5</span></span></span>
 <span><span class="co">#&gt;     from    to path   degree label</span></span>
@@ -130,9 +131,8 @@
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span>     5  <span style="text-decoration: underline;">7</span>000 10_1        2 HS   </span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span>     5  <span style="text-decoration: underline;">7</span>038 1000_1      4 HGUN </span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span>     6  <span style="text-decoration: underline;">7</span>035 1100_1      4 HC   </span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 123 more rows</span></span></span></code></pre></div>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">kinship</span> <span class="op">|&gt;</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html" class="external-link">count</a></span><span class="op">(</span><span class="va">label</span>, .drop <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 123 more rows</span></span></span>
+<span><span class="va">kinship</span> <span class="op">|&gt;</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html" class="external-link">count</a></span><span class="op">(</span><span class="va">label</span>, .drop <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 11 × 2</span></span></span>
 <span><span class="co">#&gt;    label     n</span></span>
 <span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span></span>
@@ -148,7 +148,7 @@
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> HGUN     28</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">11</span> GUN       0</span></span></code></pre></div>
 <p>Bind other information to kinship data.frame:</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">sampled</span> <span class="op">=</span> <span class="va">sample_family</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">capture_year</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>age <span class="op">=</span> <span class="va">capture_year</span> <span class="op">-</span> <span class="va">birth_year</span><span class="op">)</span> <span class="op">|&gt;</span></span>
@@ -167,9 +167,8 @@
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span>     8        0           98     5</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span>     9        0           98     4</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span>    10        0           98     5</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 110 more rows</span></span></span></code></pre></div>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 110 more rows</span></span></span>
+<span></span>
 <span><span class="va">kinship</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">left_join</a></span><span class="op">(</span><span class="va">sampled</span>, by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>from <span class="op">=</span> <span class="st">"id"</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">left_join</a></span><span class="op">(</span><span class="va">sampled</span>, by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>to <span class="op">=</span> <span class="st">"id"</span><span class="op">)</span>, suffix <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"_from"</span>, <span class="st">"_to"</span><span class="op">)</span><span class="op">)</span></span>
