@@ -18,6 +18,7 @@ if(tekka_FOUND)
   if(${CMAKE_INSTALL_PREFIX} MATCHES linuxbrew)
     set(CMAKE_INSTALL_LIBDIR lib)
   endif()
+  set(PARAMETERS_JSON "${tekka_DIR}/parameters.json")
   install(CODE "message(STATUS ${tekka_DIR})") # to make target 'install'
 else()
   if(DEFINED ENV{FETCHCONTENT_SOURCE_DIR_TEKKA})
@@ -44,11 +45,11 @@ else()
   set(BUILD_TESTING OFF CACHE BOOL "")
   FetchContent_MakeAvailable(tekka)
   cmake_print_variables(tekka_SOURCE_DIR tekka_BINARY_DIR)
+  set(PARAMETERS_JSON "${tekka_SOURCE_DIR}/util/parameters.json")
 endif()
 
 set(BINDIR "${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_BINDIR}")
 set(LIBDIR "${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR}")
-set(DATADIR "${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_DATADIR}")
 set(CPPFLAGS "-I${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_INCLUDEDIR}")
 set(LDFLAGS "-L${LIBDIR} -Wl,-rpath,${LIBDIR}")
 set(LDLIBS "-ltekka")
@@ -60,6 +61,4 @@ configure_file(
 )
 get_filename_component(R_PACKAGE_SOURCE ${CMAKE_CURRENT_SOURCE_DIR} DIRECTORY)
 file(WRITE ${R_PACKAGE_SOURCE}/inst/path "${BINDIR}/tekka")
-install(FILES "${DATADIR}/tekka/parameters.json"
-  DESTINATION "${R_PACKAGE_SOURCE}/inst/"
-)
+install(FILES ${PARAMETERS_JSON} DESTINATION "${R_PACKAGE_SOURCE}/inst/")
