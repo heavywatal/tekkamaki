@@ -5,17 +5,18 @@
 #include "cpp11/declarations.hpp"
 #include <R_ext/Visibility.h>
 
-// nbinom.cpp
-std::vector<int> cpp_rnbinom(int n, double size, double mu);
-extern "C" SEXP _tekkamaki_cpp_rnbinom(SEXP n, SEXP size, SEXP mu) {
+// code.cpp
+void zzz_do_nothing();
+extern "C" SEXP _tekkamaki_zzz_do_nothing() {
   BEGIN_CPP11
-    return cpp11::as_sexp(cpp_rnbinom(cpp11::as_cpp<cpp11::decay_t<int>>(n), cpp11::as_cpp<cpp11::decay_t<double>>(size), cpp11::as_cpp<cpp11::decay_t<double>>(mu)));
+    zzz_do_nothing();
+    return R_NilValue;
   END_CPP11
 }
 
 extern "C" {
 static const R_CallMethodDef CallEntries[] = {
-    {"_tekkamaki_cpp_rnbinom", (DL_FUNC) &_tekkamaki_cpp_rnbinom, 3},
+    {"_tekkamaki_zzz_do_nothing", (DL_FUNC) &_tekkamaki_zzz_do_nothing, 0},
     {NULL, NULL, 0}
 };
 }

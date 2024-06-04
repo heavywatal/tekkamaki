@@ -17,5 +17,4 @@ reference:
   contents:
   - starts_with("as_igraph")
   - starts_with("augment")
-  - ends_with("nbinom")
   - plot_parameters_json
