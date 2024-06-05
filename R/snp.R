@@ -61,7 +61,7 @@ mark_upstream = function(.tbl, segsites) {
   graph = .tbl |>
     dplyr::filter(!stringr::str_starts(.data$from, "0")) |>
     igraphlite::graph_from_data_frame()
-  v_sampled = graph$to[!is.na(graph$Eattr[["capture_year"]])]
+  v_sampled = igraphlite::igraph_to(graph)[!is.na(igraphlite::Eattr(graph, "capture_year"))]
   v_genealogy = igraphlite::upstream_vertices(graph, v_sampled)
   vn_genealogy = igraphlite::as_vnames(graph, v_genealogy)
   .tbl$sampled = ifelse(.tbl$to %in% vn_genealogy, !is.na(.tbl$capture_year), NA)
