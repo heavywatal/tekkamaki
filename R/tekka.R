@@ -8,7 +8,8 @@ tekka = function(args = character(0L), cache = FALSE) {
     args = stringr::str_split_1(args, "\\s+")
   }
   if (any(c("-h", "--help") %in% args)) {
-    return(invisible(system2(tekka_path(), args)))
+    msg = system2(tekka_path(), args, stdout = TRUE, stderr = TRUE) |> paste0("\n")
+    return(invisible(message(msg, appendLF = FALSE)))
   }
   args = append_seed(args)
   cache_dir = cache_name(args)
