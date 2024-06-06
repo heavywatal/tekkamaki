@@ -7,7 +7,7 @@ test_that("augment/plot methods work", {
   })
   .colnames = c("from", "to", "x", "y", "xend", "yend", "label", "sampled")
   expect_true(all(.colnames %in% names(df)))
-  expect_equal(augment(samples, layout_demography), df)
+  expect_identical(augment(samples, layout_demography), df)
   expect_error(augment(samples, 666), "Invalid type")
 
   expect_silent({

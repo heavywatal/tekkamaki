@@ -23,5 +23,5 @@ test_that("genealogy methods and make_snp() work", {
   expect_silent({
     m = make_snp(samples, ss = ss)
   })
-  expect_equal(dim(m), c(nsam * 2L, sum(ss)))
+  expect_identical(dim(m), c(nsam * 2L, sum(ss)))
 })
