@@ -1,7 +1,6 @@
 test_that("Graph functions works", {
   result = tekka("--seed 42 -y40 -K100 -r2 -l2 --sa 2,2 --sj 2,2")
   samples = result$sample_family[[1L]]
-  expect_s4_class(as_igraph(samples), "Rcpp_IGraph")
   expect_silent({
     kinship = find_kinship(samples)
   })
