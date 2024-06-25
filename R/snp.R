@@ -61,16 +61,16 @@ mark_upstream = function(.tbl, segsites) {
   graph = .tbl |>
     dplyr::filter(!stringr::str_starts(.data$from, "0")) |>
     igraphlite::graph_from_data_frame()
-  v_sampled = igraphlite::igraph_to(graph)[!is.na(igraphlite::Eattr(graph, "capture_year"))]
+  v_sampled = igraphlite::igraph_to(graph)[!is.na(igraphlite::Eattr(graph)$capture_year)]
   v_genealogy = igraphlite::upstream_vertices(graph, v_sampled)
-  vn_genealogy = igraphlite::as_vnames(graph, v_genealogy)
+  vn_genealogy = igraphlite::Vnames(graph)[v_genealogy]
   .tbl$sampled = ifelse(.tbl$to %in% vn_genealogy, !is.na(.tbl$capture_year), NA)
   if (segsites > 0L) {
     origins = sample(v_genealogy, segsites)
     mutants = igraphlite::neighborhood(graph, origins, order = 1073741824L, mode = 1L)
     names(mutants) = seq_along(mutants)
-    .tbl$ss = purrr::map(mutants, \(.x) {
-      as.integer(.tbl$to %in% igraphlite::as_vnames(graph, .x))
+    .tbl$ss = lapply(mutants, \(.x) {
+      as.integer(.tbl$to %in% igraphlite::Vnames(graph)[.x])
     }) |> dplyr::bind_cols()
   }
   .tbl

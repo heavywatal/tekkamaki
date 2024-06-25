@@ -43,7 +43,7 @@ parameters_to_tbl = function(obj) {
 
 parameters_tidy_matrices = function(obj) {
   obj[["migration_matrices"]] |>
-    purrr::map(gather_migration_matrix) |>
+    lapply(gather_migration_matrix) |>
     purrr::list_rbind(names_to = "age") |>
     dplyr::mutate(age = .data$age - 1L)
 }
