@@ -52,30 +52,35 @@ find_shortest_paths = function(graph, pairs) {
   nested_pairs = pairs |>
     dplyr::group_by(.data$from) |>
     dplyr::summarise(to = list(!!as.name("to")))
-  .path = purrr::pmap(nested_pairs, igraphlite::get_all_shortest_paths, graph = graph, mode = 3)
+  .path = nested_pairs |>
+    purrr::pmap(\(from, to) {
+      igraphlite::get_all_shortest_paths(graph, from, to, mode = 3)
+    })
+  vnames = igraphlite::Vnames(graph)
   tibble::tibble(from = nested_pairs$from, path = .path) |>
     tidyr::unnest("path") |>
     dplyr::mutate(
-      path = lapply(.data$path, \(x) igraphlite::as_vnames(graph)[x]),
+      path = lapply(.data$path, \(x) vnames[x]),
       to = purrr::map_int(.data$path, \(x) x[length(x)]),
-      from = igraphlite::Vnames(graph)[.data$from]
+      from = vnames[.data$from]
     ) |>
     dplyr::filter(!purrr::map_lgl(.data$path, \(x) 0L %in% x))
 }
 
 find_kinship_common = function(graph, pairs, order) {
+  vnames = igraphlite::Vnames(graph)
   pairs |>
     dplyr::mutate(
-      data = purrr::pmap(pairs, count_updown, graph = graph, order = order),
-      from = igraphlite::Vnames(graph)[.data$from],
-      to = igraphlite::Vnames(graph)[.data$to]
+      data = purrr::pmap(pairs, \(from, to) count_updown(graph, from, to, order)),
+      from = vnames[.data$from],
+      to = vnames[.data$to]
     ) |>
     tidyr::unnest("data") |>
     dplyr::mutate(degree = .data$up + .data$down) |>
     dplyr::filter(.data$up + .data$down <= order) |>
     purrr::modify(as.integer) |>
     dplyr::mutate(
-      ancestor = igraphlite::Vnames(graph)[.data$ancestor],
+      ancestor = vnames[.data$ancestor],
       path = encode_updown(.data$up, .data$down)
     ) |>
     dplyr::select("from", "to", "ancestor", "path", "degree")
@@ -107,7 +112,7 @@ encode_updown = function(up, down) {
 
 label_kinship = function(kinship) {
   kinship |>
-    dplyr::mutate(path = purrr::map_chr(.data$path, paste0, collapse = "")) |>
+    dplyr::mutate(path = purrr::map_chr(.data$path, stringr::str_flatten)) |>
     dplyr::filter(stringr::str_detect(.data$path, "01", negate = TRUE)) |>
     dplyr::count(.data$from, .data$to, .data$path) |>
     dplyr::ungroup() |>
