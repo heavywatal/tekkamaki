@@ -33,4 +33,10 @@ test_that("POP and HSP work", {
   expect_silent(write_pop(pop, path))
   expect_identical(read_pop(path), pop)
   expect_error(write_pop(hsp, path))
+
+  kinship = find_kinship(samples)
+  kinship |>
+    dplyr::filter(.data$label == "HS") |>
+    nrow() |>
+    expect_identical(sum(hsp$hsps))
 })

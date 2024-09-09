@@ -10,6 +10,12 @@ test_that("tekka runs", {
     result = tekka()
   })
   expect_s3_class(result, "data.frame")
-  expect_s3_class(result$sample_family[[1L]], "data.frame")
+  sample_family = result$sample_family[[1L]]
+  expect_s3_class(sample_family, "data.frame")
+  sample_family |>
+    dplyr::select(dplyr::matches("(?:^|_)id$")) |>
+    duplicated() |>
+    any() |>
+    expect_false()
   expect_s3_class(result$demography[[1L]], "data.frame")
 })
