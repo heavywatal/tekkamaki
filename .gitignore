@@ -3,6 +3,13 @@
 .RData
 /inst/parameters.json
 /inst/path
+/docs/deps/bootstrap-toc-*
+/docs/deps/clipboard.js-*
+/docs/deps/headroom-*
+/docs/deps/search-*
+/docs/deps/font-awesome-*
+/docs/katex-auto.js
+/docs/lightswitch.js
 /docs/pkgdown.yml
 font.css
 fonts/

@@ -1,9 +1,8 @@
-pandoc: '3.2'
-pkgdown: 2.0.9
+pandoc: '3.3'
+pkgdown: 2.1.0
 pkgdown_sha: ~
 articles:
   kinship: kinship.html
   snp: snp.html
   tekkamaki: tekkamaki.html
-last_built: 2024-06-04T01:41Z
-
+last_built: 2024-09-09T11:24Z
