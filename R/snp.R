@@ -10,10 +10,10 @@
 #' @export
 make_snp = function(.tbl, ss = c(2L, 2L)) {
   segments = gather_segments(.tbl)
-  matrices = lapply(ss, function(segsites) {
+  matrices = lapply(ss, \(segsites) {
     make_gene_genealogy(segments, segsites = segsites) |> extract_snp()
   })
-  unname(Reduce(cbind, matrices))
+  Reduce(cbind, matrices)
 }
 
 #' @details
@@ -78,7 +78,10 @@ mark_upstream = function(.tbl, segsites) {
 }
 
 extract_snp = function(genealogy) {
-  as.matrix(genealogy$ss[areTRUE(genealogy$sampled), ])
+  idx = areTRUE(genealogy$sampled)
+  res = unname(as.matrix(genealogy$ss[idx, ]))
+  rownames(res) = genealogy$to[idx]
+  res
 }
 
 areTRUE = function(x) !is.na(x) & x
