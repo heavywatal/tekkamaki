@@ -47,7 +47,9 @@
 <span></span>
 <span><span class="fu">gather_segments</span><span class="op">(</span><span class="va">.tbl</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">make_gene_genealogy</span><span class="op">(</span><span class="va">segments</span>, segsites <span class="op">=</span> <span class="fl">0L</span><span class="op">)</span></span>
+<span><span class="fu">make_gene_genealogy</span><span class="op">(</span><span class="va">segments</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">place_mutations</span><span class="op">(</span><span class="va">genealogy</span>, <span class="va">segsites</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">count_uncoalesced</span><span class="op">(</span><span class="va">genealogy</span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -70,21 +72,25 @@ each element is the number of segsites on a segment.</p></dd>
 <dd><p>An output from <code>gather_segments()</code>.</p></dd>
 
 
-<dt id="arg-segsites">segsites<a class="anchor" aria-label="anchor" href="#arg-segsites"></a></dt>
-<dd><p>The number of segregating sites on a segment.</p></dd>
-
-
 <dt id="arg-genealogy">genealogy<a class="anchor" aria-label="anchor" href="#arg-genealogy"></a></dt>
 <dd><p>An output from <code>make_gene_genealogy()</code>.</p></dd>
+
+
+<dt id="arg-segsites">segsites<a class="anchor" aria-label="anchor" href="#arg-segsites"></a></dt>
+<dd><p>The number of segregating sites on a segment.</p></dd>
 
 </dl></div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
-    <p><code>make_snp()</code> generates a SNP matrix.</p>
-<p><code>gather_segments()</code> transform individual-based <code>sample_family</code> into
+    <p><code>make_snp()</code> is a shortcut to generate a SNP matrix from
+a <code>sample_family</code> data.frame.</p>
+<p><code>gather_segments()</code> transforms an individual-based <code>sample_family</code> into
+a segment-based table.</p>
+<p><code>make_gene_genealogy()</code> generates a random gene genealogy from a
 segment-based table.</p>
-<p><code>make_gene_genealogy()</code> generates random gene genealogy.</p>
-<p><code>count_uncoalesced()</code> counts uncoalesced lineages in a gene genealogy</p>
+<p><code>place_mutations()</code> generates a SNP matrix by randomly placing a fixed
+number of mutations on a given genealogy.</p>
+<p><code>count_uncoalesced()</code> counts uncoalesced roots of the samples.</p>
     </div>
 
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

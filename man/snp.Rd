@@ -4,6 +4,7 @@
 \alias{make_snp}
 \alias{gather_segments}
 \alias{make_gene_genealogy}
+\alias{place_mutations}
 \alias{count_uncoalesced}
 \title{Functions to generate gene genealogy and SNP matrix}
 \usage{
@@ -11,7 +12,9 @@ make_snp(.tbl, ss = c(2L, 2L))
 
 gather_segments(.tbl)
 
-make_gene_genealogy(segments, segsites = 0L)
+make_gene_genealogy(segments)
+
+place_mutations(genealogy, segsites)
 
 count_uncoalesced(genealogy)
 }
@@ -24,20 +27,25 @@ each element is the number of segsites on a segment.}
 
 \item{segments}{An output from \code{\link[=gather_segments]{gather_segments()}}.}
 
-\item{segsites}{The number of segregating sites on a segment.}
-
 \item{genealogy}{An output from \code{\link[=make_gene_genealogy]{make_gene_genealogy()}}.}
+
+\item{segsites}{The number of segregating sites on a segment.}
 }
 \description{
 Functions to generate gene genealogy and SNP matrix
 }
 \details{
-\code{\link[=make_snp]{make_snp()}} generates a SNP matrix.
+\code{\link[=make_snp]{make_snp()}} is a shortcut to generate a SNP matrix from
+a \code{sample_family} data.frame.
 
-\code{\link[=gather_segments]{gather_segments()}} transform individual-based \code{sample_family} into
+\code{\link[=gather_segments]{gather_segments()}} transforms an individual-based \code{sample_family} into
+a segment-based table.
+
+\code{\link[=make_gene_genealogy]{make_gene_genealogy()}} generates a random gene genealogy from a
 segment-based table.
 
-\code{\link[=make_gene_genealogy]{make_gene_genealogy()}} generates random gene genealogy.
+\code{\link[=place_mutations]{place_mutations()}} generates a SNP matrix by randomly placing a fixed
+number of mutations on a given genealogy.
 
-\code{\link[=count_uncoalesced]{count_uncoalesced()}} counts uncoalesced lineages in a gene genealogy
+\code{\link[=count_uncoalesced]{count_uncoalesced()}} counts uncoalesced roots of the samples.
 }

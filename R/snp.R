@@ -1,7 +1,8 @@
 #' Functions to generate gene genealogy and SNP matrix
 #'
 #' @details
-#' [make_snp()] generates a SNP matrix.
+#' [make_snp()] is a shortcut to generate a SNP matrix from
+#' a `sample_family` data.frame.
 #' @param .tbl `sample_family` data.frame.
 #' @param ss A sequence of `segsites`;
 #'   its length is the number of segments;
@@ -11,19 +12,20 @@
 make_snp = function(.tbl, ss = c(2L, 2L)) {
   segments = gather_segments(.tbl)
   matrices = lapply(ss, \(segsites) {
-    make_gene_genealogy(segments, segsites = segsites) |> extract_snp()
+    make_gene_genealogy(segments) |> place_mutations(segsites)
   })
   Reduce(cbind, matrices)
 }
 
 #' @details
-#' [gather_segments()] transform individual-based `sample_family` into
-#' segment-based table.
+#' [gather_segments()] transforms an individual-based `sample_family` into
+#' a segment-based table.
 #' @rdname snp
 #' @export
 gather_segments = function(.tbl) {
   .tbl |>
     dplyr::select(!"location") |>
+    dplyr::filter(.data$birth_year > 0L) |>
     tidyr::pivot_longer(dplyr::ends_with("_id"), names_to = "homolog", values_to = "parent_id") |>
     dplyr::mutate(homolog = c(mother_id = 1L, father_id = 2L)[.data$homolog]) |>
     dplyr::arrange(.data$id, .data$homolog) |>
@@ -31,57 +33,56 @@ gather_segments = function(.tbl) {
 }
 
 #' @details
-#' [make_gene_genealogy()] generates random gene genealogy.
+#' [make_gene_genealogy()] generates a random gene genealogy from a
+#' segment-based table.
 #' @param segments An output from [gather_segments()].
-#' @param segsites The number of segregating sites on a segment.
 #' @rdname snp
 #' @export
-make_gene_genealogy = function(segments, segsites = 0L) {
-  n = nrow(segments)
+make_gene_genealogy = function(segments) {
+  x = sample.int(2L, nrow(segments), replace = TRUE)
   df = segments |>
-    dplyr::mutate(from = paste(.data$parent_id, sample.int(2L, n, replace = TRUE), sep = "-")) |>
+    dplyr::mutate(from = paste(.data$parent_id, x, sep = "-")) |>
     dplyr::select("from", to = "id", "birth_year", "capture_year") |>
-    mark_upstream(segsites = segsites)
-  class(df) = c("genealogy", "tbl_df", "tbl", "data.frame")
-  df
+    dplyr::mutate(sampled = !is.na(.data$capture_year))
+  graph = igraphlite::graph_from_data_frame(df)
+  v_to = igraphlite::igraph_to(graph)
+  v_sampled = v_to[df$sampled]
+  v_genealogy = igraphlite::upstream_vertices(graph, v_sampled)
+  igraphlite::Eattr(graph)$sampled = ifelse(v_to %in% v_genealogy, df$sampled, NA)
+  class(graph) = c("genealogy", class(graph))
+  graph
 }
 
 #' @details
-#' [count_uncoalesced()] counts uncoalesced lineages in a gene genealogy
+#' [place_mutations()] generates a SNP matrix by randomly placing a fixed
+#' number of mutations on a given genealogy.
+#' @param segsites The number of segregating sites on a segment.
+#' @rdname snp
+#' @export
+place_mutations = function(genealogy, segsites) {
+  sampled = igraphlite::Eattr(genealogy)$sampled
+  v_to = igraphlite::igraph_to(genealogy)
+  v_sampled = v_to[areTRUE(sampled)]
+  v_genealogy = v_to[!is.na(sampled)]
+  origins = sample(v_genealogy, segsites, replace = TRUE)
+  mutants = igraphlite::neighborhood(genealogy, origins, order = 1073741824L, mode = 1L)
+  res = lapply(mutants, \(.x) v_sampled %in% .x) |>
+    simplify2array(higher = FALSE)
+  mode(res) = "integer"
+  rownames(res) = igraphlite::Vnames(genealogy)[v_sampled]
+  res
+}
+
+#' @details
+#' [count_uncoalesced()] counts uncoalesced roots of the samples.
 #' @param genealogy An output from [make_gene_genealogy()].
 #' @rdname snp
 #' @export
 count_uncoalesced = function(genealogy) {
-  origins = stringr::str_starts(genealogy[["from"]], "0")
-  on_tree = !is.na(genealogy[["sampled"]])
-  sum(origins & on_tree)
-}
-
-mark_upstream = function(.tbl, segsites) {
-  graph = .tbl |>
-    dplyr::filter(!stringr::str_starts(.data$from, "0")) |>
-    igraphlite::graph_from_data_frame()
-  vnames = igraphlite::Vnames(graph)
-  v_sampled = igraphlite::igraph_to(graph)[!is.na(igraphlite::Eattr(graph)$capture_year)]
-  v_genealogy = igraphlite::upstream_vertices(graph, v_sampled)
-  vn_genealogy = vnames[v_genealogy]
-  .tbl$sampled = ifelse(.tbl$to %in% vn_genealogy, !is.na(.tbl$capture_year), NA)
-  if (segsites > 0L) {
-    origins = sample(v_genealogy, segsites)
-    mutants = igraphlite::neighborhood(graph, origins, order = 1073741824L, mode = 1L)
-    names(mutants) = seq_along(mutants)
-    .tbl$ss = lapply(mutants, \(.x) {
-      as.integer(.tbl$to %in% vnames[.x])
-    }) |> dplyr::bind_cols()
-  }
-  .tbl
-}
-
-extract_snp = function(genealogy) {
-  idx = areTRUE(genealogy$sampled)
-  res = unname(as.matrix(genealogy$ss[idx, ]))
-  rownames(res) = genealogy$to[idx]
-  res
+  v_src = igraphlite::Vsource(genealogy)
+  is_src = igraphlite::igraph_from(genealogy) %in% v_src
+  in_genealogy = !is.na(igraphlite::Eattr(genealogy)$sampled)
+  sum(is_src & in_genealogy)
 }
 
 areTRUE = function(x) !is.na(x) & x

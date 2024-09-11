@@ -11,7 +11,7 @@ Individual-based simulator of pacific bluefin tuna.
 \seealso{
 Useful links:
 \itemize{
-  \item \url{https://github.com/heavywatal/tekkamaki}
+  \item \url{https://heavywatal.github.io/tekkamaki/}
   \item Report bugs at \url{https://github.com/heavywatal/tekkamaki/issues}
 }
 

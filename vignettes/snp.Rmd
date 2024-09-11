@@ -23,23 +23,34 @@ options(
 )
 ```
 
-## Generate a SNP matrix
+## Generate a gene genealogy
 
-```{r, snp}
+```{r, run}
 result = tekka("--seed 42 -y40 -K100 -r2 -l2 --sa 2,2 --sj 2,2")
 samples = result$sample_family[[1L]]
+segments = gather_segments(samples)
 set.seed(666L)
-make_snp(samples, ss = c(1L, 2L))
+genealogy = make_gene_genealogy(segments) |> print()
 ```
 
-## Visualize a generated gene genealogy
+## Visualize the generated gene genealogy
 
 ```{r, plot}
 #| fig-height: 8
 #| fig-width: 10
-segments = gather_segments(samples)
-genealogy = make_gene_genealogy(segments)
 plot(genealogy) +
   theme_void() +
   theme(legend.position = "top")
+```
+
+## Generate a SNP matrix
+
+```{r, snp}
+genealogy |> place_mutations(3L)
+```
+
+There is a shortcut to generate a SNP matrix from `sample_family`:
+
+```{r, snp-shortcut}
+make_snp(samples, ss = c(1L, 2L))
 ```

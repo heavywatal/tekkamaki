@@ -14,17 +14,18 @@ augment.sample_family = function(x, layout = NULL, ...) {
 #' @rdname plot
 #' @export
 augment.genealogy = function(x, layout = NULL, ...) {
+  eattr = as.data.frame(x)
   if (is.null(layout)) {
-    layout = layout_demography(x, ...)
+    layout = layout_demography(eattr, ...)
   } else if (is.function(layout)) {
-    layout = layout(x, ...)
+    layout = layout(eattr, ...)
   }
   if (is.data.frame(layout)) {
     stopifnot(utils::hasName(layout, c("id", "x", "y")))
   } else {
     stop("Invalid type '", typeof(layout), "' for argument 'layout'")
   }
-  add_coordinates(x, layout) |>
+  add_coordinates(eattr, layout) |>
     dplyr::mutate(
       xend = ifelse(is.na(.data$sampled), NA, .data$xend),
       yend = ifelse(is.na(.data$sampled), NA, .data$yend),
@@ -44,8 +45,9 @@ as_genealogy = function(x) {
   x = x |>
     tidyr::pivot_longer(dplyr::ends_with("_id")) |>
     dplyr::mutate(sampled = !is.na(.data$capture_year)) |>
-    dplyr::select(from = "value", to = "id", "birth_year", "capture_year", "sampled")
-  class(x) = c("genealogy", "tbl_df", "tbl", "data.frame")
+    dplyr::select(from = "value", to = "id", "birth_year", "capture_year", "sampled") |>
+    igraphlite::graph_from_data_frame()
+  class(x) = c("genealogy", class(x))
   x
 }
 
