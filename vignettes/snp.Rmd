@@ -4,33 +4,39 @@ output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Simulate SNP pattern}
   %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteEncoding{UTF-8}
 ---
 
-```{r, include = FALSE}
-knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>"
-)
+```{r, setup-hidden}
+#| include: false
+knitr::opts_chunk$set(fig.alt = " ")
 ```
 
-```{r setup, message = FALSE}
+```{r, setup}
 library(tekkamaki)
 library(ggplot2)
-set.seed(666L)
+grDevices::palette("Okabe-Ito")
+options(
+  ggplot2.continuous.colour = "viridis",
+  ggplot2.continuous.fill = "viridis",
+  ggplot2.discrete.colour = grDevices::palette()[-1],
+  ggplot2.discrete.fill = grDevices::palette()[-1]
+)
 ```
 
 ## Generate a SNP matrix
 
-```{r snp}
+```{r, snp}
 result = tekka("--seed 42 -y40 -K100 -r2 -l2 --sa 2,2 --sj 2,2")
 samples = result$sample_family[[1L]]
+set.seed(666L)
 make_snp(samples, ss = c(1L, 2L))
 ```
 
 ## Visualize a generated gene genealogy
 
-```{r plot, fig.height = 8, fig.width = 10}
+```{r, plot}
+#| fig-height: 8
+#| fig-width: 10
 segments = gather_segments(samples)
 genealogy = make_gene_genealogy(segments)
 plot(genealogy) +

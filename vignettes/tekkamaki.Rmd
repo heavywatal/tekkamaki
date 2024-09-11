@@ -4,41 +4,47 @@ output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Basic usage of tekkamaki}
   %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteEncoding{UTF-8}
 ---
 
-```{r setup, include = FALSE}
-knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>"
+```{r, setup-hidden}
+#| include: false
+knitr::opts_chunk$set(fig.alt = " ")
+```
+
+```{r, setup}
+library(tekkamaki)
+library(conflicted)
+library(dplyr)
+library(ggplot2)
+grDevices::palette("Okabe-Ito")
+options(
+  ggplot2.continuous.colour = "viridis",
+  ggplot2.continuous.fill = "viridis",
+  ggplot2.discrete.colour = grDevices::palette()[-1],
+  ggplot2.discrete.fill = grDevices::palette()[-1]
 )
 ```
 
 Run simulation:
 
-```{r simulation, message = FALSE}
-library(dplyr)
-library(ggplot2)
-library(tekkamaki)
-
+```{r, simulation}
 result = tekka("--seed=42 -y100 -l3") |> print()
 ```
 
 A result is a nested tibble with two columns: `sample_family` and `demography`:
 
-```{r result}
+```{r, result}
 sample_family = result$sample_family[[1L]] |> print()
 demography = result$demography[[1L]] |> print()
 ```
 
 Here is an example of visualizing demography:
 
-```{r demography}
-library(ggplot2)
+```{r, demography}
 df = demography |>
   dplyr::mutate(time = year + 0.25 * season) |>
-  dplyr::group_by(time, location, age = ifelse(age > 4, "adult", "juvenile")) |>
-  dplyr::summarise(count = sum(count))
+  dplyr::mutate(age = ifelse(age > 4, "adult", "juvenile")) |>
+  dplyr::summarize(count = sum(count), .by = c(time, location, age))
 
 ggplot(df) +
   aes(time, count) +

@@ -4,36 +4,36 @@ output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Extract Kinship}
   %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteEncoding{UTF-8}
 ---
 
-```{r setup, include = FALSE}
-knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>"
-)
+```{r, setup-hidden}
+#| include: false
+knitr::opts_chunk$set(fig.alt = " ")
+```
+
+```{r, setup}
+library(tekkamaki)
+library(conflicted)
+library(dplyr)
 ```
 
 Run simulation:
 
-```{r simulation, message = FALSE}
-library(dplyr)
-library(tekkamaki)
-
+```{r, simulation}
 result = tekka("--seed=42 -y100 -l3 --sa 10,10 --sj 10,10") |> print()
 sample_family = result$sample_family[[1L]] |> print()
 ```
 
 Extract kinship with degree&le;4:
 
-```{r find_kinship}
+```{r, find_kinship}
 kinship = find_kinship(sample_family, 4L) |> print()
 kinship |> dplyr::count(label, .drop = FALSE)
 ```
 
 Bind other information to kinship data.frame:
 
-```{r }
+```{r, bind}
 sampled = sample_family |>
   dplyr::filter(!is.na(capture_year)) |>
   dplyr::mutate(age = capture_year - birth_year) |>
