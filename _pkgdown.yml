@@ -9,6 +9,7 @@ reference:
   - tekka_path
   - read_result
   - make_snp
+  - as_vcf
 - title: Kinship
   contents:
   - find_kinship

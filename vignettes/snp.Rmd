@@ -46,11 +46,20 @@ plot(genealogy) +
 ## Generate a SNP matrix
 
 ```{r, snp}
-genealogy |> place_mutations(3L)
+snp = place_mutations(genealogy, 3L) |> print()
+```
+
+You can save SNP patterns as a VCF file:
+
+```{r, vcf}
+#| echo: -1
+some_file = stdout()
+write_vcf(snp, some_file)
 ```
 
 There is a shortcut to generate a SNP matrix from `sample_family`:
 
 ```{r, snp-shortcut}
-make_snp(samples, ss = c(1L, 2L))
+#| results: "hide"
+snp = make_snp(samples, ss = c(1L, 2L))
 ```
