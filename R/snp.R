@@ -42,13 +42,8 @@ make_gene_genealogy = function(segments) {
   x = sample.int(2L, nrow(segments), replace = TRUE)
   df = segments |>
     dplyr::mutate(from = paste(.data$parent_id, x, sep = "-")) |>
-    dplyr::select("from", to = "id", "birth_year", "capture_year") |>
-    dplyr::mutate(sampled = !is.na(.data$capture_year))
+    dplyr::select("from", to = "id", "birth_year", "capture_year")
   graph = igraphlite::graph_from_data_frame(df)
-  v_to = igraphlite::igraph_to(graph)
-  v_sampled = v_to[df$sampled]
-  v_genealogy = igraphlite::upstream_vertices(graph, v_sampled)
-  igraphlite::Eattr(graph)$sampled = ifelse(v_to %in% v_genealogy, df$sampled, NA)
   class(graph) = c("genealogy", class(graph))
   graph
 }
@@ -60,6 +55,7 @@ make_gene_genealogy = function(segments) {
 #' @rdname snp
 #' @export
 place_mutations = function(genealogy, segsites) {
+  annotate_sampled(genealogy)
   sampled = igraphlite::Eattr(genealogy)$sampled
   v_to = igraphlite::igraph_to(genealogy)
   v_sampled = v_to[areTRUE(sampled)]
@@ -81,8 +77,28 @@ place_mutations = function(genealogy, segsites) {
 count_uncoalesced = function(genealogy) {
   v_src = igraphlite::Vsource(genealogy)
   is_src = igraphlite::igraph_from(genealogy) %in% v_src
+  annotate_sampled(genealogy)
   in_genealogy = !is.na(igraphlite::Eattr(genealogy)$sampled)
   sum(is_src & in_genealogy)
+}
+
+#' @details
+#' [annotate_sampled()] adds "sampled" edge attribute: `TRUE` if sampled,
+#' `FALSE` if upstream of samples, `NA` if unrelated.
+#' @rdname snp
+#' @export
+annotate_sampled = function(genealogy) {
+  if (! "sampled" %in% names(igraphlite::Eattr(genealogy))) {
+    igraphlite::Eattr(genealogy)$sampled = edge_sampled(genealogy)
+  }
+  genealogy
+}
+
+edge_sampled = function(genealogy) {
+  sampled = !is.na(igraphlite::Eattr(genealogy)$capture_year)
+  v_to = igraphlite::igraph_to(genealogy)
+  v_upstream = igraphlite::upstream_vertices(genealogy, v_to[sampled])
+  ifelse(v_to %in% v_upstream, sampled, NA)
 }
 
 areTRUE = function(x) !is.na(x) & x

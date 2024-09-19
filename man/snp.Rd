@@ -6,6 +6,7 @@
 \alias{make_gene_genealogy}
 \alias{place_mutations}
 \alias{count_uncoalesced}
+\alias{annotate_sampled}
 \title{Functions to generate gene genealogy and SNP matrix}
 \usage{
 make_snp(.tbl, ss = c(2L, 2L))
@@ -17,6 +18,8 @@ make_gene_genealogy(segments)
 place_mutations(genealogy, segsites)
 
 count_uncoalesced(genealogy)
+
+annotate_sampled(genealogy)
 }
 \arguments{
 \item{.tbl}{\code{sample_family} data.frame.}
@@ -48,4 +51,7 @@ segment-based table.
 number of mutations on a given genealogy.
 
 \code{\link[=count_uncoalesced]{count_uncoalesced()}} counts uncoalesced roots of the samples.
+
+\code{\link[=annotate_sampled]{annotate_sampled()}} adds "sampled" edge attribute: \code{TRUE} if sampled,
+\code{FALSE} if upstream of samples, \code{NA} if unrelated.
 }
