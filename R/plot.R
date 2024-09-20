@@ -14,7 +14,9 @@ augment.sample_family = function(x, layout = NULL, ...) {
 #' @rdname plot
 #' @export
 augment.genealogy = function(x, layout = NULL, ...) {
-  eattr = annotate_sampled(x) |> as.data.frame()
+  eattr = annotate_sampled(x) |>
+    as.data.frame() |>
+    dplyr::arrange(nchar(.data$to), .data$to)
   if (is.null(layout)) {
     layout = layout_demography(eattr, ...)
   } else if (is.function(layout)) {

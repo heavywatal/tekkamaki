@@ -101,4 +101,56 @@ edge_sampled = function(genealogy) {
   ifelse(v_to %in% v_upstream, sampled, NA)
 }
 
+prepare_snp = function(genealogy, segsites) {
+  eattr = igraphlite::Eattr(genealogy)
+  if (!utils::hasName(eattr, "segsites")) {
+    chrom_size = 3e7
+    n = nrow(eattr)
+    igraphlite::Eattr(genealogy) = eattr |> dplyr::mutate(
+      chiasma = sample.int(chrom_size, n, replace = FALSE),
+      segsites = rmultinom1(segsites, n)
+    )
+  }
+  genealogy
+}
+
+prepare_recombination = function(genealogy) {
+  igraphlite::Eattr(genealogy)$sampled = NULL
+  eattr = igraphlite::Eattr(genealogy)
+  if (!utils::hasName(eattr, "homolog")) {
+    vnames = igraphlite::Vnames(genealogy)
+    vf = igraphlite::igraph_from(genealogy)
+    igraphlite::Eattr(genealogy) = eattr |> dplyr::mutate(
+      homolog = switch_homolog(vnames[vf]),
+      vf = vf,
+      vt = igraphlite::igraph_to(genealogy),
+      vh = match(.data$homolog, igraphlite::Vnames(genealogy)),
+      .before = "birth_year"
+    )
+  }
+  genealogy
+}
+
+recombination = function(genealogy, edge) {
+  prepare_recombination(genealogy)
+  row = as.data.frame(genealogy)[edge, ]
+  new_vf = row$vh
+  igraphlite::delete_edges(genealogy, edge)
+  igraphlite::add_edges(genealogy, c(new_vf, row$vt))
+  eattr = row |>
+    dplyr::mutate(homolog = .data$from, vh = .data$vf, vf = new_vf) |>
+    dplyr::select(!c("from", "to"))
+  igraphlite::Eattr(genealogy)[igraphlite::ecount(genealogy), ] = eattr
+  genealogy
+}
+
+switch_homolog = function(name) {
+  stringr::str_sub(name, -1L) = ifelse(stringr::str_ends(name, "1"), "2", "1")
+  name
+}
+
+rmultinom1 = function(n, k) {
+  stats::rmultinom(1L, n, rep_len(1, k)) |> as.vector()
+}
+
 areTRUE = function(x) !is.na(x) & x
