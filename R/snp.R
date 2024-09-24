@@ -17,6 +17,19 @@ make_snp = function(.tbl, ss = c(2L, 2L)) {
   Reduce(cbind, matrices)
 }
 
+make_snp_chromosome = function(genealogy, segsites) {
+  snp_tbl = genealogy |> prepare_snp(segsites)
+  matrices = snp_tbl |> purrr::pmap(\(segsites, to) {
+    x = place_mutations(genealogy, segsites)
+    if (!is.na(to)) {
+      edge = match(to, igraphlite::igraph_to(genealogy))
+      recombination(genealogy, edge)
+    }
+    x
+  })
+  Reduce(cbind, matrices)
+}
+
 #' @details
 #' [gather_segments()] transforms an individual-based `sample_family` into
 #' a segment-based table.
@@ -57,6 +70,9 @@ make_gene_genealogy = function(segments) {
 #' @rdname snp
 #' @export
 place_mutations = function(genealogy, segsites) {
+  if (segsites < 1L) {
+    return(NULL)
+  }
   annotate_sampled(genealogy)
   sampled = igraphlite::Eattr(genealogy)$sampled
   v_to = igraphlite::igraph_to(genealogy)
@@ -90,7 +106,7 @@ count_uncoalesced = function(genealogy) {
 #' @rdname snp
 #' @export
 annotate_sampled = function(genealogy) {
-  if (! "sampled" %in% names(igraphlite::Eattr(genealogy))) {
+  if (!"sampled" %in% names(igraphlite::Eattr(genealogy))) {
     igraphlite::Eattr(genealogy)$sampled = edge_sampled(genealogy)
   }
   genealogy
@@ -104,16 +120,12 @@ edge_sampled = function(genealogy) {
 }
 
 prepare_snp = function(genealogy, segsites) {
-  eattr = igraphlite::Eattr(genealogy)
-  if (!utils::hasName(eattr, "segsites")) {
-    chrom_size = 3e7
-    n = nrow(eattr)
-    igraphlite::Eattr(genealogy) = eattr |> dplyr::mutate(
-      chiasma = sample.int(chrom_size, n, replace = FALSE),
-      segsites = rmultinom1(segsites, n)
-    )
-  }
-  genealogy
+  to = igraphlite::igraph_to(genealogy)
+  n = length(to)
+  tibble::tibble(
+    segsites = rmultinom1(segsites, n + 1L),
+    to = c(sample(to, replace = FALSE), NA_integer_)
+  )
 }
 
 prepare_recombination = function(genealogy) {
@@ -135,14 +147,16 @@ prepare_recombination = function(genealogy) {
 
 recombination = function(genealogy, edge) {
   prepare_recombination(genealogy)
+  n = igraphlite::ecount(genealogy)
   row = as.data.frame(genealogy)[edge, ]
-  new_vf = row$vh
   igraphlite::delete_edges(genealogy, edge)
-  igraphlite::add_edges(genealogy, c(new_vf, row$vt))
-  eattr = row |>
-    dplyr::mutate(homolog = .data$from, vh = .data$vf, vf = new_vf) |>
-    dplyr::select(!c("from", "to"))
-  igraphlite::Eattr(genealogy)[igraphlite::ecount(genealogy), ] = eattr
+  igraphlite::add_edges(genealogy, c(row$vh, row$vt))
+  igraphlite::Eattr(genealogy)$homolog[n] = row$from
+  igraphlite::Eattr(genealogy)$vf[n] = row$vh
+  igraphlite::Eattr(genealogy)$vt[n] = row$vt
+  igraphlite::Eattr(genealogy)$vh[n] = row$vf
+  igraphlite::Eattr(genealogy)$birth_year[n] = row$birth_year
+  igraphlite::Eattr(genealogy)$capture_year[n] = row$capture_year
   genealogy
 }
 
