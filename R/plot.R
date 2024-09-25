@@ -23,7 +23,7 @@ augment.genealogy = function(x, layout = NULL, ...) {
     layout = layout(eattr, ...)
   }
   if (is.data.frame(layout)) {
-    stopifnot(utils::hasName(layout, c("id", "x", "y")))
+    stopifnot(c("id", "x", "y") %in% names(layout))
   } else {
     stop("Invalid type '", typeof(layout), "' for argument 'layout'")
   }
@@ -36,7 +36,7 @@ augment.genealogy = function(x, layout = NULL, ...) {
 }
 
 add_coordinates = function(x, layout) {
-  stopifnot(utils::hasName(layout, c("id", "x", "y")))
+  stopifnot(c("id", "x", "y") %in% names(layout))
   lo_end = dplyr::rename_with(layout, \(x) paste0(x, "end"))
   x |>
     dplyr::left_join(layout, by = c(to = "id")) |>
@@ -58,7 +58,7 @@ as_genealogy = function(x) {
 #' @rdname plot
 #' @export
 layout_demography = function(x) {
-  if (utils::hasName(x, "to")) x = dplyr::rename(x, id = "to")
+  if ("to" %in% names(x)) x = dplyr::rename(x, id = "to")
   x |>
     dplyr::distinct(.data$id, .data$birth_year) |>
     dplyr::group_by(.data$birth_year) |>

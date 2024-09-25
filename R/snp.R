@@ -131,7 +131,7 @@ prepare_snp = function(genealogy, segsites) {
 prepare_recombination = function(genealogy) {
   igraphlite::Eattr(genealogy)$sampled = NULL
   eattr = igraphlite::Eattr(genealogy)
-  if (!utils::hasName(eattr, "homolog")) {
+  if (!"homolog" %in% names(eattr)) {
     vnames = igraphlite::Vnames(genealogy)
     vf = igraphlite::igraph_from(genealogy)
     igraphlite::Eattr(genealogy) = eattr |> dplyr::mutate(
