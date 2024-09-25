@@ -54,7 +54,7 @@ make_gene_genealogy = function(segments) {
   x = sample.int(2L, nrow(segments), replace = TRUE)
   df = segments |>
     dplyr::mutate(from = paste(.data$parent_id, x, sep = "-")) |>
-    dplyr::mutate(from = stringr::str_replace(from, "^0-[12]$", "0")) |>
+    dplyr::mutate(from = stringr::str_replace(.data$from, "^0-[12]$", "0")) |>
     dplyr::select("from", to = "id", "birth_year", "capture_year")
   graph = igraphlite::graph_from_data_frame(df)
   v0 = igraphlite::as_vids(graph, "0")

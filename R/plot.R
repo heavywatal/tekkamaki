@@ -61,9 +61,7 @@ layout_demography = function(x) {
   if ("to" %in% names(x)) x = dplyr::rename(x, id = "to")
   x |>
     dplyr::distinct(.data$id, .data$birth_year) |>
-    dplyr::group_by(.data$birth_year) |>
-    dplyr::mutate(x = dplyr::row_number()) |>
-    dplyr::ungroup() |>
+    dplyr::mutate(x = dplyr::row_number(), .by = "birth_year") |>
     dplyr::select("id", "x", y = "birth_year")
 }
 

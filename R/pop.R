@@ -56,8 +56,10 @@ summarize_pop = function(.tbl) {
   n = dplyr::n
   .tbl |>
     dplyr::mutate(capture_age = .data$capture_year - .data$adult_birth_year) |>
-    dplyr::group_by(.data$cohort, .data$capture_year, .data$capture_age, .data$location) |>
-    dplyr::summarise(pops = sum(!!as.name("is_pop")), comps = n()) |>
-    dplyr::ungroup() |>
+    dplyr::summarize(
+      pops = sum(!!as.name("is_pop")),
+      comps = n(),
+      .by = c("cohort", "capture_year", "capture_age", "location")
+    ) |>
     tidyr::complete(.data$cohort, .data$capture_year, .data$capture_age, fill = list(pops = 0L, comps = 0L))
 }

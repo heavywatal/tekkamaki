@@ -50,8 +50,7 @@ find_kinship_shortest = function(.tbl, graph, pairs, order) {
 # add columns: path and degree
 find_shortest_paths = function(graph, pairs) {
   nested_pairs = pairs |>
-    dplyr::group_by(.data$from) |>
-    dplyr::summarise(to = list(!!as.name("to")))
+    dplyr::summarize(to = list(!!as.name("to")), .by = "from")
   .path = nested_pairs |>
     purrr::pmap(\(from, to) {
       igraphlite::get_all_shortest_paths(graph, from, to, mode = 3)
@@ -115,7 +114,6 @@ label_kinship = function(kinship) {
     dplyr::mutate(path = purrr::map_chr(.data$path, stringr::str_flatten)) |>
     dplyr::filter(stringr::str_detect(.data$path, "01", negate = TRUE)) |>
     dplyr::count(.data$from, .data$to, .data$path) |>
-    dplyr::ungroup() |>
     dplyr::mutate(
       degree = nchar(.data$path),
       path = paste(.data$path, .data$n, sep = "_"),
