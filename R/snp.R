@@ -20,12 +20,10 @@ make_snp = function(.tbl, ss = c(2L, 2L)) {
 make_snp_chromosome = function(genealogy, segsites) {
   snp_tbl = genealogy |> prepare_snp(segsites)
   v_sam = igraphlite::igraph_to(genealogy)[edge_sampled(genealogy)]
-  matrices = snp_tbl |> purrr::pmap(\(segsites, to) {
+  matrices = snp_tbl |> purrr::pmap(\(segsites, vt) {
     x = place_mutations(genealogy, segsites, v_sam)
-    for (vt in to) {
-      if (!is.na(vt)) {
-        recombination(genealogy, vt)
-      }
+    if (length(vt) > 0L) {
+      recombination(genealogy, vt)
     }
     x
   })
@@ -126,14 +124,14 @@ prepare_snp = function(genealogy, segsites) {
   to = igraphlite::igraph_to(genealogy)
   flat = tibble::tibble(
     segsites = rmultinom1(segsites, length(to) + 1L),
-    to = c(sample(to, replace = FALSE), NA_integer_)
+    vt = c(sample(to, replace = FALSE), NA_integer_)
   )
   nested = flat |>
     dplyr::mutate(group = cumsum(.data$segsites)) |>
-    dplyr::summarize(segsites = .data$segsites[1L], to = list(.data$to), .by = "group") |>
+    dplyr::summarize(segsites = .data$segsites[1L], vt = list(.data$vt), .by = "group") |>
     dplyr::select(!"group") |>
     dplyr::filter(.data$segsites > 0L)
-  nested$to[nrow(nested)] = list(integer(0))
+  nested$vt[nrow(nested)] = list(integer(0))
   nested
 }
 
@@ -158,14 +156,17 @@ prepare_recombination = function(genealogy) {
 # Edge IDs are not preserved (igraph#2677) while vertices remain the same.
 recombination = function(genealogy, vt) {
   to = igraphlite::igraph_to(genealogy)
-  edge = match(vt, to)
-  vf = igraphlite::igraph_from(genealogy)[edge]
+  edges = match(vt, to)
+  vf = igraphlite::igraph_from(genealogy)[edges]
   eattr = prepare_recombination(genealogy)
-  row = eattr[edge, ]
-  igraphlite::delete_edges(genealogy, edge)
-  igraphlite::add_edges(genealogy, c(row$vh, vt))
-  row$vh = vf
-  igraphlite::Eattr(genealogy)[length(to), ] = row
+  rows = eattr[edges, ]
+  new_edges = matrix(c(rows$vh, vt), nrow = 2L, byrow = TRUE)
+  igraphlite::delete_edges(genealogy, edges)
+  igraphlite::add_edges(genealogy, as.vector(new_edges))
+  rows$vh = vf
+  ecount = length(to)
+  start = ecount - length(vt) + 1L
+  igraphlite::Eattr(genealogy)[seq.int(start, ecount), ] = rows
   genealogy
 }
 
