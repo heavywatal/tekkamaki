@@ -131,18 +131,15 @@ prepare_snp = function(genealogy, segsites) {
 }
 
 prepare_recombination = function(genealogy) {
-  igraphlite::Eattr(genealogy)$sampled = NULL
   eattr = igraphlite::Eattr(genealogy)
-  if (!"homolog" %in% names(eattr)) {
+  if (!"vh" %in% names(eattr)) {
     vnames = igraphlite::Vnames(genealogy)
     vf = igraphlite::igraph_from(genealogy)
-    igraphlite::Eattr(genealogy) = eattr |> dplyr::mutate(
-      homolog = switch_homolog(vnames[vf]),
-      vf = vf,
-      vt = igraphlite::igraph_to(genealogy),
-      vh = match(.data$homolog, igraphlite::Vnames(genealogy)),
-      .before = "birth_year"
-    )
+    homolog = switch_homolog(vnames[vf])
+    igraphlite::Eattr(genealogy)$vh = match(homolog, vnames)
+  }
+  if ("sampled" %in% names(eattr)) {
+    igraphlite::Eattr(genealogy)$sampled = NULL
   }
   genealogy
 }
@@ -153,15 +150,13 @@ prepare_recombination = function(genealogy) {
 recombination = function(genealogy, edge) {
   prepare_recombination(genealogy)
   n = igraphlite::ecount(genealogy)
-  row = as.data.frame(genealogy)[edge, ]
+  row = igraphlite::Eattr(genealogy)[edge, ]
+  vf = igraphlite::igraph_from(genealogy)[edge]
+  vt = igraphlite::igraph_to(genealogy)[edge]
   igraphlite::delete_edges(genealogy, edge)
-  igraphlite::add_edges(genealogy, c(row$vh, row$vt))
-  igraphlite::Eattr(genealogy)$homolog[n] = row$from
-  igraphlite::Eattr(genealogy)$vf[n] = row$vh
-  igraphlite::Eattr(genealogy)$vt[n] = row$vt
-  igraphlite::Eattr(genealogy)$vh[n] = row$vf
-  igraphlite::Eattr(genealogy)$birth_year[n] = row$birth_year
-  igraphlite::Eattr(genealogy)$capture_year[n] = row$capture_year
+  igraphlite::add_edges(genealogy, c(row$vh, vt))
+  row$vh = vf
+  igraphlite::Eattr(genealogy)[n, ] = row
   genealogy
 }
 
