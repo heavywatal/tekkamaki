@@ -22,9 +22,10 @@ make_snp_chromosome = function(genealogy, segsites) {
   v_sam = igraphlite::igraph_to(genealogy)[edge_sampled(genealogy)]
   matrices = snp_tbl |> purrr::pmap(\(segsites, to) {
     x = place_mutations(genealogy, segsites, v_sam)
-    if (!is.na(to)) {
-      edge = match(to, igraphlite::igraph_to(genealogy))
-      recombination(genealogy, edge)
+    for (vt in to) {
+      if (!is.na(vt)) {
+        recombination(genealogy, vt)
+      }
     }
     x
   })
@@ -123,11 +124,17 @@ edge_sampled = function(genealogy) {
 
 prepare_snp = function(genealogy, segsites) {
   to = igraphlite::igraph_to(genealogy)
-  n = length(to)
-  tibble::tibble(
-    segsites = rmultinom1(segsites, n + 1L),
+  flat = tibble::tibble(
+    segsites = rmultinom1(segsites, length(to) + 1L),
     to = c(sample(to, replace = FALSE), NA_integer_)
   )
+  nested = flat |>
+    dplyr::mutate(group = cumsum(.data$segsites)) |>
+    dplyr::summarize(segsites = .data$segsites[1L], to = list(.data$to), .by = "group") |>
+    dplyr::select(!"group") |>
+    dplyr::filter(.data$segsites > 0L)
+  nested$to[nrow(nested)] = list(integer(0))
+  nested
 }
 
 prepare_recombination = function(genealogy) {
@@ -136,27 +143,29 @@ prepare_recombination = function(genealogy) {
     vnames = igraphlite::Vnames(genealogy)
     vf = igraphlite::igraph_from(genealogy)
     homolog = switch_homolog(vnames[vf])
-    igraphlite::Eattr(genealogy)$vh = match(homolog, vnames)
+    eattr$vh = match(homolog, vnames)
+    igraphlite::Eattr(genealogy) = eattr
   }
   if ("sampled" %in% names(eattr)) {
-    igraphlite::Eattr(genealogy)$sampled = NULL
+    eattr$sampled = NULL
+    igraphlite::Eattr(genealogy) = eattr
   }
-  genealogy
+  eattr
 }
 
 # [recombination()] rewires `from` end of the given edge.
 # Note that genealogy is modified in-place.
 # Edge IDs are not preserved (igraph#2677) while vertices remain the same.
-recombination = function(genealogy, edge) {
-  prepare_recombination(genealogy)
-  n = igraphlite::ecount(genealogy)
-  row = igraphlite::Eattr(genealogy)[edge, ]
+recombination = function(genealogy, vt) {
+  to = igraphlite::igraph_to(genealogy)
+  edge = match(vt, to)
   vf = igraphlite::igraph_from(genealogy)[edge]
-  vt = igraphlite::igraph_to(genealogy)[edge]
+  eattr = prepare_recombination(genealogy)
+  row = eattr[edge, ]
   igraphlite::delete_edges(genealogy, edge)
   igraphlite::add_edges(genealogy, c(row$vh, vt))
   row$vh = vf
-  igraphlite::Eattr(genealogy)[n, ] = row
+  igraphlite::Eattr(genealogy)[length(to), ] = row
   genealogy
 }
 
