@@ -12,11 +12,16 @@
 make_snp = function(.tbl, ss = c(2L, 2L)) {
   segments = gather_segments(.tbl)
   matrices = lapply(ss, \(segsites) {
-    make_gene_genealogy(segments) |> place_mutations(segsites)
+    make_gene_genealogy(segments) |> make_snp_chromosome(segsites)
   })
   Reduce(cbind, matrices)
 }
 
+#' @details
+#' [make_snp_chromosome()] simulate a SNP matrix on a chromosome by calling
+#' [place_mutations()] and `recombination()`.
+#' @rdname snp
+#' @export
 make_snp_chromosome = function(genealogy, segsites) {
   snp_tbl = genealogy |> prepare_snp(segsites)
   v_sam = igraphlite::igraph_to(genealogy)[edge_sampled(genealogy)]

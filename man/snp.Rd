@@ -2,6 +2,7 @@
 % Please edit documentation in R/snp.R
 \name{make_snp}
 \alias{make_snp}
+\alias{make_snp_chromosome}
 \alias{gather_segments}
 \alias{make_gene_genealogy}
 \alias{place_mutations}
@@ -10,6 +11,8 @@
 \title{Functions to generate gene genealogy and SNP matrix}
 \usage{
 make_snp(.tbl, ss = c(2L, 2L))
+
+make_snp_chromosome(genealogy, segsites)
 
 gather_segments(.tbl)
 
@@ -28,11 +31,11 @@ annotate_sampled(genealogy)
 its length is the number of segments;
 each element is the number of segsites on a segment.}
 
-\item{segments}{An output from \code{\link[=gather_segments]{gather_segments()}}.}
-
 \item{genealogy}{An output from \code{\link[=make_gene_genealogy]{make_gene_genealogy()}}.}
 
 \item{segsites}{The number of segregating sites on a segment.}
+
+\item{segments}{An output from \code{\link[=gather_segments]{gather_segments()}}.}
 
 \item{v_sampled}{The sampled vertices. Use this to fix the output order.}
 }
@@ -42,6 +45,9 @@ Functions to generate gene genealogy and SNP matrix
 \details{
 \code{\link[=make_snp]{make_snp()}} is a shortcut to generate a SNP matrix from
 a \code{sample_family} data.frame.
+
+\code{\link[=make_snp_chromosome]{make_snp_chromosome()}} simulate a SNP matrix on a chromosome by calling
+\code{\link[=place_mutations]{place_mutations()}} and \code{recombination()}.
 
 \code{\link[=gather_segments]{gather_segments()}} transforms an individual-based \code{sample_family} into
 a segment-based table.
