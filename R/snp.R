@@ -19,8 +19,9 @@ make_snp = function(.tbl, ss = c(2L, 2L)) {
 
 make_snp_chromosome = function(genealogy, segsites) {
   snp_tbl = genealogy |> prepare_snp(segsites)
+  v_sam = igraphlite::igraph_to(genealogy)[edge_sampled(genealogy)]
   matrices = snp_tbl |> purrr::pmap(\(segsites, to) {
-    x = place_mutations(genealogy, segsites)
+    x = place_mutations(genealogy, segsites, v_sam)
     if (!is.na(to)) {
       edge = match(to, igraphlite::igraph_to(genealogy))
       recombination(genealogy, edge)
@@ -67,18 +68,19 @@ make_gene_genealogy = function(segments) {
 #' [place_mutations()] generates a SNP matrix by randomly placing a fixed
 #' number of mutations on a given genealogy.
 #' @param segsites The number of segregating sites on a segment.
+#' @param v_sampled The sampled vertices. Use this to fix the output order.
 #' @rdname snp
 #' @export
-place_mutations = function(genealogy, segsites) {
+place_mutations = function(genealogy, segsites, v_sampled = NULL) {
   if (segsites < 1L) {
     return(NULL)
   }
-  annotate_sampled(genealogy)
-  sampled = igraphlite::Eattr(genealogy)$sampled
   v_to = igraphlite::igraph_to(genealogy)
-  v_sampled = v_to[areTRUE(sampled)]
-  v_genealogy = v_to[!is.na(sampled)]
-  origins = sample(v_genealogy, segsites, replace = TRUE)
+  if (is.null(v_sampled)) {
+    v_sampled = v_to[edge_sampled(genealogy)]
+  }
+  v_up = igraphlite::upstream_vertices(genealogy, v_sampled)
+  origins = sample(v_up, segsites, replace = TRUE)
   mutants = igraphlite::neighborhood(genealogy, origins, order = 1073741824L, mode = 1L)
   res = lapply(mutants, \(.x) v_sampled %in% .x) |>
     simplify2array(higher = FALSE)
@@ -107,16 +109,16 @@ count_uncoalesced = function(genealogy) {
 #' @export
 annotate_sampled = function(genealogy) {
   if (!"sampled" %in% names(igraphlite::Eattr(genealogy))) {
-    igraphlite::Eattr(genealogy)$sampled = edge_sampled(genealogy)
+    binary = edge_sampled(genealogy)
+    v_to = igraphlite::igraph_to(genealogy)
+    v_up = igraphlite::upstream_vertices(genealogy, v_to[binary])
+    igraphlite::Eattr(genealogy)$sampled = ifelse(v_to %in% v_up, binary, NA)
   }
   genealogy
 }
 
 edge_sampled = function(genealogy) {
-  sampled = !is.na(igraphlite::Eattr(genealogy)$capture_year)
-  v_to = igraphlite::igraph_to(genealogy)
-  v_upstream = igraphlite::upstream_vertices(genealogy, v_to[sampled])
-  ifelse(v_to %in% v_upstream, sampled, NA)
+  !is.na(igraphlite::Eattr(genealogy)$capture_year)
 }
 
 prepare_snp = function(genealogy, segsites) {
@@ -145,6 +147,9 @@ prepare_recombination = function(genealogy) {
   genealogy
 }
 
+# [recombination()] rewires `from` end of the given edge.
+# Note that genealogy is modified in-place.
+# Edge IDs are not preserved (igraph#2677) while vertices remain the same.
 recombination = function(genealogy, edge) {
   prepare_recombination(genealogy)
   n = igraphlite::ecount(genealogy)

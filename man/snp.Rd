@@ -15,7 +15,7 @@ gather_segments(.tbl)
 
 make_gene_genealogy(segments)
 
-place_mutations(genealogy, segsites)
+place_mutations(genealogy, segsites, v_sampled = NULL)
 
 count_uncoalesced(genealogy)
 
@@ -33,6 +33,8 @@ each element is the number of segsites on a segment.}
 \item{genealogy}{An output from \code{\link[=make_gene_genealogy]{make_gene_genealogy()}}.}
 
 \item{segsites}{The number of segregating sites on a segment.}
+
+\item{v_sampled}{The sampled vertices. Use this to fix the output order.}
 }
 \description{
 Functions to generate gene genealogy and SNP matrix
