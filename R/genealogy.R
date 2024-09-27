@@ -1,8 +1,28 @@
 #' Functions to generate gene genealogy from sample family table
 #'
+#' [make_gene_genealogy()] generates a random gene genealogy from a table.
+#' @param samples A data.frame: `sample_family` or output from [gather_segments()].
+#' @rdname genealogy
+#' @export
+make_gene_genealogy = function(samples) {
+  if (inherits(samples, "sample_family")) {
+    samples = gather_segments(samples)
+  }
+  x = sample.int(2L, nrow(samples), replace = TRUE)
+  df = samples |>
+    dplyr::mutate(from = paste(.data$parent_id, x, sep = "-")) |>
+    dplyr::mutate(from = stringr::str_replace(.data$from, "^0-[12]$", "0")) |>
+    dplyr::select("from", to = "id", "birth_year", "capture_year")
+  graph = igraphlite::graph_from_data_frame(df)
+  v0 = igraphlite::as_vids(graph, "0")
+  igraphlite::delete_vertices(graph, v0)
+  class(graph) = c("genealogy", class(graph))
+  graph
+}
+
+#' @details
 #' [gather_segments()] transforms an individual-based `sample_family` into
 #' a segment-based table.
-#' @param samples A `sample_family` data.frame.
 #' @rdname genealogy
 #' @export
 gather_segments = function(samples) {
@@ -12,25 +32,6 @@ gather_segments = function(samples) {
     dplyr::mutate(homolog = c(mother_id = 1L, father_id = 2L)[.data$homolog]) |>
     dplyr::arrange(-.data$birth_year, .data$id, .data$homolog) |>
     dplyr::mutate(id = paste(.data$id, .data$homolog, sep = "-"), homolog = NULL)
-}
-
-#' @details
-#' [make_gene_genealogy()] generates a random gene genealogy from a
-#' segment-based table.
-#' @param segments An output from [gather_segments()].
-#' @rdname genealogy
-#' @export
-make_gene_genealogy = function(segments) {
-  x = sample.int(2L, nrow(segments), replace = TRUE)
-  df = segments |>
-    dplyr::mutate(from = paste(.data$parent_id, x, sep = "-")) |>
-    dplyr::mutate(from = stringr::str_replace(.data$from, "^0-[12]$", "0")) |>
-    dplyr::select("from", to = "id", "birth_year", "capture_year")
-  graph = igraphlite::graph_from_data_frame(df)
-  v0 = igraphlite::as_vids(graph, "0")
-  igraphlite::delete_vertices(graph, v0)
-  class(graph) = c("genealogy", class(graph))
-  graph
 }
 
 #' @details

@@ -8,11 +8,13 @@
 #' @rdname vcf
 #' @export
 as_vcf = function(x, phased = TRUE, chrom = NA_character_, pos = NA_integer_) {
-  if (inherits(x, "vcf")) {
-    return(x)
-  }
+  UseMethod("as_vcf", x)
+}
+
+#' @export
+as_vcf.default = function(x, phased = TRUE, chrom = NA_character_, pos = NA_integer_) {
   x |>
-    as_vcf_genotype(phased = phased) |>
+    as_vcf_gt(phased = phased) |>
     dplyr::mutate(
       CHROM = chrom,
       POS = pos,
@@ -27,6 +29,16 @@ as_vcf = function(x, phased = TRUE, chrom = NA_character_, pos = NA_integer_) {
     ) |>
     tibble::new_tibble(class = "vcf")
 }
+
+#' @export
+as_vcf.list = function(x, phased = TRUE, ...) {
+  purrr::imap(x, \(.x, .i) {
+    as_vcf(.x, phased = phased, chrom = as.character(.i))
+  }) |> purrr::list_rbind()
+}
+
+#' @export
+as_vcf.vcf = function(x, ...) x
 
 #' @param file A path or connection.
 #' @rdname vcf
@@ -48,24 +60,41 @@ read_vcf = function(file) {
     tibble::new_tibble(class = "vcf")
 }
 
-as_vcf_genotype = function(x, phased = TRUE) {
-  if (inherits(x, "vcf_gt")) {
-    return(x)
-  }
-  if (inherits(x, "vcf")) {
-    x = x |>
-      dplyr::select(!c("CHROM", "POS", "ID", "REF", "ALT")) |>
-      dplyr::select(!c("QUAL", "FILTER", "INFO", "FORMAT"))
-  } else {
-    stopifnot(is.matrix(x))
-    sep = ifelse(phased, "|", "/")
-    is_mother = stringr::str_ends(rownames(x), "-1")
-    allele_mother = x[is_mother, ]
-    allele_father = x[!is_mother, ]
-    x = paste(allele_mother, allele_father, sep = sep)
-    dim(x) = dim(allele_mother)
-    rownames(x) = stringr::str_remove(rownames(allele_mother), "-\\d$")
-    x = as.data.frame(t(x))
-  }
+#' @rdname vcf
+#' @export
+as_vcf_gt = function(x, phased = TRUE) UseMethod("as_vcf_gt", x)
+
+#' @export
+as_vcf_gt.default = function(x, phased = TRUE) {
+  stopifnot(is.matrix(x))
+  sep = ifelse(phased, "|", "/")
+  is_mother = stringr::str_ends(rownames(x), "-1")
+  allele_mother = x[is_mother, ]
+  allele_father = x[!is_mother, ]
+  x = paste(allele_mother, allele_father, sep = sep)
+  dim(x) = dim(allele_mother)
+  rownames(x) = stringr::str_remove(rownames(allele_mother), "-\\d$")
+  x = as.data.frame(t(x))
   tibble::new_tibble(x, class = "vcf_gt")
+}
+
+#' @export
+as_vcf_gt.vcf_gt = function(x, ...) x
+
+#' @export
+as_vcf_gt.vcf = function(x, ...) {
+  x = x |>
+    dplyr::select(!c("CHROM", "POS", "ID", "REF", "ALT")) |>
+    dplyr::select(!c("QUAL", "FILTER", "INFO", "FORMAT"))
+  tibble::new_tibble(x, class = "vcf_gt")
+  x
+}
+
+#' @rdname vcf
+#' @export
+add_pos_id = function(x) {
+  stopifnot(inherits(x, "vcf"))
+  x |>
+    dplyr::mutate(POS = dplyr::row_number(), .by = .data$CHROM) |>
+    dplyr::mutate(ID = paste(.data$CHROM, .data$POS, sep = "-"))
 }

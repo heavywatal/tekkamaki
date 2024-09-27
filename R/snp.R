@@ -10,11 +10,12 @@
 #' @rdname snp
 #' @export
 make_snp = function(samples, ss = c(2L, 2L)) {
-  segments = gather_segments(samples)
-  matrices = lapply(ss, \(segsites) {
-    make_gene_genealogy(segments) |> make_snp_chromosome(segsites)
+  if (inherits(samples, "sample_family")) {
+    samples = gather_segments(samples)
+  }
+  lapply(ss, \(segsites) {
+    make_gene_genealogy(samples) |> make_snp_chromosome(segsites)
   })
-  Reduce(cbind, matrices)
 }
 
 #' @details

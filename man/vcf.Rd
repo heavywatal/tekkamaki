@@ -4,6 +4,8 @@
 \alias{as_vcf}
 \alias{write_vcf}
 \alias{read_vcf}
+\alias{as_vcf_gt}
+\alias{add_pos_id}
 \title{Utilities for VCF format}
 \usage{
 as_vcf(x, phased = TRUE, chrom = NA_character_, pos = NA_integer_)
@@ -11,6 +13,10 @@ as_vcf(x, phased = TRUE, chrom = NA_character_, pos = NA_integer_)
 write_vcf(x, file)
 
 read_vcf(file)
+
+as_vcf_gt(x, phased = TRUE)
+
+add_pos_id(x)
 }
 \arguments{
 \item{x}{SNP matrix or VCF data.frame.}

@@ -18,7 +18,7 @@ place_mutations(genealogy, segsites, v_sampled = NULL)
 \arguments{
 \item{genealogy}{An output from \code{\link[=make_gene_genealogy]{make_gene_genealogy()}}.}
 
-\item{samples}{A \code{sample_family} data.frame.}
+\item{samples}{A data.frame: \code{sample_family} or output from \code{\link[=gather_segments]{gather_segments()}}.}
 
 \item{ss}{A sequence of \code{segsites};
 its length is the number of segments;

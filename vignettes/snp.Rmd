@@ -28,9 +28,8 @@ options(
 ```{r, run}
 result = tekka("--seed 42 -y40 -K100 -r2 -l2 --sa 2,2 --sj 2,2")
 samples = result$sample_family[[1L]]
-segments = gather_segments(samples)
 set.seed(666L)
-genealogy = make_gene_genealogy(segments) |> print()
+genealogy = make_gene_genealogy(samples) |> print()
 ```
 
 ## Visualize the generated gene genealogy
@@ -60,6 +59,7 @@ write_vcf(snp, some_file)
 There is a shortcut to generate a SNP matrix from `sample_family`:
 
 ```{r, snp-shortcut}
-#| results: "hide"
-snp = make_snp(samples, ss = c(1L, 2L))
+snp = make_snp(samples, ss = c(chr7 = 4L, chr8 = 3L))
+vcf = as_vcf(snp) |> add_pos_id()
+write_vcf(vcf, some_file)
 ```
