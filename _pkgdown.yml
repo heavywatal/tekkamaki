@@ -8,6 +8,7 @@ reference:
   - tekka
   - tekka_path
   - read_result
+  - make_gene_genealogy
   - make_snp
   - as_vcf
 - title: Kinship
