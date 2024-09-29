@@ -47,7 +47,9 @@
 <span></span>
 <span><span class="fu">gather_segments</span><span class="op">(</span><span class="va">samples</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">count_uncoalesced</span><span class="op">(</span><span class="va">genealogy</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">count_uncoalesced</span><span class="op">(</span><span class="va">genealogy</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">annotate_sampled</span><span class="op">(</span><span class="va">genealogy</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -67,6 +69,8 @@
     <p><code>gather_segments()</code> transforms an individual-based <code>sample_family</code> into
 a segment-based table.</p>
 <p><code>count_uncoalesced()</code> counts uncoalesced roots of the samples.</p>
+<p><code>annotate_sampled()</code> adds "sampled" edge attribute: <code>TRUE</code> if sampled,
+<code>FALSE</code> if upstream of samples, <code>NA</code> if unrelated.</p>
     </div>
 
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
