@@ -4,6 +4,7 @@
 \alias{make_gene_genealogy}
 \alias{gather_segments}
 \alias{count_uncoalesced}
+\alias{annotate_sampled}
 \title{Functions to generate gene genealogy from sample family table}
 \usage{
 make_gene_genealogy(samples)
@@ -11,6 +12,8 @@ make_gene_genealogy(samples)
 gather_segments(samples)
 
 count_uncoalesced(genealogy)
+
+annotate_sampled(genealogy)
 }
 \arguments{
 \item{samples}{A data.frame: \code{sample_family} or output from \code{\link[=gather_segments]{gather_segments()}}.}
@@ -25,4 +28,7 @@ count_uncoalesced(genealogy)
 a segment-based table.
 
 \code{\link[=count_uncoalesced]{count_uncoalesced()}} counts uncoalesced roots of the samples.
+
+\code{\link[=annotate_sampled]{annotate_sampled()}} adds "sampled" edge attribute: \code{TRUE} if sampled,
+\code{FALSE} if upstream of samples, \code{NA} if unrelated.
 }

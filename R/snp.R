@@ -1,19 +1,23 @@
-#' Functions to generate SNP matrix
+#' Functions to generate SNPs on given samples.
 #'
 #' @details
-#' [make_snp()] is a shortcut to generate a SNP matrix from
-#' a `sample_family` data.frame.
+#' [make_snp()] generates a list of SNP matrices by calling
+#' [make_snp_chromosome()] in parallel.
+#' Use `RNGkind("L'Ecuyer-CMRG")` and `set.seed()` to get reproducible results.
+#' The number of CPU cores used can be configured via `mc.cores` option.
 #' @inheritParams make_gene_genealogy
 #' @param ss A sequence of `segsites`;
-#'   its length is the number of segments;
-#'   each element is the number of segsites on a segment.
+#'   its length is the number of chromosome;
+#'   each element is the number of segsites on a chromosome.
+#'   If a named vector is given, the output is also named.
 #' @rdname snp
 #' @export
-make_snp = function(samples, ss = c(2L, 2L)) {
+make_snp = function(samples, ss) {
+  on.exit(stats::runif(1L)) # proxy of parallel::nextRNGStream(.Random.seed)
   if (inherits(samples, "sample_family")) {
     samples = gather_segments(samples)
   }
-  lapply(ss, \(segsites) {
+  parallel::mclapply(ss, \(segsites) {
     make_gene_genealogy(samples) |> make_snp_chromosome(segsites)
   })
 }
@@ -39,6 +43,7 @@ make_snp_chromosome = function(genealogy, segsites) {
 #' @details
 #' [place_mutations()] generates a SNP matrix by randomly placing a fixed
 #' number of mutations on a given genealogy.
+#' It means that all the sites are perfectly linked with each other.
 #' @param segsites The number of segregating sites on a segment.
 #' @param v_sampled The sampled vertices. Use this to fix the output order.
 #' @rdname snp

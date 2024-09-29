@@ -42,13 +42,15 @@ plot(genealogy) +
   theme(legend.position = "top")
 ```
 
-## Generate a SNP matrix
+## Generate SNPs
+
+Randomly place a fixed number of mutations on a given genealogy without recombination.
 
 ```{r, snp}
 snp = place_mutations(genealogy, 3L) |> print()
 ```
 
-You can save SNP patterns as a VCF file:
+Save SNP patterns as a VCF file:
 
 ```{r, vcf}
 #| echo: -1
@@ -56,9 +58,13 @@ some_file = stdout()
 write_vcf(snp, some_file)
 ```
 
-There is a shortcut to generate a SNP matrix from `sample_family`:
+You can also generate a list of SNP matrices for chromosomes with recombination in parallel.
+Use `RNGkind("L'Ecuyer-CMRG")` and `set.seed()` for reproducibility:
 
 ```{r, snp-shortcut}
+options(mc.cores = 2L) # parallel::detectCores(logical = FALSE)
+RNGkind("L'Ecuyer-CMRG")
+set.seed(666L)
 snp = make_snp(samples, ss = c(chr7 = 4L, chr8 = 3L))
 vcf = as_vcf(snp) |> add_pos_id()
 write_vcf(vcf, some_file)

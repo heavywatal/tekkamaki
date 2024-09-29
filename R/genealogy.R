@@ -50,7 +50,7 @@ count_uncoalesced = function(genealogy) {
 #' @details
 #' [annotate_sampled()] adds "sampled" edge attribute: `TRUE` if sampled,
 #' `FALSE` if upstream of samples, `NA` if unrelated.
-#' @rdname snp
+#' @rdname genealogy
 #' @export
 annotate_sampled = function(genealogy) {
   if (!"sampled" %in% names(igraphlite::Eattr(genealogy))) {
