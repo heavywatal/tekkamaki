@@ -69,8 +69,8 @@ as_vcf_gt.default = function(x, phased = TRUE) {
   stopifnot(is.matrix(x))
   sep = ifelse(phased, "|", "/")
   is_mother = stringr::str_ends(rownames(x), "-1")
-  allele_mother = x[is_mother, ]
-  allele_father = x[!is_mother, ]
+  allele_mother = x[is_mother, , drop = FALSE]
+  allele_father = x[!is_mother, , drop = FALSE]
   x = paste(allele_mother, allele_father, sep = sep)
   dim(x) = dim(allele_mother)
   rownames(x) = stringr::str_remove(rownames(allele_mother), "-\\d$")
@@ -83,11 +83,9 @@ as_vcf_gt.vcf_gt = function(x, ...) x
 
 #' @export
 as_vcf_gt.vcf = function(x, ...) {
-  x = x |>
+  tibble::new_tibble(x, class = "vcf_gt") |>
     dplyr::select(!c("CHROM", "POS", "ID", "REF", "ALT")) |>
     dplyr::select(!c("QUAL", "FILTER", "INFO", "FORMAT"))
-  tibble::new_tibble(x, class = "vcf_gt")
-  x
 }
 
 #' @rdname vcf
@@ -95,6 +93,6 @@ as_vcf_gt.vcf = function(x, ...) {
 add_pos_id = function(x) {
   stopifnot(inherits(x, "vcf"))
   x |>
-    dplyr::mutate(POS = dplyr::row_number(), .by = .data$CHROM) |>
+    dplyr::mutate(POS = dplyr::row_number(), .by = "CHROM") |>
     dplyr::mutate(ID = paste(.data$CHROM, .data$POS, sep = "-"))
 }
