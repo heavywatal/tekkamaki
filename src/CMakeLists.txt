@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.15)
 project(tekkamaki
-  VERSION 0.7.4
+  VERSION 0.7.5
   LANGUAGES CXX)
 
 include(CMakePrintHelpers)
@@ -15,10 +15,7 @@ if(tekka_FOUND)
   get_target_property(INCLUDEDIR tekka::tekka INTERFACE_INCLUDE_DIRECTORIES)
   get_filename_component(CMAKE_INSTALL_PREFIX "${INCLUDEDIR}" DIRECTORY)
   cmake_print_variables(CMAKE_INSTALL_PREFIX)
-  if(${CMAKE_INSTALL_PREFIX} MATCHES linuxbrew)
-    set(CMAKE_INSTALL_LIBDIR lib)
-  endif()
-  set(PARAMETERS_JSON "${tekka_DIR}/parameters.json")
+  set(PARAMETERS_JSON "${CMAKE_INSTALL_PREFIX}/share/tekka/parameters.json")
   install(CODE "message(STATUS ${tekka_DIR})") # to make target 'install'
 else()
   if(DEFINED ENV{FETCHCONTENT_SOURCE_DIR_TEKKA})
