@@ -24,7 +24,7 @@ read_result = function(file) {
 
 .read_conf = function(indir = getwd()) {
   json = file.path(indir, "config.json")
-  obj = jsonlite::read_json(json)
+  obj = jsonlite::read_json(json, simplifyVector = TRUE)
   obj[["sample_size_adult"]] = list(obj[["sample_size_adult"]])
   obj[["sample_size_juvenile"]] = list(obj[["sample_size_juvenile"]])
   tibble::new_tibble(obj)
