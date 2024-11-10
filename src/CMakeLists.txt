@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.15)
 project(tekkamaki
-  VERSION 0.7.6
+  VERSION 0.7.7
   LANGUAGES CXX)
 
 include(CMakePrintHelpers)
