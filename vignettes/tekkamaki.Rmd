@@ -12,8 +12,8 @@ knitr::opts_chunk$set(fig.alt = " ")
 ```
 
 ```{r, setup}
-library(tekkamaki)
 library(conflicted)
+library(tekkamaki)
 library(dplyr)
 library(ggplot2)
 grDevices::palette("Okabe-Ito")
@@ -28,7 +28,8 @@ options(
 Run simulation:
 
 ```{r, simulation}
-result = tekka("--seed=42 -y100 -l3") |> print()
+set.seed(42)
+result = tekka("-y80 -l3") |> print()
 ```
 
 A result is a nested tibble with two columns: `sample_family` and `demography`:

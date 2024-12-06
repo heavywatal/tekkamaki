@@ -1,5 +1,6 @@
 test_that("genealogy methods and make_snp() work", {
-  result = tekka("--seed 42 -y40 -K100 -r2 -l2 --sa 2,2 --sj 2,2")
+  set.seed(42L)
+  result = tekka("-y40 -l2 --sa 2,2 --sj 2,2")
   samples = result$sample_family[[1L]]
   segments = gather_segments(samples) |>
     expect_silent()

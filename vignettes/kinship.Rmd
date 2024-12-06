@@ -12,15 +12,16 @@ knitr::opts_chunk$set(fig.alt = " ")
 ```
 
 ```{r, setup}
-library(tekkamaki)
 library(conflicted)
+library(tekkamaki)
 library(dplyr)
 ```
 
 Run simulation:
 
 ```{r, simulation}
-result = tekka("--seed=42 -y100 -l3 --sa 10,10 --sj 10,10") |> print()
+set.seed(42)
+result = tekka("-y80 -l3 --sa 10,10 --sj 10,10") |> print()
 sample_family = result$sample_family[[1L]] |> print()
 ```
 

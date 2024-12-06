@@ -12,6 +12,7 @@ knitr::opts_chunk$set(fig.alt = " ")
 ```
 
 ```{r, setup}
+library(conflicted)
 library(tekkamaki)
 library(ggplot2)
 grDevices::palette("Okabe-Ito")
@@ -26,9 +27,9 @@ options(
 ## Generate a gene genealogy
 
 ```{r, run}
-result = tekka("--seed 42 -y40 -K100 -r2 -l2 --sa 2,2 --sj 2,2")
-samples = result$sample_family[[1L]]
 set.seed(666L)
+result = tekka("-y40 -K1000 -l2 --sa 2,2 --sj 2,2")
+samples = result$sample_family[[1L]]
 genealogy = make_gene_genealogy(samples) |> print()
 ```
 
