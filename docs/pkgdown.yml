@@ -1,11 +1,11 @@
-pandoc: '3.5'
+pandoc: 3.6.1
 pkgdown: 2.1.1
 pkgdown_sha: ~
 articles:
   kinship: kinship.html
   snp: snp.html
   tekkamaki: tekkamaki.html
-last_built: 2024-11-10T14:42Z
+last_built: 2024-12-28T07:24Z
 urls:
   reference: https://heavywatal.github.io/tekkamaki/reference
   article: https://heavywatal.github.io/tekkamaki/articles
