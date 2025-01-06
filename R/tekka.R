@@ -7,7 +7,7 @@ tekka = function(args = character(0L), cache = FALSE) {
   if (length(args) == 1L) {
     args = stringr::str_split_1(args, "\\s+")
   }
-  if (any(c("-h", "--help") %in% args)) {
+  if (any(c("-h", "--help", "--version", "--default") %in% args)) {
     msg = system2(tekka_path(), args, stdout = TRUE, stderr = TRUE) |> paste0("\n")
     return(invisible(message(msg, appendLF = FALSE)))
   }
