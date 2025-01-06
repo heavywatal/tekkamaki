@@ -6,7 +6,7 @@ test_that("tekka is installed", {
 
 test_that("tekka runs", {
   expect_message(tekka("--help"), "Usage")
-  expect_message(tekka("--version"), "v")
+  expect_message(tekka("--version"), "^v?\\d+\\.\\d+")
   expect_silent({
     result = tekka()
   })
