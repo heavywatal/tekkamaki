@@ -29,7 +29,7 @@ gather_segments = function(samples) {
   id_cols = c("mother_id", "father_id")
   samples |>
     dplyr::select(!"location") |>
-    tidyr::pivot_longer(id_cols, names_to = "homolog", values_to = "parent_id") |>
+    tidyr::pivot_longer(tidyr::all_of(id_cols), names_to = "homolog", values_to = "parent_id") |>
     dplyr::mutate(homolog = as.integer(factor(.data$homolog, levels = id_cols))) |>
     dplyr::arrange(-.data$birth_year, .data$id, .data$homolog) |>
     tidyr::unite("id", "id", "homolog", sep = "-")
