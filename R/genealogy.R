@@ -11,11 +11,8 @@ make_gene_genealogy = function(samples) {
   x = sample.int(2L, nrow(samples), replace = TRUE)
   df = samples |>
     dplyr::mutate(from = paste(.data$parent_id, x, sep = "-")) |>
-    dplyr::mutate(from = ifelse(.data$parent_id == 0L, "0", .data$from)) |>
     dplyr::select("from", to = "id", "birth_year", "capture_year")
   graph = igraphlite::graph_from_data_frame(df)
-  v0 = igraphlite::as_vids(graph, "0")
-  igraphlite::delete_vertices(graph, v0)
   class(graph) = c("genealogy", class(graph))
   graph
 }
@@ -29,8 +26,12 @@ gather_segments = function(samples) {
   id_cols = c("mother_id", "father_id")
   samples |>
     dplyr::select(!"location") |>
-    tidyr::pivot_longer(tidyr::all_of(id_cols), names_to = "homolog", values_to = "parent_id") |>
-    dplyr::mutate(homolog = as.integer(factor(.data$homolog, levels = id_cols))) |>
+    dplyr::filter(.data$mother_id > 0L) |>
+    tidyr::pivot_longer(tidyr::all_of(id_cols),
+      names_to = "homolog",
+      names_transform = \(x) as.integer(factor(x, levels = id_cols)),
+      values_to = "parent_id"
+    ) |>
     dplyr::arrange(-.data$birth_year, .data$id, .data$homolog) |>
     tidyr::unite("id", "id", "homolog", sep = "-")
 }
