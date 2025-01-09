@@ -79,13 +79,13 @@ If a named vector is given, the output is also named.</p></dd>
 </dl></div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
-    <p><code>make_snp()</code> generates a list of SNP matrices by calling
+    <p><code>make_snp()</code> generates a list of SNP data.frames by calling
 <code>make_snp_chromosome()</code> in parallel.
 Use <code>RNGkind("L'Ecuyer-CMRG")</code> and <code><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed()</a></code> to get reproducible results.
 The number of CPU cores used can be configured via <code>mc.cores</code> option.</p>
-<p><code>make_snp_chromosome()</code> simulate a SNP matrix on a chromosome by calling
+<p><code>make_snp_chromosome()</code> simulate a SNP data.frame on a chromosome by calling
 <code>place_mutations()</code> and <code>recombination()</code>.</p>
-<p><code>place_mutations()</code> generates a SNP matrix by randomly placing a fixed
+<p><code>place_mutations()</code> generates a SNP data.frame by randomly placing a fixed
 number of mutations on a given genealogy.
 It means that all the sites are perfectly linked with each other.</p>
     </div>

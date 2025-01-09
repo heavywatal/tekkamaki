@@ -75,10 +75,8 @@
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://conflicted.r-lib.org/" class="external-link">conflicted</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://heavywatal.github.io/tekkamaki/">tekkamaki</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## Error in get(paste0(generic, ".", class), envir = get_method_env()) : </span></span>
-<span><span class="co">##   object 'type_sum.accel' not found</span></span></code></pre>
 <p>Run simulation:</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">42</span><span class="op">)</span></span>
 <span><span class="va">result</span> <span class="op">=</span> <span class="fu"><a href="../reference/tekka.html">tekka</a></span><span class="op">(</span><span class="st">"-y80 -l3 --sa 10,10 --sj 10,10"</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 1 × 17</span></span></span>
@@ -89,9 +87,9 @@
 <span><span class="co">## <span style="color: #949494;">#   overdispersion &lt;dbl&gt;, recruitment &lt;dbl&gt;, sample_size_adult &lt;list&gt;,</span></span></span>
 <span><span class="co">## <span style="color: #949494;">#   sample_size_juvenile &lt;list&gt;, seed &lt;int&gt;, weight_for_age &lt;list&gt;,</span></span></span>
 <span><span class="co">## <span style="color: #949494;">#   years &lt;int&gt;, sample_family &lt;list&gt;, demography &lt;list&gt;</span></span></span></code></pre>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">sample_family</span> <span class="op">=</span> <span class="va">result</span><span class="op">$</span><span class="va">sample_family</span><span class="op">[[</span><span class="fl">1L</span><span class="op">]</span><span class="op">]</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 7,273 × 6</span></span></span>
+<pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 7,116 × 6</span></span></span>
 <span><span class="co">##       id father_id mother_id birth_year location capture_year</span></span>
 <span><span class="co">##    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span></span>
 <span><span class="co">## <span style="color: #BCBCBC;"> 1</span>   132         0         0         -<span style="color: #BB0000;">4</span>       <span style="color: #BB0000;">NA</span>           <span style="color: #BB0000;">NA</span></span></span>
@@ -104,42 +102,42 @@
 <span><span class="co">## <span style="color: #BCBCBC;"> 8</span>   139       132       132          0       <span style="color: #BB0000;">NA</span>           <span style="color: #BB0000;">NA</span></span></span>
 <span><span class="co">## <span style="color: #BCBCBC;"> 9</span>   140       132       132          0       <span style="color: #BB0000;">NA</span>           <span style="color: #BB0000;">NA</span></span></span>
 <span><span class="co">## <span style="color: #BCBCBC;">10</span>   138       139       140          4       <span style="color: #BB0000;">NA</span>           <span style="color: #BB0000;">NA</span></span></span>
-<span><span class="co">## <span style="color: #949494;"># ℹ 7,263 more rows</span></span></span></code></pre>
+<span><span class="co">## <span style="color: #949494;"># ℹ 7,106 more rows</span></span></span></code></pre>
 <p>Extract kinship with degree≤4:</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">kinship</span> <span class="op">=</span> <span class="fu"><a href="../reference/kinship.html">find_kinship</a></span><span class="op">(</span><span class="va">sample_family</span>, <span class="fl">4L</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 95 × 5</span></span></span>
+<pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 93 × 5</span></span></span>
 <span><span class="co">##     from    to path   degree label</span></span>
 <span><span class="co">##    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span></span></span>
 <span><span class="co">## <span style="color: #BCBCBC;"> 1</span>     2    10 1100_1      4 HC   </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 2</span>     3    43 100_1       3 HUN  </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 3</span>     3    86 1100_1      4 HC   </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 4</span>     3    90 1100_1      4 HC   </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 5</span>     5    92 1100_1      4 HC   </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 6</span>     5   112 1100_1      4 HC   </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 7</span>     6   103 1100_1      4 HC   </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 2</span>     2   102 110_1       3 HUN  </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 3</span>     3    44 10_1        2 HS   </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 4</span>     3    86 1100_1      4 HC   </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 5</span>     3    90 1100_1      4 HC   </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 6</span>     5    92 1100_1      4 HC   </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 7</span>     6    43 1100_1      4 HC   </span></span>
 <span><span class="co">## <span style="color: #BCBCBC;"> 8</span>     7    79 1100_1      4 HC   </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 9</span>     8    23 10_1        2 HS   </span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">10</span>     9    27 1100_1      4 HC   </span></span>
-<span><span class="co">## <span style="color: #949494;"># ℹ 85 more rows</span></span></span></code></pre>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<span><span class="co">## <span style="color: #BCBCBC;"> 9</span>     7   111 1100_1      4 HC   </span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">10</span>     7   113 1100_1      4 HC   </span></span>
+<span><span class="co">## <span style="color: #949494;"># ℹ 83 more rows</span></span></span></code></pre>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">kinship</span> <span class="op">|&gt;</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html" class="external-link">count</a></span><span class="op">(</span><span class="va">label</span>, .drop <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 11 × 2</span></span></span>
 <span><span class="co">##    label     n</span></span>
 <span><span class="co">##    <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 1</span> PO        4</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 2</span> HS       10</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 1</span> PO        1</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 2</span> HS       12</span></span>
 <span><span class="co">## <span style="color: #BCBCBC;"> 3</span> FS        0</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 4</span> GG        1</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 5</span> GGG       1</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 6</span> HUN      18</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 4</span> GG        2</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 5</span> GGG       0</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 6</span> HUN      19</span></span>
 <span><span class="co">## <span style="color: #BCBCBC;"> 7</span> UN        0</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 8</span> HC       53</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 8</span> HC       50</span></span>
 <span><span class="co">## <span style="color: #BCBCBC;"> 9</span> C         0</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">10</span> HGUN      8</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">10</span> HGUN      9</span></span>
 <span><span class="co">## <span style="color: #BCBCBC;">11</span> GUN       0</span></span></code></pre>
 <p>Bind other information to kinship data.frame:</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">sampled</span> <span class="op">=</span> <span class="va">sample_family</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">capture_year</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>age <span class="op">=</span> <span class="va">capture_year</span> <span class="op">-</span> <span class="va">birth_year</span><span class="op">)</span> <span class="op">|&gt;</span></span>
@@ -159,24 +157,24 @@
 <span><span class="co">## <span style="color: #BCBCBC;"> 9</span>     9        0           78     5</span></span>
 <span><span class="co">## <span style="color: #BCBCBC;">10</span>    10        0           78     4</span></span>
 <span><span class="co">## <span style="color: #949494;"># ℹ 110 more rows</span></span></span></code></pre>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">kinship</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">left_join</a></span><span class="op">(</span><span class="va">sampled</span>, by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>from <span class="op">=</span> <span class="st">"id"</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">left_join</a></span><span class="op">(</span><span class="va">sampled</span>, by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>to <span class="op">=</span> <span class="st">"id"</span><span class="op">)</span>, suffix <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"_from"</span>, <span class="st">"_to"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 95 × 11</span></span></span>
+<pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 93 × 11</span></span></span>
 <span><span class="co">##     from    to path   degree label location_from capture_year_from age_from</span></span>
 <span><span class="co">##    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;int&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span></span>
 <span><span class="co">## <span style="color: #BCBCBC;"> 1</span>     2    10 1100_1      4 HC                0                78        4</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 2</span>     3    43 100_1       3 HUN               0                78        4</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 3</span>     3    86 1100_1      4 HC                0                78        4</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 4</span>     3    90 1100_1      4 HC                0                78        4</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 5</span>     5    92 1100_1      4 HC                0                78        5</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 6</span>     5   112 1100_1      4 HC                0                78        5</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 7</span>     6   103 1100_1      4 HC                0                78        5</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 2</span>     2   102 110_1       3 HUN               0                78        4</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 3</span>     3    44 10_1        2 HS                0                78        4</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 4</span>     3    86 1100_1      4 HC                0                78        4</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 5</span>     3    90 1100_1      4 HC                0                78        4</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 6</span>     5    92 1100_1      4 HC                0                78        5</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 7</span>     6    43 1100_1      4 HC                0                78        5</span></span>
 <span><span class="co">## <span style="color: #BCBCBC;"> 8</span>     7    79 1100_1      4 HC                0                78        6</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;"> 9</span>     8    23 10_1        2 HS                0                78        5</span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">10</span>     9    27 1100_1      4 HC                0                78        5</span></span>
-<span><span class="co">## <span style="color: #949494;"># ℹ 85 more rows</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;"> 9</span>     7   111 1100_1      4 HC                0                78        6</span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">10</span>     7   113 1100_1      4 HC                0                78        6</span></span>
+<span><span class="co">## <span style="color: #949494;"># ℹ 83 more rows</span></span></span>
 <span><span class="co">## <span style="color: #949494;"># ℹ 3 more variables: location_to &lt;int&gt;, capture_year_to &lt;int&gt;, age_to &lt;int&gt;</span></span></span></code></pre>
   </main>
 </div>
