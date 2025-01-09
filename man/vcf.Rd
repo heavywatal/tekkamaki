@@ -19,7 +19,7 @@ as_vcf_gt(x, phased = TRUE)
 add_pos_id(x)
 }
 \arguments{
-\item{x}{SNP matrix or VCF data.frame.}
+\item{x}{SNP data.frame or VCF data.frame.}
 
 \item{phased}{A logical to switch separators: \code{|} vs \code{/}.}
 
@@ -30,5 +30,5 @@ add_pos_id(x)
 \item{file}{A path or connection.}
 }
 \description{
-\code{\link[=as_vcf]{as_vcf()}} converts a SNP matrix to a VCF-like data.frame.
+\code{\link[=as_vcf]{as_vcf()}} converts a SNP data.frame to a VCF-like data.frame.
 }

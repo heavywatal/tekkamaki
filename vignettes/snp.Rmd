@@ -59,7 +59,7 @@ some_file = stdout()
 write_vcf(snp, some_file)
 ```
 
-You can also generate a list of SNP matrices for chromosomes with recombination in parallel.
+You can also generate a list of SNP data.frame for chromosomes with recombination in parallel.
 Use `RNGkind("L'Ecuyer-CMRG")` and `set.seed()` for reproducibility:
 
 ```{r, snp-shortcut}

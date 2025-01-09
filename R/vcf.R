@@ -1,7 +1,7 @@
 #' Utilities for VCF format
 #'
-#' [as_vcf()] converts a SNP matrix to a VCF-like data.frame.
-#' @param x SNP matrix or VCF data.frame.
+#' [as_vcf()] converts a SNP data.frame to a VCF-like data.frame.
+#' @param x SNP data.frame or VCF data.frame.
 #' @param phased A logical to switch separators: `|` vs `/`.
 #' @param chrom Characters.
 #' @param pos Integers.
@@ -66,14 +66,13 @@ as_vcf_gt = function(x, phased = TRUE) UseMethod("as_vcf_gt", x)
 
 #' @export
 as_vcf_gt.default = function(x, phased = TRUE) {
-  stopifnot(is.matrix(x))
+  stopifnot(is.data.frame(x))
   sep = ifelse(phased, "|", "/")
   is_mother = stringr::str_ends(rownames(x), "-1")
   allele_mother = x[is_mother, , drop = FALSE]
   allele_father = x[!is_mother, , drop = FALSE]
-  x = paste(allele_mother, allele_father, sep = sep)
-  dim(x) = dim(allele_mother)
-  rownames(x) = stringr::str_remove(rownames(allele_mother), "-\\d$")
+  x = purrr::map2(allele_mother, allele_father, \(...) paste(..., sep = sep)) |>
+    as.data.frame(row.names = stringr::str_remove(rownames(allele_mother), "-\\d$"))
   x = as.data.frame(t(x))
   tibble::new_tibble(x, class = "vcf_gt")
 }

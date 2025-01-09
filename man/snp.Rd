@@ -30,15 +30,15 @@ If a named vector is given, the output is also named.}
 Functions to generate SNPs on given samples.
 }
 \details{
-\code{\link[=make_snp]{make_snp()}} generates a list of SNP matrices by calling
+\code{\link[=make_snp]{make_snp()}} generates a list of SNP data.frames by calling
 \code{\link[=make_snp_chromosome]{make_snp_chromosome()}} in parallel.
 Use \code{RNGkind("L'Ecuyer-CMRG")} and \code{set.seed()} to get reproducible results.
 The number of CPU cores used can be configured via \code{mc.cores} option.
 
-\code{\link[=make_snp_chromosome]{make_snp_chromosome()}} simulate a SNP matrix on a chromosome by calling
+\code{\link[=make_snp_chromosome]{make_snp_chromosome()}} simulate a SNP data.frame on a chromosome by calling
 \code{\link[=place_mutations]{place_mutations()}} and \code{recombination()}.
 
-\code{\link[=place_mutations]{place_mutations()}} generates a SNP matrix by randomly placing a fixed
+\code{\link[=place_mutations]{place_mutations()}} generates a SNP data.frame by randomly placing a fixed
 number of mutations on a given genealogy.
 It means that all the sites are perfectly linked with each other.
 }

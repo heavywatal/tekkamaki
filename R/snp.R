@@ -1,7 +1,7 @@
 #' Functions to generate SNPs on given samples.
 #'
 #' @details
-#' [make_snp()] generates a list of SNP matrices by calling
+#' [make_snp()] generates a list of SNP data.frames by calling
 #' [make_snp_chromosome()] in parallel.
 #' Use `RNGkind("L'Ecuyer-CMRG")` and `set.seed()` to get reproducible results.
 #' The number of CPU cores used can be configured via `mc.cores` option.
@@ -23,25 +23,25 @@ make_snp = function(samples, ss) {
 }
 
 #' @details
-#' [make_snp_chromosome()] simulate a SNP matrix on a chromosome by calling
+#' [make_snp_chromosome()] simulate a SNP data.frame on a chromosome by calling
 #' [place_mutations()] and `recombination()`.
 #' @rdname snp
 #' @export
 make_snp_chromosome = function(genealogy, segsites) {
-  snp_tbl = genealogy |> prepare_snp(segsites)
+  plan = genealogy |> prepare_snp(segsites)
   v_sam = igraphlite::igraph_to(genealogy)[edge_sampled(genealogy)]
-  matrices = snp_tbl |> purrr::pmap(\(segsites, vt) {
+  snp_tbls = plan |> purrr::pmap(\(segsites, vt) {
     x = place_mutations(genealogy, segsites, v_sam)
     if (length(vt) > 0L) {
       recombination(genealogy, vt)
     }
     x
   })
-  Reduce(cbind, matrices)
+  Reduce(cbind, snp_tbls)
 }
 
 #' @details
-#' [place_mutations()] generates a SNP matrix by randomly placing a fixed
+#' [place_mutations()] generates a SNP data.frame by randomly placing a fixed
 #' number of mutations on a given genealogy.
 #' It means that all the sites are perfectly linked with each other.
 #' @param segsites The number of segregating sites on a segment.
@@ -59,11 +59,9 @@ place_mutations = function(genealogy, segsites, v_sampled = NULL) {
   v_up = igraphlite::upstream_vertices(genealogy, v_sampled)
   origins = sample(v_up, segsites, replace = TRUE)
   mutants = igraphlite::neighborhood(genealogy, origins, order = 1073741824L, mode = 1L)
-  res = lapply(mutants, \(.x) v_sampled %in% .x) |>
-    simplify2array(higher = FALSE)
-  mode(res) = "integer"
-  rownames(res) = igraphlite::Vnames(genealogy)[v_sampled]
-  res
+  lapply(mutants, \(.x) as.integer(v_sampled %in% .x)) |>
+    stats::setNames(seq_len(segsites)) |>
+    as.data.frame(row.names = igraphlite::Vnames(genealogy)[v_sampled])
 }
 
 prepare_snp = function(genealogy, segsites) {
