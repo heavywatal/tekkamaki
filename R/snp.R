@@ -56,7 +56,8 @@ place_mutations = function(genealogy, segsites, v_sampled = NULL) {
   if (is.null(v_sampled)) {
     v_sampled = v_to[edge_sampled(genealogy)]
   }
-  v_up = igraphlite::upstream_vertices(genealogy, v_sampled)
+  annotate_sampled(genealogy)
+  v_up = v_to[!is.na(igraphlite::Eattr(genealogy)$sampled)]
   origins = sample(v_up, segsites, replace = TRUE)
   mutants = igraphlite::neighborhood(genealogy, origins, order = 1073741824L, mode = 1L)
   lapply(mutants, \(.x) as.integer(v_sampled %in% .x)) |>
