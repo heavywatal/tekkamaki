@@ -37,7 +37,7 @@ make_snp_chromosome = function(genealogy, segsites) {
     }
     x
   })
-  Reduce(cbind, snp_tbls)
+  purrr::list_cbind(snp_tbls, name_repair = "minimal")
 }
 
 #' @details
@@ -60,9 +60,9 @@ place_mutations = function(genealogy, segsites, v_sampled = NULL) {
   v_up = v_to[!is.na(igraphlite::Eattr(genealogy)$sampled)]
   origins = sample(v_up, segsites, replace = TRUE)
   mutants = igraphlite::neighborhood(genealogy, origins, order = 1073741824L, mode = 1L)
+  vn = igraphlite::Vnames(genealogy)[v_sampled]
   lapply(mutants, \(.x) as.integer(v_sampled %in% .x)) |>
-    stats::setNames(seq_len(segsites)) |>
-    as.data.frame(row.names = igraphlite::Vnames(genealogy)[v_sampled])
+    as.data.frame(row.names = vn, check.names = FALSE, fix.empty.names = FALSE)
 }
 
 prepare_snp = function(genealogy, segsites) {
