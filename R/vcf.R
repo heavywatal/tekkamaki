@@ -68,13 +68,14 @@ as_vcf_gt = function(x, phased = TRUE) UseMethod("as_vcf_gt", x)
 as_vcf_gt.default = function(x, phased = TRUE) {
   stopifnot(is.data.frame(x))
   sep = ifelse(phased, "|", "/")
+  .paste = \(.x, .y) paste(.x, .y, sep = sep, collapse = "\t")
   is_mother = stringr::str_ends(rownames(x), "-1")
   allele_mother = x[is_mother, , drop = FALSE]
   allele_father = x[!is_mother, , drop = FALSE]
-  x = purrr::map2(allele_mother, allele_father, \(...) paste(..., sep = sep)) |>
-    as.data.frame(row.names = stringr::str_remove(rownames(allele_mother), "-\\d$"))
-  x = as.data.frame(t(x))
-  tibble::new_tibble(x, class = "vcf_gt")
+  res = data.frame(x = purrr::map2_vec(allele_mother, allele_father, .paste))
+  inds = stringr::str_remove(rownames(allele_mother), "-\\d$")
+  names(res) = paste0(inds, collapse = "\t")
+  tibble::new_tibble(res, class = "vcf_gt")
 }
 
 #' @export

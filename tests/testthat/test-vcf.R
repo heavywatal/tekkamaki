@@ -7,21 +7,23 @@ test_that("vcf works", {
   segsites = sum(ss)
   snp = make_snp(samples, ss)
   vcf_gt = as_vcf_gt(Reduce(cbind, snp))
-  expect_identical(dim(vcf_gt), c(segsites, sample_size))
+  expect_identical(dim(vcf_gt), c(segsites, 1L))
   expect_identical(as_vcf_gt(vcf_gt), vcf_gt)
   vcf = as_vcf(snp) |>
     add_pos_id() |>
     expect_s3_class("data.frame")
-  expect_identical(dim(vcf), c(segsites, 9L + sample_size))
+  expect_identical(dim(vcf), c(segsites, 9L + 1L))
   expect_identical(as_vcf_gt(vcf), vcf_gt)
   file = tempfile(fileext = ".vcf")
   write_vcf(vcf, file)
   read_vcf(file) |>
-    expect_identical(vcf)
+    readr::format_tsv(quote = "none") |>
+    expect_identical(readr::format_tsv(vcf, quote = "none"))
   write_vcf(snp, file)
   read_vcf(file) |>
     as_vcf_gt() |>
-    expect_identical(vcf_gt)
+    readr::format_tsv(quote = "none") |>
+    expect_identical(readr::format_tsv(vcf_gt, quote = "none"))
   lines = readr::read_lines(file)
   expect_true(stringr::str_starts(lines[1L], "##fileformat=VCF"))
   expect_true(stringr::str_starts(lines[2L], "#CHROM\tPOS\tID"))
