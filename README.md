@@ -14,6 +14,14 @@ R interface to [tekka](https://github.com/heavywatal/tekka).
 ## Installation
 
 ```r
-# install.packages("devtools")
-devtools::install_github("heavywatal/tekkamaki")
+# install.packages("pak")
+pak::pkg_install("heavywatal/tekkamaki")
+```
+
+The code above tries to find and use an installed `tekka` in your system.
+If it is too old or not found, the latest version will be installed.
+
+To use a bleeding edge or some specific revision, set the environment variable `TEKKA_GIT_TAG` before installation:
+```r
+Sys.setenv(TEKKA_GIT_TAG = "HEAD")
 ```
