@@ -19,9 +19,18 @@ pak::pkg_install("heavywatal/tekkamaki")
 ```
 
 The code above tries to find and use an installed `tekka` in your system.
-If it is too old or not found, the latest version will be installed.
+If it is too old or not found, [the latest version](https://github.com/heavywatal/tekka/tags) will be installed.
 
-To use a bleeding edge or some specific revision, set the environment variable `TEKKA_GIT_TAG` before installation:
+To use a bleeding edge (`HEAD`) or some specific revision, set the environment variable `TEKKA_GIT_TAG` before installation:
 ```r
 Sys.setenv(TEKKA_GIT_TAG = "HEAD")
 ```
+
+The installation of `tekka` and `tekkamaki` can be checked with the following commands:
+```r
+tekkamaki::tekka_path()
+tekkamaki::tekka_version()
+sessioninfo::session_info("tekkamaki")
+```
+
+Please include these information when you report issues.
