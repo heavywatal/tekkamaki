@@ -9,5 +9,5 @@ tekka_path = function() {
 #' @rdname path
 #' @export
 tekka_version = function() {
-  system2(tekka_path(), "--version", stdout = TRUE, stderr = FALSE)
+  tekka("--version")
 }

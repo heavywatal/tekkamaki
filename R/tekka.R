@@ -7,9 +7,12 @@ tekka = function(args = character(0L), cache = FALSE) {
   if (length(args) == 1L) {
     args = stringr::str_split_1(args, "\\s+")
   }
-  if (any(c("-h", "--help", "--version", "--default") %in% args)) {
-    msg = system2(tekka_path(), args, stdout = TRUE, stderr = TRUE) |> paste0("\n")
-    return(invisible(message(msg, appendLF = FALSE)))
+  if ("--version" %in% args) {
+    return(system2(tekka_path(), "--version", stdout = TRUE))
+  }
+  if (any(c("-h", "--help", "--default") %in% args)) {
+    msg = system2(tekka_path(), args, stdout = TRUE)
+    return(invisible(message(paste0(msg, collapse = "\n"))))
   }
   args = append_seed(args)
   cache_dir = cache_name(args)
@@ -17,7 +20,8 @@ tekka = function(args = character(0L), cache = FALSE) {
     cache_dir = file.path(tempdir(), cache_dir)
   }
   if (!dir.exists(cache_dir)) {
-    system2(tekka_path(), c(args, "-o", cache_dir))
+    ret = system2(tekka_path(), c(args, "-o", cache_dir))
+    stopifnot(ret == 0L)
   }
   .read_result(cache_dir)
 }
