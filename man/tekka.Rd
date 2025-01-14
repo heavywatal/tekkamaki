@@ -7,10 +7,20 @@
 tekka(args = character(0L), cache = FALSE)
 }
 \arguments{
-\item{args}{command line arguments as a string vector.}
+\item{args}{Command line arguments as a string vector.
+See \href{https://heavywatal.github.io/tekka/group__parameters.html}{\code{tekka} manual}
+and \code{tekka("--help")} for available options.
+Note that a random \code{--seed} is appended if not given.
+Use \code{set.seed()} or \code{--seed} explicitly for reproducibility and caching.}
 
-\item{cache}{use cache if TRUE.}
+\item{cache}{Parent directory for tekka output.
+\code{\link[=tempdir]{tempdir()}} is used by default (\code{FALSE}),
+which is discarded at the end of an R session.
+\code{TRUE} is equivalent to "." (current directory).}
 }
 \description{
-Run C++ simulation.
+A result is first written to a directory in \code{cache},
+and then read into a data.frame.
+If a previous result with exactly the same arguments is found in \code{cache},
+it is read without calling \code{tekka}.
 }

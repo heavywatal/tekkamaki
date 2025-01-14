@@ -1,6 +1,18 @@
 #' Run C++ simulation.
-#' @param args command line arguments as a string vector.
-#' @param cache use cache if TRUE.
+#'
+#' A result is first written to a directory in `cache`,
+#' and then read into a data.frame.
+#' If a previous result with exactly the same arguments is found in `cache`,
+#' it is read without calling `tekka`.
+#' @param args Command line arguments as a string vector.
+#' See [`tekka` manual](https://heavywatal.github.io/tekka/group__parameters.html)
+#' and `tekka("--help")` for available options.
+#' Note that a random `--seed` is appended if not given.
+#' Use `set.seed()` or `--seed` explicitly for reproducibility and caching.
+#' @param cache Parent directory for tekka output.
+#' [tempdir()] is used by default (`FALSE`),
+#' which is discarded at the end of an R session.
+#' `TRUE` is equivalent to "." (current directory).
 #' @rdname tekka
 #' @export
 tekka = function(args = character(0L), cache = FALSE) {
@@ -15,15 +27,17 @@ tekka = function(args = character(0L), cache = FALSE) {
     return(invisible(message(paste0(msg, collapse = "\n"))))
   }
   args = append_seed(args)
-  cache_dir = cache_name(args)
-  if (!cache) {
-    cache_dir = file.path(tempdir(), cache_dir)
+  if (isFALSE(cache)) {
+    cache = tempdir()
+  } else if (isTRUE(cache)) {
+    cache = "."
   }
-  if (!dir.exists(cache_dir)) {
-    ret = system2(tekka_path(), c(args, "-o", cache_dir))
+  outdir = file.path(cache, cache_name(args))
+  if (!dir.exists(outdir)) {
+    ret = system2(tekka_path(), c(args, "-o", outdir))
     stopifnot(ret == 0L)
   }
-  .read_result(cache_dir)
+  .read_result(outdir)
 }
 
 cache_name = function(args) {
