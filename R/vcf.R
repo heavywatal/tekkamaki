@@ -47,8 +47,9 @@ write_vcf = function(x, file) {
   x = as_vcf(x) |>
     dplyr::rename(`#CHROM` = "CHROM")
   meta = "##fileformat=VCFv4.5"
-  readr::write_lines(meta, file)
-  readr::write_tsv(x, file, na = ".", append = TRUE, col_names = TRUE)
+  colnames = paste0(c(names(x)[seq_len(9L)], attr(x, "gt_names")), collapse = "\t")
+  readr::write_lines(c(meta, colnames), file)
+  readr::write_tsv(x, file, na = ".", append = TRUE, col_names = FALSE)
 }
 
 #' @rdname vcf
@@ -57,6 +58,7 @@ read_vcf = function(file) {
   .cols = readr::cols(POS = "i", .default = "c")
   readr::read_tsv(file, na = ".", comment = "##", col_types = .cols)[] |>
     dplyr::rename(CHROM = "#CHROM") |>
+    unite_gt() |>
     tibble::new_tibble(class = "vcf")
 }
 
@@ -72,9 +74,8 @@ as_vcf_gt.default = function(x, phased = TRUE) {
   is_mother = stringr::str_ends(rownames(x), "-1")
   allele_mother = x[is_mother, , drop = FALSE]
   allele_father = x[!is_mother, , drop = FALSE]
-  res = data.frame(x = purrr::map2_vec(allele_mother, allele_father, .paste))
-  inds = stringr::str_remove(rownames(allele_mother), "-\\d$")
-  names(res) = paste0(inds, collapse = "\t")
+  res = data.frame(gt = purrr::map2_vec(allele_mother, allele_father, .paste))
+  attr(res, "gt_names") = stringr::str_remove(rownames(allele_mother), "-\\d$")
   tibble::new_tibble(res, class = "vcf_gt")
 }
 
@@ -95,4 +96,15 @@ add_pos_id = function(x) {
   x |>
     dplyr::mutate(POS = dplyr::row_number(), .by = "CHROM") |>
     dplyr::mutate(ID = paste(.data$CHROM, .data$POS, sep = "-"))
+}
+
+unite_gt = function(x) {
+  gt_names = names(x)[-seq_len(9L)]
+  x = tidyr::unite(x, "gt", !seq_len(9L), sep = "\t")
+  attr(x, "gt_names") = gt_names
+  x
+}
+
+separate_gt = function(x) {
+  tidyr::separate_wider_delim(x, "gt", "\t", names = attr(x, "gt_names"))
 }

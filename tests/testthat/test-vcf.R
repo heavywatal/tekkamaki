@@ -14,16 +14,17 @@ test_that("vcf works", {
     expect_s3_class("data.frame")
   expect_identical(dim(vcf), c(segsites, 9L + 1L))
   expect_identical(as_vcf_gt(vcf), vcf_gt)
+  vcf |> separate_gt() |> unite_gt() |>
+    tibble::new_tibble(class = "vcf") |>
+    expect_identical(vcf)
   file = tempfile(fileext = ".vcf")
   write_vcf(vcf, file)
   read_vcf(file) |>
-    readr::format_tsv(quote = "none") |>
-    expect_identical(readr::format_tsv(vcf, quote = "none"))
+    expect_identical(vcf)
   write_vcf(snp, file)
   read_vcf(file) |>
     as_vcf_gt() |>
-    readr::format_tsv(quote = "none") |>
-    expect_identical(readr::format_tsv(vcf_gt, quote = "none"))
+    expect_identical(vcf_gt)
   lines = readr::read_lines(file)
   expect_true(stringr::str_starts(lines[1L], "##fileformat=VCF"))
   expect_true(stringr::str_starts(lines[2L], "#CHROM\tPOS\tID"))
