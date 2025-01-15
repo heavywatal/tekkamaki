@@ -14,8 +14,8 @@ R interface to [tekka](https://github.com/heavywatal/tekka).
 ## Installation
 
 ```r
-# install.packages("pak")
-pak::pkg_install("heavywatal/tekkamaki")
+# install.packages("devtools")
+devtools::install_github("heavywatal/tekkamaki")
 ```
 
 The code above tries to find and use an installed `tekka` in your system.
