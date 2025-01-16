@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.15)
-project(tekkamaki
+project($ENV{R_PACKAGE_NAME}
   VERSION 0.8.0
   LANGUAGES CXX)
 
@@ -9,23 +9,20 @@ include(GNUInstallDirs)
 set(CMAKE_VERBOSE_MAKEFILE ON)
 cmake_print_variables(CMAKE_CURRENT_SOURCE_DIR)
 
-set(TEKKA_GIT_TAG $ENV{TEKKA_GIT_TAG})
-cmake_print_variables(TEKKA_GIT_TAG)
-if(NOT TEKKA_GIT_TAG)
+set(tag "$ENV{TEKKA_GIT_TAG}")
+if(NOT tag)
+  set(tag "v${PROJECT_VERSION}")
   find_package(tekka ${PROJECT_VERSION} QUIET)
   cmake_print_variables(tekka_FOUND tekka_DIR)
 endif()
 if(tekka_FOUND)
-  set(CMAKE_INSTALL_PREFIX "${tekka_DIR}/../../..")
-  cmake_print_variables(CMAKE_INSTALL_PREFIX)
-  set(PARAMETERS_JSON "${CMAKE_INSTALL_PREFIX}/share/tekka/parameters.json")
-  install(CODE "message(STATUS ${tekka_DIR})") # to make target 'install'
+  set(exec_INSTALL_PREFIX "${tekka_DIR}/../../..")
+  set(PARAMETERS_JSON "${exec_INSTALL_PREFIX}/share/tekka/parameters.json")
 else()
-  if(DEFINED ENV{FETCHCONTENT_SOURCE_DIR_TEKKA})
-    set(FETCHCONTENT_SOURCE_DIR_TEKKA $ENV{FETCHCONTENT_SOURCE_DIR_TEKKA})
+  set(exec_INSTALL_PREFIX "$ENV{R_LIBRARY_DIR}/${PROJECT_NAME}") # load_all()
+  set(FETCHCONTENT_SOURCE_DIR_TEKKA "$ENV{FETCHCONTENT_SOURCE_DIR_TEKKA}")
+  if(FETCHCONTENT_SOURCE_DIR_TEKKA AND NOT DEFINED ENV{TEKKA_GIT_TAG})
     set(tag "HEAD")
-  else()
-    set(tag "v${PROJECT_VERSION}")
   endif()
   cmake_print_variables(FETCHCONTENT_SOURCE_DIR_TEKKA tag)
   set(FETCHCONTENT_QUIET OFF)
@@ -44,9 +41,13 @@ else()
   set(PARAMETERS_JSON "${tekka_SOURCE_DIR}/util/parameters.json")
 endif()
 
-set(BINDIR "${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_BINDIR}")
-cmake_print_variables(BINDIR)
-get_filename_component(R_PACKAGE_SOURCE ${CMAKE_CURRENT_SOURCE_DIR} DIRECTORY)
-file(WRITE ${R_PACKAGE_SOURCE}/inst/path "${BINDIR}/tekka")
+set(exec_path "${exec_INSTALL_PREFIX}/${CMAKE_INSTALL_BINDIR}/tekka")
+set(exec_path_file "${CMAKE_CURRENT_BINARY_DIR}/path")
+file(WRITE "${exec_path_file}" "${exec_path}")
+cmake_print_variables(exec_path)
 cmake_print_variables(PARAMETERS_JSON)
-install(FILES ${PARAMETERS_JSON} DESTINATION "${R_PACKAGE_SOURCE}/inst/")
+install(FILES
+  "${exec_path_file}"
+  "${PARAMETERS_JSON}"
+  DESTINATION "${CMAKE_CURRENT_SOURCE_DIR}/../inst"
+)
