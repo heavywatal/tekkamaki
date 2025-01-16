@@ -5,18 +5,25 @@
 #include "cpp11/declarations.hpp"
 #include <R_ext/Visibility.h>
 
-// code.cpp
-void zzz_do_nothing();
-extern "C" SEXP _tekkamaki_zzz_do_nothing() {
+// config.cpp
+cpp11::strings tekka_path_config();
+extern "C" SEXP _tekkamaki_tekka_path_config() {
   BEGIN_CPP11
-    zzz_do_nothing();
-    return R_NilValue;
+    return cpp11::as_sexp(tekka_path_config());
+  END_CPP11
+}
+// config.cpp
+cpp11::strings default_parameters_json_text();
+extern "C" SEXP _tekkamaki_default_parameters_json_text() {
+  BEGIN_CPP11
+    return cpp11::as_sexp(default_parameters_json_text());
   END_CPP11
 }
 
 extern "C" {
 static const R_CallMethodDef CallEntries[] = {
-    {"_tekkamaki_zzz_do_nothing", (DL_FUNC) &_tekkamaki_zzz_do_nothing, 0},
+    {"_tekkamaki_default_parameters_json_text", (DL_FUNC) &_tekkamaki_default_parameters_json_text, 0},
+    {"_tekkamaki_tekka_path_config",            (DL_FUNC) &_tekkamaki_tekka_path_config,            0},
     {NULL, NULL, 0}
 };
 }

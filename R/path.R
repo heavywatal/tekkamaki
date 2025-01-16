@@ -3,17 +3,12 @@
 #' @rdname path
 #' @export
 tekka_path = function() {
-  x = tekka_path_file()
+  x = tekka_path_config()
   if (!file.exists(x)) {
     x = tekka_path_exec()
     if (!file.exists(x)) x = "tekka"
   }
   x
-}
-
-tekka_path_file = function() {
-  file = system.file("path", package = "tekkamaki")
-  scan(file, what = character(0), quiet = TRUE)
 }
 
 tekka_path_exec = function() {

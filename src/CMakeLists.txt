@@ -41,13 +41,8 @@ else()
   set(PARAMETERS_JSON "${tekka_SOURCE_DIR}/util/parameters.json")
 endif()
 
+set(R_PACKAGE_SOURCE "${CMAKE_CURRENT_SOURCE_DIR}/..")
 set(exec_path "${exec_INSTALL_PREFIX}/${CMAKE_INSTALL_BINDIR}/tekka")
-set(exec_path_file "${CMAKE_CURRENT_BINARY_DIR}/path")
-file(WRITE "${exec_path_file}" "${exec_path}")
 cmake_print_variables(exec_path)
-cmake_print_variables(PARAMETERS_JSON)
-install(FILES
-  "${exec_path_file}"
-  "${PARAMETERS_JSON}"
-  DESTINATION "${CMAKE_CURRENT_SOURCE_DIR}/../inst"
-)
+file(READ "${PARAMETERS_JSON}" default_parameters_json_text)
+configure_file("config.cpp.in" "${R_PACKAGE_SOURCE}/src/config.cpp" @ONLY)

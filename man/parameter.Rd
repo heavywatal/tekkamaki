@@ -4,12 +4,10 @@
 \alias{plot_parameters_json}
 \title{Visualize parameter json file}
 \usage{
-plot_parameters_json(
-  file = system.file("parameters.json", package = "tekkamaki")
-)
+plot_parameters_json(obj = default_parameters_json())
 }
 \arguments{
-\item{file}{path to a json file}
+\item{obj}{jsonlite object}
 }
 \description{
 Visualize parameter json file
