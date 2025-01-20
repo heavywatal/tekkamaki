@@ -6,7 +6,7 @@
 \alias{read_pop}
 \title{POP format}
 \usage{
-as_pop(.tbl, min_adult_age = 5L)
+as_pop(.tbl, min_adult_age = 4L)
 
 write_pop(x, path = "pop.txt")
 

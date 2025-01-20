@@ -6,12 +6,22 @@
 #' @param min_adult_age integer
 #' @rdname pop
 #' @export
-as_pop = function(.tbl, min_adult_age = 5L) {
-  .tbl = .tbl |>
-    pairwise_parent_offspring(min_adult_age) |>
-    summarize_pop()
-  class(.tbl) = c(class(.tbl), "pop")
-  .tbl
+as_pop = function(.tbl, min_adult_age = 4L) {
+  captured = dplyr::filter(.tbl, !is.na(.data$capture_year))
+  adults = captured |>
+    dplyr::mutate(capture_age = .data$capture_year - .data$birth_year) |>
+    dplyr::filter(.data$capture_age >= min_adult_age) |>
+    dplyr::select("id", "capture_year", "capture_age", "location")
+  juveniles = captured |>
+    dplyr::filter(!.data$id %in% adults$id) |>
+    dplyr::select("id", "mother_id", "father_id", cohort = "birth_year")
+  comps = count_comps(adults, juveniles)
+  pop = count_pops(adults, juveniles) |>
+    dplyr::right_join(comps, by = c("cohort", "capture_year", "capture_age", "location")) |>
+    tidyr::replace_na(list(pops = 0L)) |>
+    bloat_pop()
+  class(pop) = c(class(pop), "pop")
+  pop
 }
 
 #' @details
@@ -37,29 +47,34 @@ read_pop = function(path) {
   x
 }
 
-pairwise_parent_offspring = function(.tbl, min_adult_age) {
-  .tbl = dplyr::filter(.tbl, !is.na(.data$capture_year))
-  adults = .tbl |>
-    dplyr::filter(.data$capture_year - .data$birth_year >= min_adult_age) |>
-    dplyr::select("id", "capture_year", adult_birth_year = "birth_year", "location")
-  juveniles = .tbl |>
-    dplyr::select("id", cohort = "birth_year", "mother_id", "father_id")
-  tidyr::crossing(id = .tbl$id, adult_id = adults$id) |>
-    dplyr::filter(.data$id > .data$adult_id) |>
-    dplyr::left_join(juveniles, by = "id") |>
-    dplyr::left_join(adults, by = c(adult_id = "id")) |>
-    dplyr::filter(.data$cohort - .data$adult_birth_year >= min_adult_age) |>
-    dplyr::mutate(is_pop = (.data$adult_id == .data$mother_id | .data$adult_id == .data$father_id))
+count_pops = function(adults, juveniles) {
+  parents = adults |>
+    dplyr::filter(.data$id %in% juveniles$father_id | .data$id %in% juveniles$mother_id)
+  juveniles_with_mother = juveniles |>
+    dplyr::select(id = "mother_id", "cohort") |>
+    dplyr::filter(.data$id %in% parents$id)
+  juveniles_with_father = juveniles |>
+    dplyr::select(id = "father_id", "cohort") |>
+    dplyr::filter(.data$id %in% parents$id)
+  dplyr::bind_rows(juveniles_with_mother, juveniles_with_father) |>
+    dplyr::left_join(parents, by = "id") |>
+    dplyr::count(.data$cohort, .data$capture_year, .data$capture_age, .data$location, name = "pops")
 }
 
-summarize_pop = function(.tbl) {
-  n = dplyr::n
-  .tbl |>
-    dplyr::mutate(capture_age = .data$capture_year - .data$adult_birth_year) |>
-    dplyr::summarize(
-      pops = sum(!!as.name("is_pop")),
-      comps = n(),
-      .by = c("cohort", "capture_year", "capture_age", "location")
-    ) |>
+count_comps = function(adults, juveniles) {
+  cnt_adults = adults |>
+    dplyr::count(.data$capture_year, .data$capture_age, .data$location)
+  cnt_juv = juveniles |>
+    dplyr::count(.data$cohort)
+  cnt_juv |>
+    dplyr::mutate(data = lapply(.data$n, \(.x) {
+      dplyr::mutate(cnt_adults, n = .data$n * .x)
+    }), n = NULL) |>
+    tidyr::unnest("data") |>
+    dplyr::rename(comps = "n")
+}
+
+bloat_pop = function(pop) {
+  pop |>
     tidyr::complete(.data$cohort, .data$capture_year, .data$capture_age, fill = list(pops = 0L, comps = 0L))
 }
