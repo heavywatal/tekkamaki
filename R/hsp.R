@@ -6,11 +6,15 @@
 #' @rdname hsp
 #' @export
 as_hsp = function(.tbl) {
-  .tbl = .tbl |>
-    pairwise_half_sibling() |>
-    summarize_hsp()
-  class(.tbl) = c(class(.tbl), "hsp")
-  .tbl
+  captured = dplyr::filter(.tbl, !is.na(.data$capture_year)) |>
+    dplyr::rename(cohort = "birth_year") |>
+    dplyr::select(!"capture_year")
+  comps = count_hsp_comps(captured)
+  count_hsp(captured) |>
+    dplyr::right_join(comps, by = c("cohort_i", "cohort_j", "location_i", "location_j")) |>
+    dplyr::relocate("comps", .before = "hsps") |>
+    tidyr::replace_na(list(hsps = 0L)) |>
+    tibble::new_tibble(class = "hsp")
 }
 
 #' @details
@@ -39,37 +43,55 @@ read_hsp = function(path) {
     col_names = c("cohort_i", "cohort_j", "location_i", "location_j", "comps", "hsps"),
     col_types = "iiiiii", skip = 5L, show_col_types = FALSE
   )
-  class(x) = c(class(x), "hsp")
+  class(x) = c("hsp", class(x))
   x
 }
 
-pairwise_half_sibling = function(.tbl) {
-  .tbl = dplyr::filter(.tbl, !is.na(.data$capture_year))
-  tsv_i = .tbl |> dplyr::select(
-    "id",
-    mother_i = "mother_id",
-    father_i = "father_id",
-    cohort_i = "birth_year",
-    location_i = "location"
-  )
-  tsv_j = .tbl |> dplyr::select(
-    "id",
-    mother_j = "mother_id",
-    father_j = "father_id",
-    cohort_j = "birth_year",
-    location_j = "location"
-  )
-  tidyr::crossing(id_i = .tbl$id, id_j = .tbl$id) |>
-    dplyr::filter(.data$id_i < .data$id_j) |>
-    dplyr::left_join(tsv_i, by = c(id_i = "id")) |>
-    dplyr::left_join(tsv_j, by = c(id_j = "id")) |>
-    dplyr::mutate(is_hsp = (.data$mother_i == .data$mother_j) | (.data$father_i == .data$father_j))
+count_hsp = function(captured) {
+  hs_father = captured |>
+    dplyr::filter(duplicated(.data$father_id) | duplicated(.data$father_id, fromLast = TRUE)) |>
+    dplyr::rename(parent_id = "father_id") |>
+    dplyr::select(!"mother_id")
+  hs_mother = captured |>
+    dplyr::filter(duplicated(.data$mother_id) | duplicated(.data$mother_id, fromLast = TRUE)) |>
+    dplyr::rename(parent_id = "mother_id") |>
+    dplyr::select(!"father_id")
+  dplyr::bind_rows(hs_father, hs_mother) |>
+    dplyr::arrange(.data$cohort, .data$location) |>
+    dplyr::group_by(.data$parent_id) |>
+    dplyr::group_modify(\(x, ...) {
+      fun = \(v) {
+        data.frame(
+          cohort_i = x$cohort[v[1L]],
+          cohort_j = x$cohort[v[2L]],
+          location_i = x$location[v[1L]],
+          location_j = x$location[v[2L]]
+        )
+      }
+      utils::combn(seq_len(nrow(x)), 2L, fun, simplify = FALSE) |> purrr::list_rbind()
+    }) |>
+    dplyr::ungroup() |>
+    dplyr::count(.data$cohort_i, .data$cohort_j, .data$location_i, .data$location_j, name = "hsps")
 }
 
-summarize_hsp = function(.tbl) {
-  .tbl |> dplyr::summarize(
-    comps = dplyr::n(),
-    hsps = sum(.data$is_hsp),
-    .by = c("cohort_i", "cohort_j", "location_i", "location_j")
-  )
+count_hsp_comps = function(captured) {
+  cnt = captured |>
+    dplyr::count(.data$cohort, .data$location) |>
+    tidyr::unite("cohloc", "cohort", "location") |>
+    dplyr::mutate(cohloc = ordered(.data$cohloc, levels = unique(.data$cohloc)))
+  tibble::tibble(
+    df_i = cnt |> dplyr::rename_with(\(x) paste0(x, "_i")) |> list(),
+    df_j = cnt |> dplyr::rename_with(\(x) paste0(x, "_j")) |> list()
+  ) |>
+    tidyr::unnest("df_i") |>
+    tidyr::unnest("df_j") |>
+    dplyr::filter(.data$cohloc_i <= .data$cohloc_j) |>
+    dplyr::mutate(comps = ifelse(
+      .data$cohloc_i == .data$cohloc_j,
+      .data$n_i * (.data$n_i - 1L) %/% 2L,
+      .data$n_i * .data$n_j
+    )) |>
+    dplyr::select(!c("n_i", "n_j")) |>
+    tidyr::separate("cohloc_i", c("cohort_i", "location_i"), convert = TRUE) |>
+    tidyr::separate("cohloc_j", c("cohort_j", "location_j"), convert = TRUE)
 }

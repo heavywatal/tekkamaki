@@ -17,7 +17,7 @@ test_that("Graph functions works", {
 
 test_that("POP and HSP work", {
   set.seed(42L)
-  result = tekka("-y40 -l2 --sa 2,2 --sj 2,2")
+  result = tekka("-y40 -l4 --sa 2,2 --sj 2,2")
   samples = result$sample_family[[1L]]
   expect_silent({
     hsp = as_hsp(samples)

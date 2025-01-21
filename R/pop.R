@@ -15,12 +15,12 @@ as_pop = function(.tbl, min_adult_age = 4L) {
   juveniles = captured |>
     dplyr::filter(!.data$id %in% adults$id) |>
     dplyr::select("id", "mother_id", "father_id", cohort = "birth_year")
-  comps = count_comps(adults, juveniles)
+  comps = count_pop_comps(adults, juveniles)
   pop = count_pops(adults, juveniles) |>
     dplyr::right_join(comps, by = c("cohort", "capture_year", "capture_age", "location")) |>
     tidyr::replace_na(list(pops = 0L)) |>
     bloat_pop()
-  class(pop) = c(class(pop), "pop")
+  class(pop) = c("pop", class(pop))
   pop
 }
 
@@ -43,7 +43,7 @@ read_pop = function(path) {
     col_names = c("cohort", "capture_year", "capture_age", "location", "pops", "comps"),
     col_types = "iiiiii", comment = "#", show_col_types = FALSE
   )
-  class(x) = c(class(x), "pop")
+  class(x) = c("pop", class(x))
   x
 }
 
@@ -61,7 +61,7 @@ count_pops = function(adults, juveniles) {
     dplyr::count(.data$cohort, .data$capture_year, .data$capture_age, .data$location, name = "pops")
 }
 
-count_comps = function(adults, juveniles) {
+count_pop_comps = function(adults, juveniles) {
   cnt_adults = adults |>
     dplyr::count(.data$capture_year, .data$capture_age, .data$location)
   cnt_juv = juveniles |>
