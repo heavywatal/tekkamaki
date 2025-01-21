@@ -6,14 +6,14 @@
 \alias{read_pop}
 \title{POP format}
 \usage{
-as_pop(.tbl, min_adult_age = 4L)
+as_pop(samples, min_adult_age = 4L)
 
 write_pop(x, path = "pop.txt")
 
 read_pop(path)
 }
 \arguments{
-\item{.tbl}{sample_family}
+\item{samples}{sample_family}
 
 \item{min_adult_age}{integer}
 

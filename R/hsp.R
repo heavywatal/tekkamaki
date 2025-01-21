@@ -2,11 +2,11 @@
 #'
 #' @details
 #' `as_hsp` converts a result data frame to HSP format.
-#' @param .tbl sample_family
+#' @param samples sample_family
 #' @rdname hsp
 #' @export
-as_hsp = function(.tbl) {
-  captured = dplyr::filter(.tbl, !is.na(.data$capture_year)) |>
+as_hsp = function(samples) {
+  captured = dplyr::filter(samples, !is.na(.data$capture_year)) |>
     dplyr::rename(cohort = "birth_year") |>
     dplyr::select(!"capture_year")
   comps = count_hsp_comps(captured)

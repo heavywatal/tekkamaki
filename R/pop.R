@@ -2,21 +2,20 @@
 #'
 #' @details
 #' `as_pop` converts a result data frame to POP format.
-#' @param .tbl sample_family
+#' @param samples sample_family
 #' @param min_adult_age integer
 #' @rdname pop
 #' @export
-as_pop = function(.tbl, min_adult_age = 4L) {
-  captured = dplyr::filter(.tbl, !is.na(.data$capture_year))
+as_pop = function(samples, min_adult_age = 4L) {
+  captured = dplyr::filter(samples, !is.na(.data$capture_year))
   adults = captured |>
     dplyr::mutate(capture_age = .data$capture_year - .data$birth_year) |>
     dplyr::filter(.data$capture_age >= min_adult_age) |>
     dplyr::select("id", "capture_year", "capture_age", "location")
-  juveniles = captured |>
-    dplyr::filter(!.data$id %in% adults$id) |>
+  relation = captured |>
     dplyr::select("id", "mother_id", "father_id", cohort = "birth_year")
-  comps = count_pop_comps(adults, juveniles)
-  pop = count_pops(adults, juveniles) |>
+  comps = count_pop_comps(adults, relation)
+  pop = count_pops(adults, relation) |>
     dplyr::right_join(comps, by = c("cohort", "capture_year", "capture_age", "location")) |>
     tidyr::replace_na(list(pops = 0L)) |>
     bloat_pop()
@@ -47,26 +46,26 @@ read_pop = function(path) {
   x
 }
 
-count_pops = function(adults, juveniles) {
+count_pops = function(adults, relation) {
   parents = adults |>
-    dplyr::filter(.data$id %in% juveniles$father_id | .data$id %in% juveniles$mother_id)
-  juveniles_with_mother = juveniles |>
+    dplyr::filter(.data$id %in% relation$father_id | .data$id %in% relation$mother_id)
+  offspring_with_mother = relation |>
     dplyr::select(id = "mother_id", "cohort") |>
     dplyr::filter(.data$id %in% parents$id)
-  juveniles_with_father = juveniles |>
+  offspring_with_father = relation |>
     dplyr::select(id = "father_id", "cohort") |>
     dplyr::filter(.data$id %in% parents$id)
-  dplyr::bind_rows(juveniles_with_mother, juveniles_with_father) |>
+  dplyr::bind_rows(offspring_with_mother, offspring_with_father) |>
     dplyr::left_join(parents, by = "id") |>
     dplyr::count(.data$cohort, .data$capture_year, .data$capture_age, .data$location, name = "pops")
 }
 
-count_pop_comps = function(adults, juveniles) {
+count_pop_comps = function(adults, relation) {
   cnt_adults = adults |>
     dplyr::count(.data$capture_year, .data$capture_age, .data$location)
-  cnt_juv = juveniles |>
+  cnt_cohort = relation |>
     dplyr::count(.data$cohort)
-  cnt_juv |>
+  cnt_cohort |>
     dplyr::mutate(data = lapply(.data$n, \(.x) {
       dplyr::mutate(cnt_adults, n = .data$n * .x)
     }), n = NULL) |>

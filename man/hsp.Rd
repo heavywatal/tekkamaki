@@ -6,14 +6,14 @@
 \alias{read_hsp}
 \title{HSP format}
 \usage{
-as_hsp(.tbl)
+as_hsp(samples)
 
 write_hsp(x, path = "hsp.txt")
 
 read_hsp(path)
 }
 \arguments{
-\item{.tbl}{sample_family}
+\item{samples}{sample_family}
 
 \item{x}{An outcome of \code{\link[=as_hsp]{as_hsp()}}}
 
