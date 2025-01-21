@@ -17,15 +17,20 @@ test_that("Graph functions works", {
 
 test_that("POP and HSP work", {
   set.seed(42L)
-  result = tekka("-y40 -l4 --sa 2,2 --sj 2,2")
+  result = tekka("-R1000 -S0 -y40 -l2 --sa 2,2 --sj 2,2")
   samples = result$sample_family[[1L]]
+  captured = samples |> dplyr::filter(!is.na(.data$capture_year))
+  adults = captured |> dplyr::filter(birth_year < capture_year)
+  nsam = nrow(captured)
+  nad = nrow(adults)
   expect_silent({
     hsp = as_hsp(samples)
   })
-  as_pop(samples)
+  expect_identical(sum(hsp$comps), choose2(nsam))
   expect_silent({
     pop = as_pop(samples)
   })
+  expect_identical(sum(pop$comps), nsam * nad - nad)
   expect_s3_class(hsp, c("hsp", "data.frame"))
   expect_s3_class(pop, c("pop", "data.frame"))
   path = tempfile(fileext = ".tsv")
@@ -37,8 +42,11 @@ test_that("POP and HSP work", {
   expect_error(write_pop(hsp, path))
 
   kinship = find_kinship(samples)
-  kinship |>
-    dplyr::filter(.data$label == "HS") |>
-    nrow() |>
-    expect_identical(sum(hsp$hsps))
+  kcount = kinship |>
+    dplyr::count(label) |>
+    tidyr::complete(label, fill = list(n = 0L)) |>
+    tibble::deframe()
+  # TODO: as_hsp() counts a FS pair as two HS pairs
+  expect_identical(sum(hsp$hsps), unname(kcount["HS"] + 2L * kcount["FS"]))
+  expect_identical(sum(pop$pops), unname(kcount["PO"]))
 })

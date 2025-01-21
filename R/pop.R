@@ -66,8 +66,8 @@ count_pop_comps = function(adults, relation) {
   cnt_cohort = relation |>
     dplyr::count(.data$cohort)
   cnt_cohort |>
-    dplyr::mutate(data = lapply(.data$n, \(.x) {
-      dplyr::mutate(cnt_adults, n = .data$n * .x)
+    dplyr::mutate(data = purrr::map2(.data$cohort, .data$n, \(.y, .x) {
+      dplyr::mutate(cnt_adults, n = .data$n * (.x - as.integer((.data$capture_year - .data$capture_age) == .y)))
     }), n = NULL) |>
     tidyr::unnest("data") |>
     dplyr::rename(comps = "n")

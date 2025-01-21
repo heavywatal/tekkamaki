@@ -7,7 +7,6 @@
 #' @export
 as_hsp = function(samples) {
   captured = dplyr::filter(samples, !is.na(.data$capture_year)) |>
-    dplyr::rename(cohort = "birth_year") |>
     dplyr::select(!"capture_year")
   comps = count_hsp_comps(captured)
   count_hsp(captured) |>
@@ -57,13 +56,13 @@ count_hsp = function(captured) {
     dplyr::rename(parent_id = "mother_id") |>
     dplyr::select(!"father_id")
   dplyr::bind_rows(hs_father, hs_mother) |>
-    dplyr::arrange(.data$cohort, .data$location) |>
+    dplyr::arrange(.data$birth_year, .data$location) |>
     dplyr::group_by(.data$parent_id) |>
     dplyr::group_modify(\(x, ...) {
       fun = \(v) {
         data.frame(
-          cohort_i = x$cohort[v[1L]],
-          cohort_j = x$cohort[v[2L]],
+          cohort_i = x$birth_year[v[1L]],
+          cohort_j = x$birth_year[v[2L]],
           location_i = x$location[v[1L]],
           location_j = x$location[v[2L]]
         )
@@ -76,8 +75,8 @@ count_hsp = function(captured) {
 
 count_hsp_comps = function(captured) {
   cnt = captured |>
-    dplyr::count(.data$cohort, .data$location) |>
-    tidyr::unite("cohloc", "cohort", "location") |>
+    dplyr::count(.data$birth_year, .data$location) |>
+    tidyr::unite("cohloc", "birth_year", "location") |>
     dplyr::mutate(cohloc = ordered(.data$cohloc, levels = unique(.data$cohloc)))
   tibble::tibble(
     df_i = cnt |> dplyr::rename_with(\(x) paste0(x, "_i")) |> list(),
@@ -87,11 +86,13 @@ count_hsp_comps = function(captured) {
     tidyr::unnest("df_j") |>
     dplyr::filter(.data$cohloc_i <= .data$cohloc_j) |>
     dplyr::mutate(comps = ifelse(
-      .data$cohloc_i == .data$cohloc_j,
-      .data$n_i * (.data$n_i - 1L) %/% 2L,
-      .data$n_i * .data$n_j
+      .data$cohloc_i == .data$cohloc_j, choose2(.data$n_i), .data$n_i * .data$n_j
     )) |>
     dplyr::select(!c("n_i", "n_j")) |>
     tidyr::separate("cohloc_i", c("cohort_i", "location_i"), convert = TRUE) |>
     tidyr::separate("cohloc_j", c("cohort_j", "location_j"), convert = TRUE)
+}
+
+choose2 = function(n) {
+  (n * (n - 1L)) %/% 2L
 }
