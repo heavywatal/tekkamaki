@@ -1,6 +1,6 @@
 test_that("Graph functions works", {
   set.seed(42L)
-  result = tekka("-y40 -l2 --sa 2,2 --sj 2,2")
+  result = tekka("-R4000 -S0 -y40 -l4 --sa 4,4 --sj 4,4")
   samples = result$sample_family[[1L]]
   expect_silent({
     kinship = find_kinship(samples)
@@ -17,7 +17,7 @@ test_that("Graph functions works", {
 
 test_that("POP and HSP work", {
   set.seed(42L)
-  result = tekka("-R1000 -S0 -y40 -l2 --sa 2,2 --sj 2,2")
+  result = tekka("-R4000 -S0 -y40 -l4 --sa 4,4 --sj 4,4")
   samples = result$sample_family[[1L]]
   captured = samples |> dplyr::filter(!is.na(.data$capture_year))
   adults = captured |> dplyr::filter(birth_year < capture_year)

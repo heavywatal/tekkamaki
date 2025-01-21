@@ -9,7 +9,7 @@ as_hsp = function(samples) {
   captured = dplyr::filter(samples, !is.na(.data$capture_year))
   comps = count_hsp_comps(captured)
   count_hsp(captured) |>
-    dplyr::right_join(comps, by = c("cohort_i", "cohort_j", "location_i", "location_j")) |>
+    dplyr::right_join(comps, by = hsp_keys) |>
     dplyr::relocate("comps", .before = "hsps") |>
     tidyr::replace_na(list(hsps = 0L)) |>
     tibble::new_tibble(class = "hsp")
@@ -38,18 +38,20 @@ write_hsp = function(x, path = "hsp.txt") {
 #' @export
 read_hsp = function(path) {
   x = readr::read_tsv(path,
-    col_names = c("cohort_i", "cohort_j", "location_i", "location_j", "comps", "hsps"),
+    col_names = c(hsp_keys, "comps", "hsps"),
     col_types = "iiiiii", skip = 5L, show_col_types = FALSE
   )
   class(x) = c("hsp", class(x))
   x
 }
 
+hsp_keys = c("cohort_i", "cohort_j", "location_i", "location_j")
+
 count_hsp = function(captured) {
   sibs = filter_sibs(captured)
   fsp = count_fsp(sibs)
   count_sp(sibs) |>
-    dplyr::left_join(fsp, by = c("cohort_i", "cohort_j", "location_i", "location_j")) |>
+    dplyr::left_join(fsp, by = hsp_keys) |>
     dplyr::mutate(hsps = .data$hsps - 2L * dplyr::coalesce(.data$fsps, 0L), fsps = NULL)
 }
 
@@ -81,6 +83,10 @@ count_fsp = function(sibs) {
 }
 
 count_combination = function(x, name = NULL) {
+  if (nrow(x) == 0L) {
+    names = c(hsp_keys, name %||% "n")
+    return(tibble::new_tibble(rep(list(integer(0L)), 5L), names = names))
+  }
   x |>
     dplyr::group_modify(\(g, ...) {
       fun = \(v) {
