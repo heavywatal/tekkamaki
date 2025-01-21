@@ -31,6 +31,10 @@ test_that("POP and HSP work", {
     pop = as_pop(samples)
   })
   expect_identical(sum(pop$comps), nsam * nad - nad)
+  fsp = captured |>
+    filter_sibs() |>
+    count_fsp()
+
   expect_s3_class(hsp, c("hsp", "data.frame"))
   expect_s3_class(pop, c("pop", "data.frame"))
   path = tempfile(fileext = ".tsv")
@@ -46,7 +50,7 @@ test_that("POP and HSP work", {
     dplyr::count(label) |>
     tidyr::complete(label, fill = list(n = 0L)) |>
     tibble::deframe()
-  # TODO: as_hsp() counts a FS pair as two HS pairs
-  expect_identical(sum(hsp$hsps), unname(kcount["HS"] + 2L * kcount["FS"]))
-  expect_identical(sum(pop$pops), unname(kcount["PO"]))
+  expect_identical(sum(hsp$hsps), kcount[["HS"]])
+  expect_identical(sum(fsp$fsps), kcount[["FS"]])
+  expect_identical(sum(pop$pops), kcount[["PO"]])
 })
