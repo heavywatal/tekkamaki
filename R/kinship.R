@@ -1,15 +1,21 @@
 #' Analyze kinship with igraph
 #'
 #' @details
-#' `find_kinship` finds kinship below given order.
-#' @param .tbl sample_family
+#' [find_kinship()] finds kinship below given order.
+#' @param samples sample_family
 #' @param order integer
 #' @param experimental boolean
 #' @rdname kinship
 #' @export
-find_kinship = function(.tbl, order = 4L, experimental = FALSE) {
-  graph = as_igraph(.tbl)
-  nodes = dplyr::filter(.tbl, !is.na(.data$capture_year))$id
+find_kinship = function(samples, order = 4L, experimental = FALSE) {
+  captured = dplyr::filter(samples, !is.na(.data$capture_year))
+  max_age = 31L
+  oldest_birth_year = suppressWarnings(min(captured$birth_year))
+  threshold_birth_year = oldest_birth_year - max_age * order
+  graph = samples |>
+    dplyr::filter(.data$birth_year > threshold_birth_year) |>
+    as_igraph()
+  nodes = captured$id
   vids = igraphlite::as_vids(graph, nodes)
   pairs = neighbor_pairs(graph, vids, order = order)
   if (nrow(pairs) == 0L) {
@@ -19,7 +25,7 @@ find_kinship = function(.tbl, order = 4L, experimental = FALSE) {
   if (experimental) {
     find_kinship_common(graph, pairs, order)
   } else {
-    find_kinship_shortest(.tbl, graph, pairs, order)
+    find_kinship_shortest(samples, graph, pairs, order)
   }
 }
 
@@ -38,9 +44,9 @@ filter_in_vids = function(x, vids) {
   x[x %in% vids]
 }
 
-find_kinship_shortest = function(.tbl, graph, pairs, order) {
+find_kinship_shortest = function(samples, graph, pairs, order) {
   paths = find_shortest_paths(graph, pairs)
-  birth_year = .tbl$birth_year[order(.tbl$id)]
+  birth_year = samples$birth_year[order(samples$id)]
   paths |>
     dplyr::mutate(path = lapply(.data$path, \(x) as.integer(diff(birth_year[x]) < 0L))) |>
     dplyr::filter(purrr::map_lgl(.data$path, \(x) length(rle(x)$lengths) < 3L && !identical(x, c(0L, 1L)))) |>

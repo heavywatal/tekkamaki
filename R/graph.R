@@ -17,7 +17,6 @@ igraphlite::as_igraph
 as_edgelist = function(x) {
   x |>
     dplyr::select(dplyr::ends_with("id")) |>
-    dplyr::filter(.data$father_id != 0L, .data$mother_id != 0L) |>
-    tidyr::pivot_longer(dplyr::ends_with("_id")) |>
+    tidyr::pivot_longer(dplyr::ends_with("_id"), names_to = NULL) |>
     dplyr::select(from = "value", to = "id")
 }

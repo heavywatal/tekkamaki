@@ -4,10 +4,10 @@
 \alias{find_kinship}
 \title{Analyze kinship with igraph}
 \usage{
-find_kinship(.tbl, order = 4L, experimental = FALSE)
+find_kinship(samples, order = 4L, experimental = FALSE)
 }
 \arguments{
-\item{.tbl}{sample_family}
+\item{samples}{sample_family}
 
 \item{order}{integer}
 
@@ -17,5 +17,5 @@ find_kinship(.tbl, order = 4L, experimental = FALSE)
 Analyze kinship with igraph
 }
 \details{
-\code{find_kinship} finds kinship below given order.
+\code{\link[=find_kinship]{find_kinship()}} finds kinship below given order.
 }
