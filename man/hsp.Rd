@@ -13,17 +13,27 @@ write_hsp(x, path = "hsp.txt")
 read_hsp(path)
 }
 \arguments{
-\item{samples}{sample_family}
+\item{samples}{A \code{sample_family} data.frame of \code{\link[=tekka]{tekka()}} result.}
 
 \item{x}{An outcome of \code{\link[=as_hsp]{as_hsp()}}}
 
 \item{path}{A file name or connection to write to}
 }
+\value{
+A data.frame with "hsp" class and six columns:
+\itemize{
+\item \code{cohort_i}, \code{cohort_j}: birth year of samples
+\item \code{location_i}, \code{location_j}: of sampling
+\item \code{comps}: the number of possible comparisons between group \emph{i} and \emph{j}
+\item \code{hsps}: the number of half-sib pairs between group \emph{i} and \emph{j}
+}
+}
 \description{
-HSP format
+Half-sib pairs are counted between samples grouped by birth year and
+sampled location.
 }
 \details{
-\code{as_hsp} converts a result data frame to HSP format.
+\code{\link[=as_hsp]{as_hsp()}} converts a result data frame to HSP format.
 
-\code{write_hsp} writes a HSP data frame to a file.
+\code{\link[=write_hsp]{write_hsp()}} writes a HSP data.frame to a file.
 }

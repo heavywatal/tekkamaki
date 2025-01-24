@@ -1,9 +1,19 @@
 #' POP format
 #'
+#' Parent-offspring pairs are counted between potential offspring cohort and
+#' potential parents grouped by age, year, and location of sampling.
+#' Adults are included in potential offspring.
 #' @details
-#' `as_pop` converts a result data frame to POP format.
-#' @param samples sample_family
+#' [as_pop()] converts a `sample_family` data frame to POP format.
+#' @param samples A `sample_family` data.frame of [tekka()] result.
 #' @param min_adult_age integer
+#' @return A data.frame with "pop" class and six columns:
+#' - `cohort`: birth year of offspring
+#' - `capture_year`: of parents
+#' - `capture_age`: of parents
+#' - `location`: where parents were sampled
+#' - `pops`: the number of parent-offspring pairs
+#' - `comps`: the number of possible comparisons
 #' @rdname pop
 #' @export
 as_pop = function(samples, min_adult_age = 4L) {
@@ -24,7 +34,7 @@ as_pop = function(samples, min_adult_age = 4L) {
 }
 
 #' @details
-#' `write_pop` writes a POP data frame to a file.
+#' [write_pop()] writes a POP data.frame to a file.
 #' @param x An outcome of [as_pop()]
 #' @param path A file name or connection to write to
 #' @rdname pop

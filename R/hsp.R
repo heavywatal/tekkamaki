@@ -1,8 +1,15 @@
 #' HSP format
 #'
+#' Half-sib pairs are counted between samples grouped by birth year and
+#' sampled location.
 #' @details
-#' `as_hsp` converts a result data frame to HSP format.
-#' @param samples sample_family
+#' [as_hsp()] converts a result data frame to HSP format.
+#' @param samples A `sample_family` data.frame of [tekka()] result.
+#' @return A data.frame with "hsp" class and six columns:
+#' - `cohort_i`, `cohort_j`: birth year of samples
+#' - `location_i`, `location_j`: of sampling
+#' - `comps`: the number of possible comparisons between group *i* and *j*
+#' - `hsps`: the number of half-sib pairs between group *i* and *j*
 #' @rdname hsp
 #' @export
 as_hsp = function(samples) {
@@ -16,7 +23,7 @@ as_hsp = function(samples) {
 }
 
 #' @details
-#' `write_hsp` writes a HSP data frame to a file.
+#' [write_hsp()] writes a HSP data.frame to a file.
 #' @param x An outcome of [as_hsp()]
 #' @param path A file name or connection to write to
 #' @rdname hsp

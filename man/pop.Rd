@@ -13,7 +13,7 @@ write_pop(x, path = "pop.txt")
 read_pop(path)
 }
 \arguments{
-\item{samples}{sample_family}
+\item{samples}{A \code{sample_family} data.frame of \code{\link[=tekka]{tekka()}} result.}
 
 \item{min_adult_age}{integer}
 
@@ -21,11 +21,24 @@ read_pop(path)
 
 \item{path}{A file name or connection to write to}
 }
+\value{
+A data.frame with "pop" class and six columns:
+\itemize{
+\item \code{cohort}: birth year of offspring
+\item \code{capture_year}: of parents
+\item \code{capture_age}: of parents
+\item \code{location}: where parents were sampled
+\item \code{pops}: the number of parent-offspring pairs
+\item \code{comps}: the number of possible comparisons
+}
+}
 \description{
-POP format
+Parent-offspring pairs are counted between potential offspring cohort and
+potential parents grouped by age, year, and location of sampling.
+Adults are included in potential offspring.
 }
 \details{
-\code{as_pop} converts a result data frame to POP format.
+\code{\link[=as_pop]{as_pop()}} converts a \code{sample_family} data frame to POP format.
 
-\code{write_pop} writes a POP data frame to a file.
+\code{\link[=write_pop]{write_pop()}} writes a POP data.frame to a file.
 }
