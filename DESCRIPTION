@@ -1,6 +1,6 @@
 Package: tekkamaki
 Title: Individual-based simulator of pacific bluefin tuna
-Version: 0.8.0.1
+Version: 0.8.1
 Authors@R:
     person("Watal M.", "Iwasaki", , "heavywatal@gmail.com", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0002-4718-7605"))
@@ -9,7 +9,7 @@ License: MIT + file LICENSE
 URL: https://heavywatal.github.io/tekkamaki/
 BugReports: https://github.com/heavywatal/tekkamaki/issues
 Depends:
-    R (>= 4.3.0)
+    R (>= 4.4.0)
 Imports:
     cubelyr (>= 1.0.2),
     dplyr (>= 1.1.4),
@@ -29,7 +29,7 @@ Suggests:
     ggplot2,
     knitr,
     rmarkdown,
-    testthat (>= 3.2.1)
+    testthat (>= 3.2.2)
 LinkingTo:
     cpp11
 VignetteBuilder:

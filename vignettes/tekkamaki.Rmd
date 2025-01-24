@@ -44,8 +44,9 @@ Here is an example of visualizing demography:
 ```{r, demography}
 df = demography |>
   dplyr::mutate(time = year + 0.25 * season) |>
-  dplyr::mutate(age = ifelse(age > 4, "adult", "juvenile")) |>
-  dplyr::summarize(count = sum(count), .by = c(time, location, age))
+  dplyr::mutate(age = ifelse(age >= 4, "adult", "juvenile")) |>
+  dplyr::summarize(count = sum(count), .by = c(time, location, age)) |>
+  tidyr::complete(time, location, age, fill = list(count = 0L))
 
 ggplot(df) +
   aes(time, count) +
