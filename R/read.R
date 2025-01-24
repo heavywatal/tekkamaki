@@ -16,7 +16,7 @@ read_result = function(file) {
   sample_family = file.path(indir, "sample_family.tsv.gz") |>
     read_result()
   demography = file.path(indir, "demography.tsv.gz") |>
-    readr::read_tsv(show_col_types = FALSE)
+    readr::read_tsv(col_types = readr::cols(.default = "i"), show_col_types = FALSE)
   res[["sample_family"]] = list(sample_family)
   res[["demography"]] = list(demography)
   res
