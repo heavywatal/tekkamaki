@@ -19,4 +19,4 @@ kinlabels = c(
   `1000_2` = "GUN"
 )
 
-devtools::use_data(kinlabels, overwrite = TRUE, internal = TRUE)
+usethis::use_data(kinlabels, internal = TRUE, overwrite = TRUE, compress = "gzip")
