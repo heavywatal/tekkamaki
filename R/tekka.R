@@ -10,12 +10,13 @@
 #' Note that a random `--seed` is appended if not given.
 #' Use `set.seed()` or `--seed` explicitly for reproducibility and caching.
 #' @param cache Parent directory for tekka output.
-#' [tempdir()] is used by default (`FALSE`),
-#' which is discarded at the end of an R session.
 #' `TRUE` is equivalent to "." (current directory).
+#' [tempdir()] is used in other cases including the default (`NULL`),
+#' which is discarded at the end of an R session.
+#' Set `FALSE` to force `tekka` to run and overwrite previous results if any.
 #' @rdname tekka
 #' @export
-tekka = function(args = character(0L), cache = FALSE) {
+tekka = function(args = character(0L), cache = NULL) {
   if (length(args) == 1L) {
     args = stringr::str_split_1(args, "\\s+")
   }
@@ -27,13 +28,14 @@ tekka = function(args = character(0L), cache = FALSE) {
     return(invisible(message(paste0(msg, collapse = "\n"))))
   }
   args = append_seed(args)
-  if (isFALSE(cache)) {
-    cache = tempdir()
-  } else if (isTRUE(cache)) {
-    cache = "."
+  if (isTRUE(cache)) cache = "."
+  cache_dir = if (length(cache) == 1L && is.character(cache)) {
+    cache
+  } else {
+    tempdir()
   }
-  outdir = file.path(cache, cache_name(args))
-  if (!dir.exists(outdir)) {
+  outdir = file.path(cache_dir, cache_name(args))
+  if (isFALSE(cache) || !dir.exists(outdir)) {
     ret = system2(tekka_path(), c(args, "-o", outdir))
     stopifnot(ret == 0L)
   }

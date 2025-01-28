@@ -4,7 +4,7 @@
 \alias{tekka}
 \title{Run C++ simulation.}
 \usage{
-tekka(args = character(0L), cache = FALSE)
+tekka(args = character(0L), cache = NULL)
 }
 \arguments{
 \item{args}{Command line arguments as a string vector.
@@ -14,9 +14,10 @@ Note that a random \code{--seed} is appended if not given.
 Use \code{set.seed()} or \code{--seed} explicitly for reproducibility and caching.}
 
 \item{cache}{Parent directory for tekka output.
-\code{\link[=tempdir]{tempdir()}} is used by default (\code{FALSE}),
+\code{TRUE} is equivalent to "." (current directory).
+\code{\link[=tempdir]{tempdir()}} is used in other cases including the default (\code{NULL}),
 which is discarded at the end of an R session.
-\code{TRUE} is equivalent to "." (current directory).}
+Set \code{FALSE} to force \code{tekka} to run and overwrite previous results if any.}
 }
 \description{
 A result is first written to a directory in \code{cache},
