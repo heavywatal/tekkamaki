@@ -25,7 +25,7 @@ tekka = function(args = character(0L), cache = NULL) {
   }
   if (any(c("-h", "--help", "--default") %in% args)) {
     msg = system2(tekka_path(), args, stdout = TRUE)
-    return(invisible(message(paste0(msg, collapse = "\n"))))
+    return(invisible(message(paste(msg, collapse = "\n"))))
   }
   args = append_seed(args)
   if (isTRUE(cache)) cache = "."
@@ -57,6 +57,6 @@ append_seed = function(args, seed = NULL) {
 }
 
 runif.int = function(n, min = -.Machine$integer.max, max = .Machine$integer.max) {
-  offset = min - 1
-  as.integer(sample.int(max - offset, n, replace = TRUE) + offset)
+  .offset = min - 1
+  as.integer(sample.int(max - .offset, n, replace = TRUE) + .offset)
 }

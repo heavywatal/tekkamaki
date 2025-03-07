@@ -110,8 +110,8 @@ recombination = function(genealogy, vt) {
   igraphlite::add_edges(genealogy, as.vector(new_edges))
   rows$vh = vf
   ecount = length(to)
-  start = ecount - length(vt) + 1L
-  igraphlite::Eattr(genealogy)[seq.int(start, ecount), ] = rows
+  .start = ecount - length(vt) + 1L
+  igraphlite::Eattr(genealogy)[seq.int(.start, ecount), ] = rows
   genealogy
 }
 

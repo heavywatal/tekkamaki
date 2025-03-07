@@ -14,7 +14,9 @@ test_that("vcf works", {
     expect_s3_class("data.frame")
   expect_identical(dim(vcf), c(segsites, 9L + 1L))
   expect_identical(as_vcf_gt(vcf), vcf_gt)
-  vcf |> separate_gt() |> unite_gt() |>
+  vcf |>
+    separate_gt() |>
+    unite_gt() |>
     tibble::new_tibble(class = "vcf") |>
     expect_identical(vcf)
   file = tempfile(fileext = ".vcf")

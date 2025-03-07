@@ -30,14 +30,14 @@ as_hsp = function(samples) {
 #' @export
 write_hsp = function(x, path = "hsp.txt") {
   stopifnot(inherits(x, "hsp"))
-  lines = c(
+  .lines = c(
     "# HSP 1-false-negative ratio",
     "1.0",
     "# number of HSP data points",
     nrow(x),
     "# HSP data"
   )
-  readr::write_lines(lines, path)
+  readr::write_lines(.lines, path)
   readr::write_tsv(x, path, na = "", append = TRUE, col_names = FALSE)
 }
 
@@ -91,8 +91,8 @@ count_fsp = function(sibs) {
 
 count_combination = function(x, name = NULL) {
   if (nrow(x) == 0L) {
-    names = c(hsp_keys, name %||% "n")
-    return(tibble::new_tibble(rep(list(integer(0L)), 5L), names = names))
+    .names = c(hsp_keys, name %||% "n")
+    return(tibble::new_tibble(rep(list(integer(0L)), 5L), names = .names))
   }
   x |>
     dplyr::group_modify(\(g, ...) {

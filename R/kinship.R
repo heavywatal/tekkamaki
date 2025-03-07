@@ -17,15 +17,15 @@ find_kinship = function(samples, order = 4L, experimental = FALSE) {
     as_igraph()
   nodes = captured$id
   vids = igraphlite::as_vids(graph, nodes)
-  pairs = neighbor_pairs(graph, vids, order = order)
-  if (nrow(pairs) == 0L) {
+  .pairs = neighbor_pairs(graph, vids, order = order)
+  if (nrow(.pairs) == 0L) {
     message("No kinship found")
-    return(invisible(pairs))
+    return(invisible(.pairs))
   }
   if (experimental) {
-    find_kinship_common(graph, pairs, order)
+    find_kinship_common(graph, .pairs, order)
   } else {
-    find_kinship_shortest(samples, graph, pairs, order)
+    find_kinship_shortest(samples, graph, .pairs, order)
   }
 }
 
@@ -49,7 +49,7 @@ find_kinship_shortest = function(samples, graph, pairs, order) {
   birth_year = samples$birth_year[order(samples$id)]
   paths |>
     dplyr::mutate(path = lapply(.data$path, \(x) as.integer(diff(birth_year[x]) < 0L))) |>
-    dplyr::filter(purrr::map_lgl(.data$path, \(x) length(rle(x)$lengths) < 3L && !identical(x, c(0L, 1L)))) |>
+    dplyr::filter(purrr::map_lgl(.data$path, \(x) length(rle(x)$lengths) < 3L & !identical(x, c(0L, 1L)))) |>
     label_kinship()
 }
 

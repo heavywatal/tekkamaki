@@ -6,9 +6,9 @@
 #' @rdname read
 #' @export
 read_result = function(file) {
-  df = readr::read_tsv(file, col_types = readr::cols(.default = "i"), show_col_types = FALSE)
-  class(df) = c("sample_family", "tbl_df", "tbl", "data.frame")
-  df
+  .df = readr::read_tsv(file, col_types = readr::cols(.default = "i"), show_col_types = FALSE)
+  class(.df) = c("sample_family", "tbl_df", "tbl", "data.frame")
+  .df
 }
 
 .read_result = function(indir = getwd()) {

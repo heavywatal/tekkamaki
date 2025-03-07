@@ -47,8 +47,8 @@ write_vcf = function(x, file) {
   x = as_vcf(x) |>
     dplyr::rename(`#CHROM` = "CHROM")
   meta = "##fileformat=VCFv4.5"
-  colnames = paste0(c(names(x)[seq_len(9L)], attr(x, "gt_names")), collapse = "\t")
-  readr::write_lines(c(meta, colnames), file)
+  .colnames = paste(c(names(x)[seq_len(9L)], attr(x, "gt_names")), collapse = "\t")
+  readr::write_lines(c(meta, .colnames), file)
   readr::write_tsv(x, file, na = ".", append = TRUE, col_names = FALSE)
 }
 

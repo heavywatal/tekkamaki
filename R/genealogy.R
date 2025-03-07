@@ -9,10 +9,10 @@ make_gene_genealogy = function(samples) {
     samples = gather_segments(samples)
   }
   x = sample.int(2L, nrow(samples), replace = TRUE)
-  df = samples |>
+  .df = samples |>
     dplyr::mutate(from = paste(.data$parent_id, x, sep = "-")) |>
     dplyr::select("from", to = "id", "birth_year", "capture_year")
-  graph = igraphlite::graph_from_data_frame(df)
+  graph = igraphlite::graph_from_data_frame(.df)
   class(graph) = c("genealogy", class(graph))
   graph
 }

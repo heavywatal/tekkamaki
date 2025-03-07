@@ -25,7 +25,7 @@ augment.genealogy = function(x, layout = NULL, ...) {
   if (is.data.frame(layout)) {
     stopifnot(c("id", "x", "y") %in% names(layout))
   } else {
-    stop("Invalid type '", typeof(layout), "' for argument 'layout'")
+    stop("Invalid type '", typeof(layout), "' for argument 'layout'", call. = FALSE)
   }
   add_coordinates(eattr, layout) |>
     dplyr::mutate(
@@ -70,9 +70,9 @@ layout_demography = function(x) {
 #' @rdname plot
 #' @export
 plot.genealogy = function(x, ..., lwd = 0.5, cex = 5, pch = 16) {
-  data = augment(x, ...)
+  .df = augment(x, ...)
   f = function(x) dplyr::filter(x, !is.na(.data$xend))
-  ggplot2::ggplot(data) +
+  ggplot2::ggplot(.df) +
     ggplot2::aes(.data$x, .data$y) +
     ggplot2::geom_segment(data = f, ggplot2::aes(xend = .data$xend, yend = .data$yend), linewidth = lwd, alpha = 0.5) +
     ggplot2::geom_point(ggplot2::aes(colour = .data$sampled), shape = pch, size = cex) +
