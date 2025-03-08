@@ -28,18 +28,22 @@ tekka = function(args = character(0L), cache = NULL) {
     return(invisible(message(paste(msg, collapse = "\n"))))
   }
   args = append_seed(args)
-  if (isTRUE(cache)) cache = "."
-  cache_dir = if (length(cache) == 1L && is.character(cache)) {
-    cache
-  } else {
-    tempdir()
-  }
+  cache_dir = sanitize_cache_dir(cache)
   outdir = file.path(cache_dir, cache_name(args))
   if (isFALSE(cache) || !dir.exists(outdir)) {
     ret = system2(tekka_path(), c(args, "-o", outdir))
     stopifnot(ret == 0L)
   }
   .read_result(outdir)
+}
+
+sanitize_cache_dir = function(cache) {
+  if (isTRUE(cache)) {
+    cache = "."
+  } else if (length(cache) != 1L || !is.character(cache) || is.na(cache) || !nzchar(cache)) {
+    cache = tempdir()
+  }
+  cache
 }
 
 cache_name = function(args) {
