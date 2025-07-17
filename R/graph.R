@@ -3,11 +3,12 @@
 #' @details
 #' `as_igraph` converts a result to igraph.
 #' @param x `sample_family` table
+#' @param ... Additional arguments passed to [igraphlite::graph_from_data_frame()].
 #' @rdname graph
 #' @export
-as_igraph.sample_family = function(x) {
+as_igraph.sample_family = function(x, ...) {
   as_edgelist(x) |>
-    igraphlite::graph_from_data_frame()
+    igraphlite::graph_from_data_frame(...)
 }
 
 #' @importFrom igraphlite as_igraph

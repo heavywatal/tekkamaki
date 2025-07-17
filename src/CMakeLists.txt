@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.18)
+cmake_minimum_required(VERSION 3.21)
 project($ENV{R_PACKAGE_NAME}
   VERSION 0.8.1
   LANGUAGES CXX)

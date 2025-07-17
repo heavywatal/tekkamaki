@@ -14,6 +14,6 @@ below to see their documentation.
 \describe{
   \item{generics}{\code{\link[generics]{augment}}}
 
-  \item{igraphlite}{\code{\link[igraphlite]{as_igraph}}}
+  \item{igraphlite}{\code{\link[igraphlite:conversion]{as_igraph}}}
 }}
 

@@ -7,9 +7,6 @@ if ! cmake --version >/dev/null; then
   echo 'Otherwise, use an installer available at https://cmake.org/download/'
   exit 1
 fi
-if [ -z "$CXX" ]; then
-  CXX=$(${R_HOME}/bin/R CMD config CXX)
-fi
 CXX=${CXX%% *}
 echo "CXX: $CXX"
 echo "PWD: $PWD"

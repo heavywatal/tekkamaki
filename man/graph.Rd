@@ -4,10 +4,12 @@
 \alias{as_igraph.sample_family}
 \title{Convert genealogy to igraph}
 \usage{
-\method{as_igraph}{sample_family}(x)
+\method{as_igraph}{sample_family}(x, ...)
 }
 \arguments{
 \item{x}{\code{sample_family} table}
+
+\item{...}{Additional arguments passed to \code{\link[igraphlite:conversion-impl]{igraphlite::graph_from_data_frame()}}.}
 }
 \description{
 Convert genealogy to igraph
