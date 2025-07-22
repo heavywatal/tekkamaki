@@ -19,8 +19,11 @@ test_that("POP and HSP work", {
   set.seed(42L)
   result = tekka("-R4000 -S0 -y40 -l4 --sa 4,4 --sj 4,4")
   samples = result$sample_family[[1L]]
-  captured = samples |> dplyr::filter(!is.na(.data$capture_year))
-  adults = captured |> dplyr::filter(birth_year < capture_year)
+  captured = samples |>
+    dplyr::filter(!is.na(.data$capture_year)) |>
+    dplyr::mutate(capture_age = .data$capture_year - .data$birth_year) |>
+    dplyr::rename(cohort = "birth_year")
+  adults = captured |> dplyr::filter(cohort < capture_year)
   nsam = nrow(captured)
   nad = nrow(adults)
   expect_silent({
@@ -33,7 +36,8 @@ test_that("POP and HSP work", {
   expect_identical(sum(pop$comps), nsam * nad - nad)
   fsp = captured |>
     filter_sibs() |>
-    count_fsp()
+    group_by_fsp() |>
+    count_coh_loc(name = "fsps")
 
   expect_s3_class(hsp, c("hsp", "data.frame"))
   expect_s3_class(pop, c("pop", "data.frame"))

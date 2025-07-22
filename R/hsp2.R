@@ -1,0 +1,105 @@
+#' Extended HSP format
+#'
+#' Half-sib pairs are counted between samples grouped by birth year, capture age,
+#' and sampled location.
+#' @details
+#' [as_hsp2()] converts a result data frame to HSP format.
+#' @param samples A `sample_family` data.frame of [tekka()] result.
+#' @return A data.frame with "hsp2" class and the following columns:
+#' - `cohort_i`, `cohort_j`: birth year of samples
+#' - `capture_age_i`, `capture_age_j`: of samples
+#' - `location_i`, `location_j`: of sampling
+#' - `comps`: the number of possible comparisons between group *i* and *j*
+#' - `hsps`: the number of half-sib pairs between group *i* and *j*
+#' @rdname hsp2
+#' @export
+as_hsp2 = function(samples) {
+  captured = dplyr::filter(samples, !is.na(.data$capture_year)) |>
+    dplyr::mutate(capture_age = .data$capture_year - .data$birth_year) |>
+    dplyr::rename(cohort = "birth_year") |>
+    dplyr::select(!"capture_year")
+  comps = count_hsp2_comps(captured)
+  count_hsp2(captured) |>
+    dplyr::right_join(comps, by = hsp2_keys) |>
+    dplyr::relocate("comps", .before = "hsps") |>
+    tidyr::replace_na(list(hsps = 0L)) |>
+    tibble::new_tibble(class = "hsp2")
+}
+
+#' @details
+#' [write_hsp2()] writes a HSP data.frame to a file in TSV format.
+#' @param x An outcome of [as_hsp2()].
+#' @param path A file name or connection to write to.
+#' @rdname hsp2
+#' @export
+write_hsp2 = function(x, path = "hsp2.tsv") {
+  stopifnot(inherits(x, "hsp"))
+  readr::write_tsv(x, path, na = "")
+}
+
+#' @rdname hsp2
+#' @export
+read_hsp2 = function(path) {
+  x = readr::read_tsv(path, col_types = "iiiiiiii", show_col_types = FALSE)
+  class(x) = c("hsp2", class(x))
+  x
+}
+
+hsp2_keys = c("cohort_i", "cohort_j", "capture_age_i", "capture_age_j", "location_i", "location_j")
+
+count_hsp2 = function(captured) {
+  sibs = filter_sibs(captured)
+  fsp = group_by_fsp(sibs) |> count_coh_cap_loc(name = "fsps")
+  hsp = group_by_hsp(sibs) |> count_coh_cap_loc(name = "hsps")
+  dplyr::left_join(hsp, fsp, by = hsp2_keys) |>
+    dplyr::mutate(hsps = .data$hsps - 2L * dplyr::coalesce(.data$fsps, 0L), fsps = NULL)
+}
+
+count_coh_cap_loc = function(x, name = NULL) {
+  if (nrow(x) == 0L) {
+    .names = c(hsp2_keys, name %||% "n")
+    return(tibble::new_tibble(rep(list(integer(0L)), 7L), names = .names))
+  }
+  x |>
+    dplyr::group_modify(\(g, ...) {
+      fun = \(v) {
+        data.frame(
+          cohort_i = g$cohort[v[1L]],
+          cohort_j = g$cohort[v[2L]],
+          capture_age_i = g$capture_age[v[1L]],
+          capture_age_j = g$capture_age[v[2L]],
+          location_i = g$location[v[1L]],
+          location_j = g$location[v[2L]]
+        )
+      }
+      utils::combn(seq_len(nrow(g)), 2L, fun, simplify = FALSE) |>
+        purrr::list_rbind()
+    }) |>
+    dplyr::ungroup() |>
+    dplyr::count(
+      .data$cohort_i, .data$cohort_j,
+      .data$capture_age_i, .data$capture_age_j,
+      .data$location_i, .data$location_j,
+      name = name
+    )
+}
+
+count_hsp2_comps = function(captured) {
+  cnt = captured |>
+    dplyr::count(.data$cohort, .data$capture_age, .data$location) |>
+    tidyr::unite("coh_age_loc", "cohort", "capture_age", "location") |>
+    dplyr::mutate(coh_age_loc = ordered(.data$coh_age_loc, levels = unique(.data$coh_age_loc)))
+  tibble::tibble(
+    df_i = cnt |> dplyr::rename_with(\(x) paste0(x, "_i")) |> list(),
+    df_j = cnt |> dplyr::rename_with(\(x) paste0(x, "_j")) |> list()
+  ) |>
+    tidyr::unnest("df_i") |>
+    tidyr::unnest("df_j") |>
+    dplyr::filter(.data$coh_age_loc_i <= .data$coh_age_loc_j) |>
+    dplyr::mutate(comps = ifelse(
+      .data$coh_age_loc_i == .data$coh_age_loc_j, choose2(.data$n_i), .data$n_i * .data$n_j
+    )) |>
+    dplyr::select(!c("n_i", "n_j")) |>
+    tidyr::separate("coh_age_loc_i", c("cohort_i", "capture_age_i", "location_i"), convert = TRUE) |>
+    tidyr::separate("coh_age_loc_j", c("cohort_j", "capture_age_j", "location_j"), convert = TRUE)
+}

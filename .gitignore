@@ -1,8 +1,6 @@
 .Rproj.user
 .Rhistory
 .RData
-/inst/parameters.json
-/inst/path
 /docs/deps/bootstrap-toc-*
 /docs/deps/clipboard.js-*
 /docs/deps/headroom-*

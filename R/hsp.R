@@ -13,7 +13,10 @@
 #' @rdname hsp
 #' @export
 as_hsp = function(samples) {
-  captured = dplyr::filter(samples, !is.na(.data$capture_year))
+  captured = dplyr::filter(samples, !is.na(.data$capture_year)) |>
+    dplyr::mutate(capture_age = .data$capture_year - .data$birth_year) |>
+    dplyr::rename(cohort = "birth_year") |>
+    dplyr::select(!"capture_year")
   comps = count_hsp_comps(captured)
   count_hsp(captured) |>
     dplyr::right_join(comps, by = hsp_keys) |>
@@ -56,13 +59,13 @@ hsp_keys = c("cohort_i", "cohort_j", "location_i", "location_j")
 
 count_hsp = function(captured) {
   sibs = filter_sibs(captured)
-  fsp = count_fsp(sibs)
-  count_sp(sibs) |>
-    dplyr::left_join(fsp, by = hsp_keys) |>
+  fsp = group_by_fsp(sibs) |> count_coh_loc(name = "fsps")
+  hsp = group_by_hsp(sibs) |> count_coh_loc(name = "hsps")
+  dplyr::left_join(hsp, fsp, by = hsp_keys) |>
     dplyr::mutate(hsps = .data$hsps - 2L * dplyr::coalesce(.data$fsps, 0L), fsps = NULL)
 }
 
-count_sp = function(sibs) {
+group_by_hsp = function(sibs) {
   hs_father = sibs |>
     dplyr::select(!c("mother_id", "share_mother")) |>
     dplyr::rename(parent_id = "father_id") |>
@@ -74,22 +77,20 @@ count_sp = function(sibs) {
     dplyr::filter(.data$share_mother) |>
     dplyr::select(!"share_mother")
   dplyr::bind_rows(hs_father, hs_mother) |>
-    dplyr::arrange(.data$birth_year, .data$location) |>
-    dplyr::group_by(.data$parent_id) |>
-    count_combination(name = "hsps")
+    dplyr::arrange(.data$cohort, .data$location) |>
+    dplyr::group_by(.data$parent_id)
 }
 
-count_fsp = function(sibs) {
+group_by_fsp = function(sibs) {
   sibs |>
     dplyr::filter(.data$share_father & .data$share_mother) |>
     dplyr::select(!c("share_father", "share_mother")) |>
-    dplyr::arrange(.data$birth_year, .data$location) |>
+    dplyr::arrange(.data$cohort, .data$location) |>
     dplyr::group_by(.data$father_id, .data$mother_id) |>
-    dplyr::filter(dplyr::n() > 1L) |>
-    count_combination(name = "fsps")
+    dplyr::filter(dplyr::n() > 1L)
 }
 
-count_combination = function(x, name = NULL) {
+count_coh_loc = function(x, name = NULL) {
   if (nrow(x) == 0L) {
     .names = c(hsp_keys, name %||% "n")
     return(tibble::new_tibble(rep(list(integer(0L)), 5L), names = .names))
@@ -98,8 +99,8 @@ count_combination = function(x, name = NULL) {
     dplyr::group_modify(\(g, ...) {
       fun = \(v) {
         data.frame(
-          cohort_i = g$birth_year[v[1L]],
-          cohort_j = g$birth_year[v[2L]],
+          cohort_i = g$cohort[v[1L]],
+          cohort_j = g$cohort[v[2L]],
           location_i = g$location[v[1L]],
           location_j = g$location[v[2L]]
         )
@@ -113,8 +114,8 @@ count_combination = function(x, name = NULL) {
 
 count_hsp_comps = function(captured) {
   cnt = captured |>
-    dplyr::count(.data$birth_year, .data$location) |>
-    tidyr::unite("cohloc", "birth_year", "location") |>
+    dplyr::count(.data$cohort, .data$location) |>
+    tidyr::unite("cohloc", "cohort", "location") |>
     dplyr::mutate(cohloc = ordered(.data$cohloc, levels = unique(.data$cohloc)))
   tibble::tibble(
     df_i = cnt |> dplyr::rename_with(\(x) paste0(x, "_i")) |> list(),
@@ -133,7 +134,6 @@ count_hsp_comps = function(captured) {
 
 filter_sibs = function(captured) {
   captured |>
-    dplyr::select(!"capture_year") |>
     dplyr::mutate(
       share_father = duplicated(.data$father_id) | duplicated(.data$father_id, fromLast = TRUE),
       share_mother = duplicated(.data$mother_id) | duplicated(.data$mother_id, fromLast = TRUE)
