@@ -26,8 +26,10 @@ test_that("POP and HSP work", {
   expect_identical(sum(hsp2$comps), choose2(nsam))
   pop = expect_silent(as_pop(samples))
   pop2 = expect_silent(as_pop2(samples))
-  expect_identical(sum(pop$comps), nsam * (nsam - 1L))
-  expect_identical(sum(pop$comps), nsam * (nsam - 1L))
+  cohort_n = dplyr::count(captured, .data$cohort)$n
+  sum_pop_comps = choose2(nsam) - sum(choose2(cohort_n))
+  expect_identical(sum(pop$comps), sum_pop_comps)
+  expect_identical(sum(pop2$comps), sum_pop_comps)
   fsp = captured |>
     filter_sibs() |>
     group_by_fsp() |>

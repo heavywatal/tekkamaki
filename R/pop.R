@@ -71,17 +71,13 @@ count_pops = function(captured) {
 count_pop_comps = function(captured) {
   cnt_adults = captured |>
     dplyr::count(.data$capture_year, .data$capture_age, .data$location, name = "n_i")
-  cnt_cohort = captured |>
-    dplyr::count(.data$cohort, name = "n_j")
-  tibble::tibble(
-    df_i = list(cnt_adults),
-    df_j = list(cnt_cohort)
-  ) |>
-    tidyr::unnest("df_i") |>
-    tidyr::unnest("df_j") |>
-    dplyr::mutate(comps = .data$n_i * .data$n_j - ifelse(
-      .data$cohort == .data$capture_year - .data$capture_age, .data$n_i, 0L
-    )) |>
+  captured |>
+    dplyr::count(.data$cohort, name = "n_j") |>
+    dplyr::mutate(nested = purrr::map(.data$cohort, \(x) {
+      dplyr::filter(cnt_adults, x > .data$capture_year - .data$capture_age)
+    })) |>
+    tidyr::unnest("nested") |>
+    dplyr::mutate(comps = .data$n_i * .data$n_j) |>
     dplyr::select(dplyr::all_of(pop_keys), "comps")
 }
 

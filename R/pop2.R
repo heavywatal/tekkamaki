@@ -69,19 +69,14 @@ count_pops2 = function(captured) {
 }
 
 count_pop2_comps = function(captured) {
-  cnt = captured |>
-    dplyr::count(.data$cohort, .data$capture_age, .data$location)
-  tibble::tibble(
-    df_i = cnt |> dplyr::rename_with(\(x) paste0(x, "_parent")) |> list(),
-    df_j = cnt |> dplyr::rename_with(\(x) paste0(x, "_offspring")) |> list()
-  ) |>
-    tidyr::unnest("df_i") |>
-    tidyr::unnest("df_j") |>
-    dplyr::mutate(same_class = (
-      .data$cohort_parent == .data$cohort_offspring &
-        .data$capture_age_parent == .data$capture_age_offspring &
-        .data$location_parent == .data$location_offspring)) |>
-    dplyr::mutate(self = ifelse(.data$same_class, .data$n_parent, 0L)) |>
-    dplyr::mutate(comps = .data$n_parent * .data$n_offspring - .data$self) |>
+  cnt = dplyr::count(captured, .data$cohort, .data$capture_age, .data$location)
+  cnt_offspring = dplyr::rename_with(cnt, \(x) paste0(x, "_offspring"))
+  cnt |>
+    dplyr::rename_with(\(x) paste0(x, "_parent")) |>
+    dplyr::mutate(nested = purrr::map(.data$cohort_parent, \(x) {
+      dplyr::filter(cnt_offspring, .data$cohort_offspring > x)
+    })) |>
+    tidyr::unnest("nested") |>
+    dplyr::mutate(comps = .data$n_parent * .data$n_offspring) |>
     dplyr::select(dplyr::all_of(pop2_keys), "comps")
 }
