@@ -19,17 +19,15 @@ test_that("POP and HSP work", {
     dplyr::filter(!is.na(.data$capture_year)) |>
     dplyr::mutate(capture_age = .data$capture_year - .data$birth_year) |>
     dplyr::rename(cohort = "birth_year")
-  adults = captured |> dplyr::filter(cohort < capture_year)
   nsam = nrow(captured)
-  nad = nrow(adults)
   hsp = expect_silent(as_hsp(samples))
   hsp2 = expect_silent(as_hsp2(samples))
   expect_identical(sum(hsp$comps), choose2(nsam))
   expect_identical(sum(hsp2$comps), choose2(nsam))
   pop = expect_silent(as_pop(samples))
   pop2 = expect_silent(as_pop2(samples))
-  expect_identical(sum(pop$comps), nsam * nad - nad)
-  expect_identical(sum(pop2$comps), nsam * nad - nad)
+  expect_identical(sum(pop$comps), nsam * (nsam - 1L))
+  expect_identical(sum(pop$comps), nsam * (nsam - 1L))
   fsp = captured |>
     filter_sibs() |>
     group_by_fsp() |>

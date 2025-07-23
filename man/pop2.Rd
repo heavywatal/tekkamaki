@@ -6,7 +6,7 @@
 \alias{read_pop2}
 \title{Extended POP format}
 \usage{
-as_pop2(samples, min_adult_age = 4L)
+as_pop2(samples)
 
 write_pop2(x, path = "pop2.tsv")
 
@@ -14,8 +14,6 @@ read_pop2(path)
 }
 \arguments{
 \item{samples}{A \code{sample_family} data.frame of \code{\link[=tekka]{tekka()}} result.}
-
-\item{min_adult_age}{An integer.}
 
 \item{x}{An outcome of \code{\link[=as_pop2]{as_pop2()}}}
 

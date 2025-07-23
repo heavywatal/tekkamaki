@@ -6,7 +6,7 @@
 \alias{read_pop}
 \title{POP format}
 \usage{
-as_pop(samples, min_adult_age = 4L)
+as_pop(samples)
 
 write_pop(x, path = "pop.txt")
 
@@ -14,8 +14,6 @@ read_pop(path)
 }
 \arguments{
 \item{samples}{A \code{sample_family} data.frame of \code{\link[=tekka]{tekka()}} result.}
-
-\item{min_adult_age}{integer}
 
 \item{x}{An outcome of \code{\link[=as_pop]{as_pop()}}}
 

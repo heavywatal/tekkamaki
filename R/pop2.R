@@ -6,7 +6,6 @@
 #' @details
 #' [as_pop2()] converts a `sample_family` data frame to POP format.
 #' @param samples A `sample_family` data.frame of [tekka()] result.
-#' @param min_adult_age An integer.
 #' @return A data.frame with "pop" class and six columns:
 #' - `cohort_parent`, `cohort_offspring`: birth year of samples
 #' - `capture_age_parent`, `capture_age_offspring`
@@ -15,12 +14,12 @@
 #' - `comps`: the number of possible comparisons
 #' @rdname pop2
 #' @export
-as_pop2 = function(samples, min_adult_age = 4L) {
+as_pop2 = function(samples) {
   captured = dplyr::filter(samples, !is.na(.data$capture_year)) |>
     dplyr::mutate(capture_age = .data$capture_year - .data$birth_year) |>
     dplyr::rename(cohort = "birth_year") |>
     dplyr::select(!"capture_year")
-  comps = count_pop2_comps(captured, min_adult_age)
+  comps = count_pop2_comps(captured)
   pop = count_pops2(captured) |>
     dplyr::right_join(comps, by = pop2_keys) |>
     tidyr::replace_na(list(pops = 0L))
@@ -69,12 +68,11 @@ count_pops2 = function(captured) {
     dplyr::count(!!!rlang::data_syms(pop2_keys), name = "pops")
 }
 
-count_pop2_comps = function(captured, min_adult_age) {
+count_pop2_comps = function(captured) {
   cnt = captured |>
     dplyr::count(.data$cohort, .data$capture_age, .data$location)
-  cnt_adults = dplyr::filter(cnt, .data$capture_age >= min_adult_age)
   tibble::tibble(
-    df_i = cnt_adults |> dplyr::rename_with(\(x) paste0(x, "_parent")) |> list(),
+    df_i = cnt |> dplyr::rename_with(\(x) paste0(x, "_parent")) |> list(),
     df_j = cnt |> dplyr::rename_with(\(x) paste0(x, "_offspring")) |> list()
   ) |>
     tidyr::unnest("df_i") |>

@@ -6,7 +6,6 @@
 #' @details
 #' [as_pop()] converts a `sample_family` data frame to POP format.
 #' @param samples A `sample_family` data.frame of [tekka()] result.
-#' @param min_adult_age integer
 #' @return A data.frame with "pop" class and six columns:
 #' - `cohort`: birth year of offspring
 #' - `capture_year`: of parents
@@ -16,11 +15,11 @@
 #' - `comps`: the number of possible comparisons
 #' @rdname pop
 #' @export
-as_pop = function(samples, min_adult_age = 4L) {
+as_pop = function(samples) {
   captured = dplyr::filter(samples, !is.na(.data$capture_year)) |>
     dplyr::mutate(capture_age = .data$capture_year - .data$birth_year) |>
     dplyr::rename(cohort = "birth_year")
-  comps = count_pop_comps(captured, min_adult_age)
+  comps = count_pop_comps(captured)
   pop = count_pops(captured) |>
     dplyr::right_join(comps, by = pop_keys) |>
     tidyr::replace_na(list(pops = 0L)) |>
@@ -69,9 +68,8 @@ count_pops = function(captured) {
     dplyr::count(.data$cohort, .data$capture_year, .data$capture_age, .data$location, name = "pops")
 }
 
-count_pop_comps = function(captured, min_adult_age) {
+count_pop_comps = function(captured) {
   cnt_adults = captured |>
-    dplyr::filter(.data$capture_age >= min_adult_age) |>
     dplyr::count(.data$capture_year, .data$capture_age, .data$location, name = "n_i")
   cnt_cohort = captured |>
     dplyr::count(.data$cohort, name = "n_j")
