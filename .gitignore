@@ -1,0 +1,10 @@
+/deps/bootstrap-toc-*
+/deps/clipboard.js-*
+/deps/headroom-*
+/deps/search-*
+/deps/font-awesome-*
+/katex-auto.js
+/lightswitch.js
+/pkgdown.yml
+font.css
+fonts/
