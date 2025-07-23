@@ -29,8 +29,7 @@ as_pop = function(samples) {
   pop = count_pops(captured) |>
     dplyr::right_join(comps, by = pop_keys) |>
     tidyr::replace_na(list(pops = 0L))
-  class(pop) = c("pop", class(pop))
-  pop
+  tibble::new_tibble(pop, class = "pop")
 }
 
 #' @details
