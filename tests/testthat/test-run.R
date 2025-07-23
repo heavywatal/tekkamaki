@@ -3,9 +3,7 @@ test_that("tekka is installed", {
 })
 
 test_that("tekka runs", {
-  expect_silent({
-    result = tekka()
-  })
+  result = expect_silent(tekka())
   expect_s3_class(result, "data.frame")
   sample_family = result$sample_family[[1L]]
   expect_s3_class(sample_family, "data.frame")

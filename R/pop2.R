@@ -24,8 +24,7 @@ as_pop2 = function(samples, min_adult_age = 4L) {
   pop = count_pops2(captured) |>
     dplyr::right_join(comps, by = pop2_keys) |>
     tidyr::replace_na(list(pops = 0L))
-  class(pop) = c("pop2", class(pop))
-  pop
+  tibble::new_tibble(pop, class = "pop2")
 }
 
 #' @details
@@ -42,10 +41,7 @@ write_pop2 = function(x, path = "pop2.tsv") {
 #' @rdname pop2
 #' @export
 read_pop2 = function(path) {
-  x = readr::read_tsv(path,
-    col_names = c(pop2_keys, "pops", "comps"),
-    col_types = "iiiiiiii", comment = "#", show_col_types = FALSE
-  )
+  x = readr::read_tsv(path, col_types = "iiiiiiii", comment = "#", show_col_types = FALSE)[]
   class(x) = c("pop2", class(x))
   x
 }
@@ -70,24 +66,24 @@ count_pops2 = function(captured) {
   dplyr::bind_rows(offspring_with_mother, offspring_with_father) |>
     dplyr::rename_with(\(x) paste0(x, "_offspring"), !"id") |>
     dplyr::left_join(parents, by = "id") |>
-    dplyr::count(
-      .data$cohort_parent, .data$cohort_offspring,
-      .data$capture_age_parent, .data$capture_age_offspring,
-      .data$location_parent, .data$location_offspring,
-      name = "pops"
-    )
+    dplyr::count(!!!rlang::data_syms(pop2_keys), name = "pops")
 }
 
 count_pop2_comps = function(captured, min_adult_age) {
   cnt = captured |>
     dplyr::count(.data$cohort, .data$capture_age, .data$location)
+  cnt_adults = dplyr::filter(cnt, .data$capture_age >= min_adult_age)
   tibble::tibble(
-    df_i = cnt |> dplyr::rename_with(\(x) paste0(x, "_parent")) |> list(),
+    df_i = cnt_adults |> dplyr::rename_with(\(x) paste0(x, "_parent")) |> list(),
     df_j = cnt |> dplyr::rename_with(\(x) paste0(x, "_offspring")) |> list()
   ) |>
     tidyr::unnest("df_i") |>
     tidyr::unnest("df_j") |>
-    dplyr::filter(.data$cohort_parent <= .data$cohort_offspring - min_adult_age) |>
-    dplyr::mutate(comps = .data$n_parent * .data$n_offspring) |>
+    dplyr::mutate(same_class = (
+      .data$cohort_parent == .data$cohort_offspring &
+        .data$capture_age_parent == .data$capture_age_offspring &
+        .data$location_parent == .data$location_offspring)) |>
+    dplyr::mutate(self = ifelse(.data$same_class, .data$n_parent, 0L)) |>
+    dplyr::mutate(comps = .data$n_parent * .data$n_offspring - .data$self) |>
     dplyr::select(dplyr::all_of(pop2_keys), "comps")
 }

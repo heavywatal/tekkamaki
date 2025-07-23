@@ -50,7 +50,7 @@ read_hsp = function(path) {
   x = readr::read_tsv(path,
     col_names = c(hsp_keys, "comps", "hsps"),
     col_types = "iiiiii", skip = 5L, show_col_types = FALSE
-  )
+  )[]
   class(x) = c("hsp", class(x))
   x
 }

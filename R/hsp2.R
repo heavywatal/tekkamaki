@@ -33,14 +33,14 @@ as_hsp2 = function(samples) {
 #' @rdname hsp2
 #' @export
 write_hsp2 = function(x, path = "hsp2.tsv") {
-  stopifnot(inherits(x, "hsp"))
+  stopifnot(inherits(x, "hsp2"))
   readr::write_tsv(x, path, na = "")
 }
 
 #' @rdname hsp2
 #' @export
 read_hsp2 = function(path) {
-  x = readr::read_tsv(path, col_types = "iiiiiiii", show_col_types = FALSE)
+  x = readr::read_tsv(path, col_types = "iiiiiiii", show_col_types = FALSE)[]
   class(x) = c("hsp2", class(x))
   x
 }

@@ -47,7 +47,7 @@ read_pop = function(path) {
   x = readr::read_tsv(path,
     col_names = c(pop_keys, "pops", "comps"),
     col_types = "iiiiii", comment = "#", show_col_types = FALSE
-  )
+  )[]
   class(x) = c("pop", class(x))
   x
 }
