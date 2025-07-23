@@ -1,8 +1,9 @@
-#' POP format
+#' Count parent-offspring pairs in POP format
 #'
 #' Parent-offspring pairs are counted between potential offspring cohort and
 #' potential parents grouped by age, year, and location of sampling.
-#' Adults are included in potential offspring.
+#' Comparisons are made only between younger and older samples.
+#' @seealso [as_pop2()] for the extended POP format.
 #' @details
 #' [as_pop()] converts a `sample_family` data frame to POP format.
 #' @param samples A `sample_family` data.frame of [tekka()] result.
@@ -11,10 +12,15 @@
 #' - `capture_year`: of parents
 #' - `capture_age`: of parents
 #' - `location`: where parents were sampled
-#' - `pops`: the number of parent-offspring pairs
-#' - `comps`: the number of possible comparisons
+#' - `pops`: the count of parent-offspring pairs observed within samples
+#' - `comps`: the number of possible comparisons.
 #' @rdname pop
 #' @export
+#' @examples
+#' set.seed(666)
+#' result = tekka("-y20 -l2 --sa 2,2 --sj 2,2")
+#' samples = result$sample_family[[1L]]
+#' as_pop(samples)
 as_pop = function(samples) {
   captured = dplyr::filter(samples, !is.na(.data$capture_year)) |>
     dplyr::mutate(capture_age = .data$capture_year - .data$birth_year) |>
@@ -22,8 +28,7 @@ as_pop = function(samples) {
   comps = count_pop_comps(captured)
   pop = count_pops(captured) |>
     dplyr::right_join(comps, by = pop_keys) |>
-    tidyr::replace_na(list(pops = 0L)) |>
-    bloat_pop()
+    tidyr::replace_na(list(pops = 0L))
   class(pop) = c("pop", class(pop))
   pop
 }
@@ -79,9 +84,4 @@ count_pop_comps = function(captured) {
     tidyr::unnest("nested") |>
     dplyr::mutate(comps = .data$n_i * .data$n_j) |>
     dplyr::select(dplyr::all_of(pop_keys), "comps")
-}
-
-bloat_pop = function(pop) {
-  pop |>
-    tidyr::complete(.data$cohort, .data$capture_year, .data$capture_age, fill = list(pops = 0L, comps = 0L))
 }

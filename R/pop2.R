@@ -1,19 +1,21 @@
-#' Extended POP format
+#' Count parent-offspring pairs in POP2 format
 #'
-#' Parent-offspring pairs are counted between potential offspring cohort and
-#' potential parents grouped by birth year, capture age, location of sampling.
-#' Adults are included in potential offspring.
-#' @details
-#' [as_pop2()] converts a `sample_family` data frame to POP format.
+#' The extended version of POP format with additional columns for grouping.
+#' @seealso [as_pop()] for the original POP format.
 #' @param samples A `sample_family` data.frame of [tekka()] result.
 #' @return A data.frame with "pop" class and six columns:
 #' - `cohort_parent`, `cohort_offspring`: birth year of samples
 #' - `capture_age_parent`, `capture_age_offspring`
 #' - `location_parent`, `location_offspring`: of sampling
-#' - `pops`: the number of parent-offspring pairs
+#' - `pops`: the count of parent-offspring pairs observed within samples
 #' - `comps`: the number of possible comparisons
 #' @rdname pop2
 #' @export
+#' @examples
+#' set.seed(666)
+#' result = tekka("-y20 -l2 --sa 2,2 --sj 2,2")
+#' samples = result$sample_family[[1L]]
+#' as_pop2(samples)
 as_pop2 = function(samples) {
   captured = dplyr::filter(samples, !is.na(.data$capture_year)) |>
     dplyr::mutate(capture_age = .data$capture_year - .data$birth_year) |>
@@ -26,8 +28,6 @@ as_pop2 = function(samples) {
   tibble::new_tibble(pop, class = "pop2")
 }
 
-#' @details
-#' [write_pop2()] writes a POP data.frame to a file.
 #' @param x An outcome of [as_pop2()]
 #' @param path A file name or connection to write to.
 #' @rdname pop2

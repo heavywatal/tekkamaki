@@ -4,7 +4,7 @@
 \alias{as_pop}
 \alias{write_pop}
 \alias{read_pop}
-\title{POP format}
+\title{Count parent-offspring pairs in POP format}
 \usage{
 as_pop(samples)
 
@@ -26,17 +26,26 @@ A data.frame with "pop" class and six columns:
 \item \code{capture_year}: of parents
 \item \code{capture_age}: of parents
 \item \code{location}: where parents were sampled
-\item \code{pops}: the number of parent-offspring pairs
-\item \code{comps}: the number of possible comparisons
+\item \code{pops}: the count of parent-offspring pairs observed within samples
+\item \code{comps}: the number of possible comparisons.
 }
 }
 \description{
 Parent-offspring pairs are counted between potential offspring cohort and
 potential parents grouped by age, year, and location of sampling.
-Adults are included in potential offspring.
+Comparisons are made only between younger and older samples.
 }
 \details{
 \code{\link[=as_pop]{as_pop()}} converts a \code{sample_family} data frame to POP format.
 
 \code{\link[=write_pop]{write_pop()}} writes a POP data.frame to a file.
+}
+\examples{
+set.seed(666)
+result = tekka("-y20 -l2 --sa 2,2 --sj 2,2")
+samples = result$sample_family[[1L]]
+as_pop(samples)
+}
+\seealso{
+\code{\link[=as_pop2]{as_pop2()}} for the extended POP format.
 }

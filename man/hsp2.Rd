@@ -4,7 +4,7 @@
 \alias{as_hsp2}
 \alias{write_hsp2}
 \alias{read_hsp2}
-\title{Extended HSP format}
+\title{Count half-sib pairs in HSP2 format}
 \usage{
 as_hsp2(samples)
 
@@ -25,16 +25,22 @@ A data.frame with "hsp2" class and the following columns:
 \item \code{cohort_i}, \code{cohort_j}: birth year of samples
 \item \code{capture_age_i}, \code{capture_age_j}: of samples
 \item \code{location_i}, \code{location_j}: of sampling
-\item \code{comps}: the number of possible comparisons between group \emph{i} and \emph{j}
-\item \code{hsps}: the number of half-sib pairs between group \emph{i} and \emph{j}
+\item \code{comps}: the number of possible comparisons between group \emph{i} and \emph{j}.
+All samples are compared pairwise, excluding self-comparisons.
+The total number of comparisons equals \\(n \\choose 2\\),
+where \emph{n} is the total sample size.
+\item \code{hsps}: the count of half-sib pairs observed between group \emph{i} and \emph{j}
 }
 }
 \description{
-Half-sib pairs are counted between samples grouped by birth year, capture age,
-and sampled location.
+The extended version of HSP format with additional columns for grouping.
 }
-\details{
-\code{\link[=as_hsp2]{as_hsp2()}} converts a result data frame to HSP format.
-
-\code{\link[=write_hsp2]{write_hsp2()}} writes a HSP data.frame to a file in TSV format.
+\examples{
+set.seed(666)
+result = tekka("-y20 -l2 --sa 2,2 --sj 2,2")
+samples = result$sample_family[[1L]]
+as_hsp2(samples)
+}
+\seealso{
+\code{\link[=as_hsp]{as_hsp()}} for the original HSP format.
 }

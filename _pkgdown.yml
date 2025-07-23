@@ -1,6 +1,7 @@
 url: https://heavywatal.github.io/tekkamaki/
 template:
   bootstrap: 5
+  math-rendering: katex
 destination: docs
 reference:
 - title: Run simulation
@@ -14,8 +15,8 @@ reference:
 - title: Kinship
   contents:
   - find_kinship
-  - as_hsp
-  - as_pop
+  - starts_with("as_hsp")
+  - starts_with("as_pop")
 - title: Misc.
   contents:
   - starts_with("as_igraph")

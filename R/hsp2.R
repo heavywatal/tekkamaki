@@ -1,18 +1,24 @@
-#' Extended HSP format
+#' Count half-sib pairs in HSP2 format
 #'
-#' Half-sib pairs are counted between samples grouped by birth year, capture age,
-#' and sampled location.
-#' @details
-#' [as_hsp2()] converts a result data frame to HSP format.
+#' The extended version of HSP format with additional columns for grouping.
+#' @seealso [as_hsp()] for the original HSP format.
 #' @param samples A `sample_family` data.frame of [tekka()] result.
 #' @return A data.frame with "hsp2" class and the following columns:
 #' - `cohort_i`, `cohort_j`: birth year of samples
 #' - `capture_age_i`, `capture_age_j`: of samples
 #' - `location_i`, `location_j`: of sampling
-#' - `comps`: the number of possible comparisons between group *i* and *j*
-#' - `hsps`: the number of half-sib pairs between group *i* and *j*
+#' - `comps`: the number of possible comparisons between group *i* and *j*.
+#'   All samples are compared pairwise, excluding self-comparisons.
+#'   The total number of comparisons equals \\(n \\choose 2\\),
+#'   where *n* is the total sample size.
+#' - `hsps`: the count of half-sib pairs observed between group *i* and *j*
 #' @rdname hsp2
 #' @export
+#' @examples
+#' set.seed(666)
+#' result = tekka("-y20 -l2 --sa 2,2 --sj 2,2")
+#' samples = result$sample_family[[1L]]
+#' as_hsp2(samples)
 as_hsp2 = function(samples) {
   captured = dplyr::filter(samples, !is.na(.data$capture_year)) |>
     dplyr::mutate(capture_age = .data$capture_year - .data$birth_year) |>
@@ -26,8 +32,6 @@ as_hsp2 = function(samples) {
     tibble::new_tibble(class = "hsp2")
 }
 
-#' @details
-#' [write_hsp2()] writes a HSP data.frame to a file in TSV format.
 #' @param x An outcome of [as_hsp2()].
 #' @param path A file name or connection to write to.
 #' @rdname hsp2
