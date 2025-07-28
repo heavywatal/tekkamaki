@@ -1,0 +1,23 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='93.53' height='108.00' viewBox='0 0 93.53 108'>
+<g class='svglite'>
+<defs>
+  <style type='text/css'><![CDATA[
+  .svglite polyline {
+    fill: none;
+    stroke: NA;
+  }
+  @media (prefers-color-scheme: dark) {
+    .svglite polyline {
+      stroke: #F0F0F0;
+    }
+  }
+  ]]></style>
+</defs>
+<g>
+<polygon points='46.77,0 0,27 -0,81 46.77,108 93.53,81 93.53,27 ' style='stroke-width: 0; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #303030;' />
+<polygon points='46.77,6 5.20,30 5.20,78 46.77,102 88.33,78 88.33,30 ' style='stroke-width: 0; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #FFFFFF;' />
+<polygon points='46.77,32.40 28.06,43.20 28.06,64.80 46.77,75.60 65.47,64.80 65.47,43.20 ' style='stroke-width: 0; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #C41A41;' />
+</g>
+</g>
+</svg>
