@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">tekkamaki</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.8.1.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.8.2</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -51,34 +51,34 @@
           <code><a href="tekka.html">tekka()</a></code>
 
         </dt>
-        <dd>Run C++ simulation.</dd>
+        <dd>Run the <code>tekka</code> simulator.</dd>
       </dl><dl><dt>
 
           <code><a href="path.html">tekka_path()</a></code> <code><a href="path.html">tekka_version()</a></code>
 
         </dt>
-        <dd>Get the path to the tekka installation.</dd>
+        <dd>Get information about the <code>tekka</code> executable</dd>
       </dl><dl><dt>
 
-          <code><a href="read.html">read_result()</a></code>
+          <code><a href="read.html">read_tekka()</a></code>
 
         </dt>
-        <dd>Read functions</dd>
+        <dd>Read results from <code>tekka</code></dd>
       </dl><dl><dt>
 
           <code><a href="genealogy.html">make_gene_genealogy()</a></code> <code><a href="genealogy.html">gather_segments()</a></code> <code><a href="genealogy.html">count_uncoalesced()</a></code> <code><a href="genealogy.html">annotate_sampled()</a></code>
 
         </dt>
-        <dd>Functions to generate gene genealogy from sample family table</dd>
+        <dd>Generate gene genealogy from samples</dd>
       </dl><dl><dt>
 
           <code><a href="snp.html">make_snp()</a></code> <code><a href="snp.html">make_snp_chromosome()</a></code> <code><a href="snp.html">place_mutations()</a></code>
 
         </dt>
-        <dd>Functions to generate SNPs on given samples.</dd>
+        <dd>Generate SNPs on given samples.</dd>
       </dl><dl><dt>
 
-          <code><a href="vcf.html">as_vcf()</a></code> <code><a href="vcf.html">write_vcf()</a></code> <code><a href="vcf.html">read_vcf()</a></code> <code><a href="vcf.html">as_vcf_gt()</a></code> <code><a href="vcf.html">add_pos_id()</a></code>
+          <code><a href="vcf.html">as_vcf()</a></code> <code><a href="vcf.html">add_pos_id()</a></code> <code><a href="vcf.html">write_vcf()</a></code> <code><a href="vcf.html">read_vcf()</a></code> <code><a href="vcf.html">as_vcf_gt()</a></code>
 
         </dt>
         <dd>Utilities for VCF format</dd>
@@ -98,7 +98,7 @@
           <code><a href="kinship.html">find_kinship()</a></code>
 
         </dt>
-        <dd>Analyze kinship with igraph</dd>
+        <dd>Analyze kinship within samples</dd>
       </dl><dl><dt>
 
           <code><a href="hsp.html">as_hsp()</a></code> <code><a href="hsp.html">write_hsp()</a></code> <code><a href="hsp.html">read_hsp()</a></code>
@@ -139,7 +139,7 @@
           <code><a href="graph.html">as_igraph(<i>&lt;sample_family&gt;</i>)</a></code>
 
         </dt>
-        <dd>Convert genealogy to igraph</dd>
+        <dd>Convert sample family data.frames to igraphlight objects</dd>
       </dl><dl><dt>
 
           <code><a href="plot.html">augment(<i>&lt;sample_family&gt;</i>)</a></code> <code><a href="plot.html">augment(<i>&lt;genealogy&gt;</i>)</a></code> <code><a href="plot.html">layout_demography()</a></code> <code><a href="plot.html">plot(<i>&lt;genealogy&gt;</i>)</a></code> <code><a href="plot.html">plot(<i>&lt;sample_family&gt;</i>)</a></code>
