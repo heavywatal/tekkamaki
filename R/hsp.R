@@ -3,10 +3,11 @@
 #' Half-sib pairs are counted between samples grouped by birth year and
 #' sampled location.
 #' @seealso [as_hsp2()] for the extended HSP format.
+#' @seealso [find_kinship()] to count kinship within samples.
 #' @details
 #' [as_hsp()] converts a result data frame to HSP format.
 #' @param samples A `sample_family` data.frame of [tekka()] result.
-#' @return A data.frame with "hsp" class and six columns:
+#' @returns A data.frame of "hsp" subclass with six columns:
 #' - `cohort_i`, `cohort_j`: birth year of samples
 #' - `location_i`, `location_j`: of sampling
 #' - `comps`: the number of possible comparisons between group *i* and *j*.

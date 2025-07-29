@@ -19,16 +19,46 @@ layout_demography(x)
 \method{plot}{sample_family}(x, ..., lwd = 0.5, cex = 5, pch = 16)
 }
 \arguments{
-\item{x}{sample_family data.frame.}
+\item{x}{A \code{sample_family} of \code{genealogy} data.frame.}
 
-\item{layout}{A data.frame.}
+\item{layout}{A data.frame or function to compute coordinates.
+\code{\link[=layout_demography]{layout_demography()}} is applied by default.}
 
-\item{...}{passed to layout function.}
+\item{...}{Additional arguments passed to the layout function.}
 
 \item{lwd}{passed to \link[ggplot2:geom_segment]{ggplot2::geom_segment}.}
 
 \item{cex, pch}{passed to \link[ggplot2:geom_point]{ggplot2::geom_point} and \link[ggplot2:geom_text]{ggplot2::geom_text}.}
 }
+\value{
+\code{augment()} returns a data.frame suitable for plotting.
+
+\code{\link[=layout_demography]{layout_demography()}} computes coordinates for plotting genealogy.
+
+\code{\link[=plot]{plot()}} returns a ggplot2 object.
+}
 \description{
-Methods for quick visualization
+Sample family trees and generated gene genealogies can be visualized briefly
+with the \code{\link[=plot]{plot()}} method. The output can be further customized with ggplot2
+functions.
+
+The input can be also customized.
+First, use \code{\link[=augment]{augment()}} to add coordinates and other attributes for plotting.
+Then you can modify them as needed.
+Finally, build the plot with \code{\link[ggplot2:ggplot]{ggplot2::ggplot()}}.
+}
+\examples{
+set.seed(666)
+result = tekka("-y20 -l2 --sa 2,2 --sj 2,2")
+samples = result$sample_family[[1L]]
+augment(samples)
+
+plot(samples) +
+  ggplot2::theme_void() +
+  ggplot2::theme(legend.position = "top")
+
+genealogy = make_gene_genealogy(samples)
+plot(genealogy) +
+  ggplot2::theme_void() +
+  ggplot2::theme(legend.position = "top")
 }

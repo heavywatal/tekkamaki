@@ -3,6 +3,8 @@
 #' @param obj jsonlite object
 #' @rdname parameter
 #' @export
+#' @examples
+#' plot_parameters_json()
 plot_parameters_json = function(obj = default_parameters_json()) {
   p_vec = obj |>
     parameters_to_tbl() |>

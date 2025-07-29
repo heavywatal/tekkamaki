@@ -8,7 +8,7 @@ reference:
   contents:
   - tekka
   - tekka_path
-  - read_result
+  - read_tekka
   - make_gene_genealogy
   - make_snp
   - as_vcf

@@ -2,8 +2,9 @@
 #'
 #' The extended version of HSP format with additional columns for grouping.
 #' @seealso [as_hsp()] for the original HSP format.
+#' @seealso [find_kinship()] to count kinship within samples.
 #' @param samples A `sample_family` data.frame of [tekka()] result.
-#' @return A data.frame with "hsp2" class and the following columns:
+#' @returns A data.frame of "hsp2" subclass with the following columns:
 #' - `cohort_i`, `cohort_j`: birth year of samples
 #' - `capture_age_i`, `capture_age_j`: of samples
 #' - `location_i`, `location_j`: of sampling

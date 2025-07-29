@@ -2,18 +2,19 @@
 #'
 #' Parent-offspring pairs are counted between potential offspring cohort and
 #' potential parents grouped by age, year, and location of sampling.
-#' Comparisons are made only between younger and older samples.
 #' @seealso [as_pop2()] for the extended POP format.
+#' @seealso [find_kinship()] to count kinship within samples.
 #' @details
 #' [as_pop()] converts a `sample_family` data frame to POP format.
 #' @param samples A `sample_family` data.frame of [tekka()] result.
-#' @return A data.frame with "pop" class and six columns:
+#' @returns A data.frame of "pop" subclass with six columns:
 #' - `cohort`: birth year of offspring
 #' - `capture_year`: of parents
 #' - `capture_age`: of parents
 #' - `location`: where parents were sampled
 #' - `pops`: the count of parent-offspring pairs observed within samples
-#' - `comps`: the number of possible comparisons.
+#' - `comps`: the number of possible comparisons,
+#'   including only pairs where one sample is younger than the other.
 #' @rdname pop
 #' @export
 #' @examples

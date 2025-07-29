@@ -1,12 +1,29 @@
-#' Analyze kinship with igraph
+#' Analyze kinship within samples
 #'
 #' @details
 #' [find_kinship()] finds kinship below given order.
 #' @param samples sample_family
 #' @param order integer
 #' @param experimental boolean
+#' @returns A data.frame with the following columns:
+#' - `from`, `to`: sample IDs in integer.
+#' - `path`: text representation of the path found between samples;
+#'   ascending with `1` and descending with `0`;
+#'   the count of the same paths is indicated by `_n` suffix;
+#'   e.g., "10_1" and "10_2" means half-sibling and full-sibling pairs, respectively.
+#' - `degree`: the number of steps in the path.
+#' - `label`: aliases for the path.
+#'   See <https://github.com/heavywatal/tekkamaki/blob/main/data-raw/kinlabels.R>
+#'   for the available labels.
+#' @seealso [as_hsp()] and [as_hsp2()] to find half-sibling pairs.
+#' @seealso [as_pop()] and [as_pop2()] to find parent-offspring pairs.
 #' @rdname kinship
 #' @export
+#' @examples
+#' set.seed(666)
+#' result = tekka("-y20 -l2 --sa 2,2 --sj 2,2")
+#' samples = result$sample_family[[1L]]
+#' find_kinship(samples, order = 3L)
 find_kinship = function(samples, order = 4L, experimental = FALSE) {
   captured = dplyr::filter(samples, !is.na(.data$capture_year))
   max_age = 31L

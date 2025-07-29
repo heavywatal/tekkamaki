@@ -1,8 +1,14 @@
-#' Functions to generate SNPs on given samples.
+#' Generate SNPs on given samples.
 #'
-#' @details
-#' [make_snp()] generates a list of SNP data.frames by calling
-#' [make_snp_chromosome()] in parallel.
+#' @description
+#' [place_mutations()] generates a SNP data.frame by randomly placing a fixed
+#' number of mutations on a given genealogy.
+#' It means that all the sites are perfectly linked with each other.
+#'
+#' [make_snp_chromosome()] simulates a SNP data.frame on a chromosome using
+#' [place_mutations()] with recombination.
+#' [make_snp()] calls it for each chromosome in parallel.
+#'
 #' Use `RNGkind("L'Ecuyer-CMRG")` and `set.seed()` to get reproducible results.
 #' The number of CPU cores used can be configured via `mc.cores` option.
 #' @inheritParams make_gene_genealogy
@@ -10,8 +16,21 @@
 #'   its length is the number of chromosome;
 #'   each element is the number of segsites on a chromosome.
 #'   If a named vector is given, the output is also named.
+#' @returns [make_snp()] returns a list of data.frame for each chromosome.
+#' @seealso [write_vcf()] to write the output in VCF format.
 #' @rdname snp
 #' @export
+#' @examples
+#' set.seed(666)
+#' result = tekka("-y20 -l2 --sa 2,2 --sj 2,2")
+#' samples = result$sample_family[[1L]]
+#' segments = gather_segments(samples)
+#' genealogy = make_gene_genealogy(segments)
+#'
+#' place_mutations(genealogy, 3L) |> str()
+#'
+#' ss = c(chr1 = 3, chr2 = 2)
+#' make_snp(segments, ss) |> str()
 make_snp = function(samples, ss) {
   on.exit(stats::runif(1L)) # proxy of parallel::nextRNGStream(.Random.seed)
   if (inherits(samples, "sample_family")) {
@@ -23,8 +42,15 @@ make_snp = function(samples, ss) {
 }
 
 #' @details
-#' [make_snp_chromosome()] simulate a SNP data.frame on a chromosome by calling
-#' [place_mutations()] and `recombination()`.
+#' It is assumed that each node in the genealogy has one recombination event
+#' on each chromosome. In other words, a chromosome has a fixed number of
+#' recombination events, equal to the number of nodes in the genealogy.
+#' Their locations are randomly assigned, and segregating sites are placed among them.
+#' For example, a chromosome with 3 segsites on a genealogy with 10 nodes can be
+#' illustrated like this:
+#' `5' rrrSrrSrrrrSr 3'`.
+#' @returns [make_snp_chromosome()] and [place_mutations()] returns
+#' a data.frame with segregating sites in columns, and sample segments in rows.
 #' @rdname snp
 #' @export
 make_snp_chromosome = function(genealogy, segsites) {
@@ -40,10 +66,6 @@ make_snp_chromosome = function(genealogy, segsites) {
   purrr::list_cbind(snp_tbls, name_repair = "minimal")
 }
 
-#' @details
-#' [place_mutations()] generates a SNP data.frame by randomly placing a fixed
-#' number of mutations on a given genealogy.
-#' It means that all the sites are perfectly linked with each other.
 #' @param segsites The number of segregating sites on a segment.
 #' @param v_sampled The sampled vertices. Use this to fix the output order.
 #' @rdname snp

@@ -12,3 +12,6 @@ plot_parameters_json(obj = default_parameters_json())
 \description{
 Visualize parameter json file
 }
+\examples{
+plot_parameters_json()
+}

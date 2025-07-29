@@ -4,7 +4,7 @@
 \alias{make_snp}
 \alias{make_snp_chromosome}
 \alias{place_mutations}
-\title{Functions to generate SNPs on given samples.}
+\title{Generate SNPs on given samples.}
 \usage{
 make_snp(samples, ss)
 
@@ -13,7 +13,9 @@ make_snp_chromosome(genealogy, segsites)
 place_mutations(genealogy, segsites, v_sampled = NULL)
 }
 \arguments{
-\item{samples}{A data.frame: \code{sample_family} or output from \code{\link[=gather_segments]{gather_segments()}}.}
+\item{samples}{A data.frame: \code{sample_family} or its tranfromation by \code{\link[=gather_segments]{gather_segments()}}.
+Using the latter will improve performance when the function is called many times,
+e.g., in \code{\link[=make_snp]{make_snp()}}.}
 
 \item{ss}{A sequence of \code{segsites};
 its length is the number of chromosome;
@@ -26,19 +28,45 @@ If a named vector is given, the output is also named.}
 
 \item{v_sampled}{The sampled vertices. Use this to fix the output order.}
 }
-\description{
-Functions to generate SNPs on given samples.
+\value{
+\code{\link[=make_snp]{make_snp()}} returns a list of data.frame for each chromosome.
+
+\code{\link[=make_snp_chromosome]{make_snp_chromosome()}} and \code{\link[=place_mutations]{place_mutations()}} returns
+a data.frame with segregating sites in columns, and sample segments in rows.
 }
-\details{
-\code{\link[=make_snp]{make_snp()}} generates a list of SNP data.frames by calling
-\code{\link[=make_snp_chromosome]{make_snp_chromosome()}} in parallel.
-Use \code{RNGkind("L'Ecuyer-CMRG")} and \code{set.seed()} to get reproducible results.
-The number of CPU cores used can be configured via \code{mc.cores} option.
-
-\code{\link[=make_snp_chromosome]{make_snp_chromosome()}} simulate a SNP data.frame on a chromosome by calling
-\code{\link[=place_mutations]{place_mutations()}} and \code{recombination()}.
-
+\description{
 \code{\link[=place_mutations]{place_mutations()}} generates a SNP data.frame by randomly placing a fixed
 number of mutations on a given genealogy.
 It means that all the sites are perfectly linked with each other.
+
+\code{\link[=make_snp_chromosome]{make_snp_chromosome()}} simulates a SNP data.frame on a chromosome using
+\code{\link[=place_mutations]{place_mutations()}} with recombination.
+\code{\link[=make_snp]{make_snp()}} calls it for each chromosome in parallel.
+
+Use \code{RNGkind("L'Ecuyer-CMRG")} and \code{set.seed()} to get reproducible results.
+The number of CPU cores used can be configured via \code{mc.cores} option.
+}
+\details{
+It is assumed that each node in the genealogy has one recombination event
+on each chromosome. In other words, a chromosome has a fixed number of
+recombination events, equal to the number of nodes in the genealogy.
+Their locations are randomly assigned, and segregating sites are placed among them.
+For example, a chromosome with 3 segsites on a genealogy with 10 nodes can be
+illustrated like this:
+\verb{5' rrrSrrSrrrrSr 3'}.
+}
+\examples{
+set.seed(666)
+result = tekka("-y20 -l2 --sa 2,2 --sj 2,2")
+samples = result$sample_family[[1L]]
+segments = gather_segments(samples)
+genealogy = make_gene_genealogy(segments)
+
+place_mutations(genealogy, 3L) |> str()
+
+ss = c(chr1 = 3, chr2 = 2)
+make_snp(segments, ss) |> str()
+}
+\seealso{
+\code{\link[=write_vcf]{write_vcf()}} to write the output in VCF format.
 }

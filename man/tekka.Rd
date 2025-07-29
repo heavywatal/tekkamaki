@@ -2,7 +2,7 @@
 % Please edit documentation in R/tekka.R
 \name{tekka}
 \alias{tekka}
-\title{Run C++ simulation.}
+\title{Run the \code{tekka} simulator.}
 \usage{
 tekka(args = character(0L), cache = NULL)
 }
@@ -19,9 +19,26 @@ Use \code{set.seed()} or \code{--seed} explicitly for reproducibility and cachin
 which is discarded at the end of an R session.
 Set \code{FALSE} to force \code{tekka} to run and overwrite previous results if any.}
 }
+\value{
+A data.frame read by \code{\link[=read_tekka]{read_tekka()}}.
+}
 \description{
 A result is first written to a directory in \code{cache},
 and then read into a data.frame.
 If a previous result with exactly the same arguments is found in \code{cache},
 it is read without calling \code{tekka}.
+}
+\examples{
+set.seed(666)
+tekka("--help")
+
+result = tekka("-y20 -l2 --sa 2,2 --sj 2,2")
+result |> dplyr::select(!"outdir")
+
+result$sample_family[[1L]]
+
+result$demography[[1L]]
+}
+\seealso{
+\code{\link[=tekka_path]{tekka_path()}} to get information about the \code{tekka} installation.
 }

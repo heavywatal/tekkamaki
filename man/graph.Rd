@@ -2,18 +2,23 @@
 % Please edit documentation in R/graph.R
 \name{as_igraph.sample_family}
 \alias{as_igraph.sample_family}
-\title{Convert genealogy to igraph}
+\title{Convert sample family data.frames to igraphlight objects}
 \usage{
 \method{as_igraph}{sample_family}(x, ...)
 }
 \arguments{
-\item{x}{\code{sample_family} table}
+\item{x}{A \code{sample_family} data.frame in the output of \code{\link[=tekka]{tekka()}}.}
 
 \item{...}{Additional arguments passed to \code{\link[igraphlite:conversion-impl]{igraphlite::graph_from_data_frame()}}.}
 }
 \description{
-Convert genealogy to igraph
+Connections among samples and their ancestors are recorded in
+\code{sample_family} data.frames.
+\code{\link[=as_igraph]{as_igraph()}} converts them to igraphlite objects.
 }
-\details{
-\code{as_igraph} converts a result to igraph.
+\examples{
+set.seed(666)
+result = tekka("-y20 -l2 --sa 2,2 --sj 2,2")
+samples = result$sample_family[[1L]]
+as_igraph(samples)
 }

@@ -2,7 +2,7 @@
 % Please edit documentation in R/kinship.R
 \name{find_kinship}
 \alias{find_kinship}
-\title{Analyze kinship with igraph}
+\title{Analyze kinship within samples}
 \usage{
 find_kinship(samples, order = 4L, experimental = FALSE)
 }
@@ -13,9 +13,34 @@ find_kinship(samples, order = 4L, experimental = FALSE)
 
 \item{experimental}{boolean}
 }
+\value{
+A data.frame with the following columns:
+\itemize{
+\item \code{from}, \code{to}: sample IDs in integer.
+\item \code{path}: text representation of the path found between samples;
+ascending with \code{1} and descending with \code{0};
+the count of the same paths is indicated by \verb{_n} suffix;
+e.g., "10_1" and "10_2" means half-sibling and full-sibling pairs, respectively.
+\item \code{degree}: the number of steps in the path.
+\item \code{label}: aliases for the path.
+See \url{https://github.com/heavywatal/tekkamaki/blob/main/data-raw/kinlabels.R}
+for the available labels.
+}
+}
 \description{
-Analyze kinship with igraph
+Analyze kinship within samples
 }
 \details{
 \code{\link[=find_kinship]{find_kinship()}} finds kinship below given order.
+}
+\examples{
+set.seed(666)
+result = tekka("-y20 -l2 --sa 2,2 --sj 2,2")
+samples = result$sample_family[[1L]]
+find_kinship(samples, order = 3L)
+}
+\seealso{
+\code{\link[=as_hsp]{as_hsp()}} and \code{\link[=as_hsp2]{as_hsp2()}} to find half-sibling pairs.
+
+\code{\link[=as_pop]{as_pop()}} and \code{\link[=as_pop2]{as_pop2()}} to find parent-offspring pairs.
 }

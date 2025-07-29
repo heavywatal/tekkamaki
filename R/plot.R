@@ -2,11 +2,38 @@
 #' @export
 generics::augment
 
-#' @param x sample_family data.frame.
-#' @param layout A data.frame.
-#' @param ... passed to layout function.
+#' Methods for quick visualization
+#'
+#' @description
+#' Sample family trees and generated gene genealogies can be visualized briefly
+#' with the [plot()] method. The output can be further customized with ggplot2
+#' functions.
+#'
+#' The input can be also customized.
+#' First, use [augment()] to add coordinates and other attributes for plotting.
+#' Then you can modify them as needed.
+#' Finally, build the plot with [ggplot2::ggplot()].
+#' @param x A `sample_family` of `genealogy` data.frame.
+#' @param layout A data.frame or function to compute coordinates.
+#'   [layout_demography()] is applied by default.
+#' @param ... Additional arguments passed to the layout function.
+#' @returns `augment()` returns a data.frame suitable for plotting.
 #' @rdname plot
 #' @export
+#' @examples
+#' set.seed(666)
+#' result = tekka("-y20 -l2 --sa 2,2 --sj 2,2")
+#' samples = result$sample_family[[1L]]
+#' augment(samples)
+#'
+#' plot(samples) +
+#'   ggplot2::theme_void() +
+#'   ggplot2::theme(legend.position = "top")
+#'
+#' genealogy = make_gene_genealogy(samples)
+#' plot(genealogy) +
+#'   ggplot2::theme_void() +
+#'   ggplot2::theme(legend.position = "top")
 augment.sample_family = function(x, layout = NULL, ...) {
   augment(as_genealogy(x), layout = layout, ...)
 }
@@ -53,8 +80,7 @@ as_genealogy = function(x) {
   x
 }
 
-#' Methods for quick visualization
-#'
+#' @returns [layout_demography()] computes coordinates for plotting genealogy.
 #' @rdname plot
 #' @export
 layout_demography = function(x) {
@@ -67,6 +93,7 @@ layout_demography = function(x) {
 
 #' @param lwd passed to [ggplot2::geom_segment].
 #' @param cex,pch passed to [ggplot2::geom_point] and [ggplot2::geom_text].
+#' @returns [plot()] returns a ggplot2 object.
 #' @rdname plot
 #' @export
 plot.genealogy = function(x, ..., lwd = 0.5, cex = 5, pch = 16) {

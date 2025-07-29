@@ -2,13 +2,15 @@
 #'
 #' The extended version of POP format with additional columns for grouping.
 #' @seealso [as_pop()] for the original POP format.
+#' @seealso [find_kinship()] to count kinship within samples.
 #' @param samples A `sample_family` data.frame of [tekka()] result.
-#' @return A data.frame with "pop" class and six columns:
+#' @returns A data.frame of "pop2" subclass with the following columns:
 #' - `cohort_parent`, `cohort_offspring`: birth year of samples
 #' - `capture_age_parent`, `capture_age_offspring`
 #' - `location_parent`, `location_offspring`: of sampling
 #' - `pops`: the count of parent-offspring pairs observed within samples
-#' - `comps`: the number of possible comparisons
+#' - `comps`: the number of possible comparisons,
+#'   including only pairs where one sample is younger than the other.
 #' @rdname pop2
 #' @export
 #' @examples

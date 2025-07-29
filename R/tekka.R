@@ -1,4 +1,4 @@
-#' Run C++ simulation.
+#' Run the `tekka` simulator.
 #'
 #' A result is first written to a directory in `cache`,
 #' and then read into a data.frame.
@@ -14,8 +14,20 @@
 #' [tempdir()] is used in other cases including the default (`NULL`),
 #' which is discarded at the end of an R session.
 #' Set `FALSE` to force `tekka` to run and overwrite previous results if any.
+#' @returns A data.frame read by [read_tekka()].
+#' @seealso [tekka_path()] to get information about the `tekka` installation.
 #' @rdname tekka
 #' @export
+#' @examples
+#' set.seed(666)
+#' tekka("--help")
+#'
+#' result = tekka("-y20 -l2 --sa 2,2 --sj 2,2")
+#' result |> dplyr::select(!"outdir")
+#'
+#' result$sample_family[[1L]]
+#'
+#' result$demography[[1L]]
 tekka = function(args = character(0L), cache = NULL) {
   if (length(args) == 1L) {
     args = stringr::str_split_1(args, "\\s+")
@@ -34,7 +46,7 @@ tekka = function(args = character(0L), cache = NULL) {
     ret = system2(tekka_path(), c(args, "-o", outdir))
     stopifnot(ret == 0L)
   }
-  .read_result(outdir)
+  read_tekka(outdir)
 }
 
 sanitize_cache_dir = function(cache) {

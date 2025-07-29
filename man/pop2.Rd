@@ -20,13 +20,14 @@ read_pop2(path)
 \item{path}{A file name or connection to write to.}
 }
 \value{
-A data.frame with "pop" class and six columns:
+A data.frame of "pop2" subclass with the following columns:
 \itemize{
 \item \code{cohort_parent}, \code{cohort_offspring}: birth year of samples
 \item \code{capture_age_parent}, \code{capture_age_offspring}
 \item \code{location_parent}, \code{location_offspring}: of sampling
 \item \code{pops}: the count of parent-offspring pairs observed within samples
-\item \code{comps}: the number of possible comparisons
+\item \code{comps}: the number of possible comparisons,
+including only pairs where one sample is younger than the other.
 }
 }
 \description{
@@ -40,4 +41,6 @@ as_pop2(samples)
 }
 \seealso{
 \code{\link[=as_pop]{as_pop()}} for the original POP format.
+
+\code{\link[=find_kinship]{find_kinship()}} to count kinship within samples.
 }

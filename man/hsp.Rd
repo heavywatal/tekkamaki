@@ -20,7 +20,7 @@ read_hsp(path)
 \item{path}{A file name or connection to write to}
 }
 \value{
-A data.frame with "hsp" class and six columns:
+A data.frame of "hsp" subclass with six columns:
 \itemize{
 \item \code{cohort_i}, \code{cohort_j}: birth year of samples
 \item \code{location_i}, \code{location_j}: of sampling
@@ -48,4 +48,6 @@ as_hsp(samples)
 }
 \seealso{
 \code{\link[=as_hsp2]{as_hsp2()}} for the extended HSP format.
+
+\code{\link[=find_kinship]{find_kinship()}} to count kinship within samples.
 }

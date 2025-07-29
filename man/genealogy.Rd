@@ -5,7 +5,7 @@
 \alias{gather_segments}
 \alias{count_uncoalesced}
 \alias{annotate_sampled}
-\title{Functions to generate gene genealogy from sample family table}
+\title{Generate gene genealogy from samples}
 \usage{
 make_gene_genealogy(samples)
 
@@ -16,19 +16,43 @@ count_uncoalesced(genealogy)
 annotate_sampled(genealogy)
 }
 \arguments{
-\item{samples}{A data.frame: \code{sample_family} or output from \code{\link[=gather_segments]{gather_segments()}}.}
+\item{samples}{A data.frame: \code{sample_family} or its tranfromation by \code{\link[=gather_segments]{gather_segments()}}.
+Using the latter will improve performance when the function is called many times,
+e.g., in \code{\link[=make_snp]{make_snp()}}.}
 
 \item{genealogy}{An output from \code{\link[=make_gene_genealogy]{make_gene_genealogy()}}.}
 }
-\description{
-\code{\link[=make_gene_genealogy]{make_gene_genealogy()}} generates a random gene genealogy from a table.
+\value{
+An igraphlite object with \code{genealogy} subclass.
+
+\code{\link[=gather_segments]{gather_segments()}} transforms an individual-based \code{sample_family}
+into a segment-based table.
+
+\code{\link[=count_uncoalesced]{count_uncoalesced()}} returns the count of uncoalesced roots of the genealogy.
+
+\code{\link[=annotate_sampled]{annotate_sampled()}} adds the "sampled" edge attribute to the genealogy:
+\code{TRUE} if sampled, \code{FALSE} if upstream of samples, \code{NA} if unrelated.
 }
-\details{
-\code{\link[=gather_segments]{gather_segments()}} transforms an individual-based \code{sample_family} into
-a segment-based table.
+\description{
+An individual-based family tree stored in \code{sample_family} is transformed
+into a gene-based table with \code{\link[=gather_segments]{gather_segments()}}.
+Then, the ancestry of each gene/segment is randomly assigned in \code{\link[=make_gene_genealogy]{make_gene_genealogy()}}.
+Sampled segments and their ancestors can be annotated with \code{\link[=annotate_sampled]{annotate_sampled()}}.
+}
+\examples{
+set.seed(666)
+result = tekka("-y20 -l2 --sa 2,2 --sj 2,2")
+samples = result$sample_family[[1L]]
+segments = gather_segments(samples)
+segments
 
-\code{\link[=count_uncoalesced]{count_uncoalesced()}} counts uncoalesced roots of the samples.
+genealogy = make_gene_genealogy(segments)
+genealogy
 
-\code{\link[=annotate_sampled]{annotate_sampled()}} adds "sampled" edge attribute: \code{TRUE} if sampled,
-\code{FALSE} if upstream of samples, \code{NA} if unrelated.
+count_uncoalesced(genealogy)
+
+annotate_sampled(genealogy)
+}
+\seealso{
+\code{\link[=make_snp]{make_snp()}} for SNP generation using genealogy.
 }

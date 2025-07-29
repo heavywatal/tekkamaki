@@ -3,12 +3,29 @@
 \name{tekka_path}
 \alias{tekka_path}
 \alias{tekka_version}
-\title{Get the path to the tekka installation.}
+\title{Get information about the \code{tekka} executable}
 \usage{
 tekka_path()
 
 tekka_version()
 }
+\value{
+\code{tekka_path()} returns the path to the \code{tekka} executable.
+
+\code{tekka_version()} returns the version of the \code{tekka} executable.
+}
 \description{
-Get the path to the tekka installation.
+The simulator \code{tekka} is a command-line tool written in C++.
+The executable is built and installed along with this R package
+unless the pre-installed one was found during the package installation.
+}
+\examples{
+\dontrun{
+tekka_path()
+
+tekka_version()
+}
+}
+\seealso{
+\code{\link[=tekka]{tekka()}} to run the simulator.
 }
