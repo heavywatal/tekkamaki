@@ -20,7 +20,7 @@
 #' @export
 #' @examples
 #' set.seed(666)
-#' tekka("--help")
+#' # tekka("--help")
 #'
 #' result = tekka("-y20 -l2 --sa 2,2 --sj 2,2")
 #' result |> dplyr::select(!"outdir")
