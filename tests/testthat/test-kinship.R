@@ -15,10 +15,7 @@ test_that("POP and HSP work", {
   set.seed(42L)
   result = tekka("-R4000 -S0 -y40 -l4 --sa 4,4 --sj 4,4")
   samples = result$sample_family[[1L]]
-  captured = samples |>
-    dplyr::filter(!is.na(.data$capture_year)) |>
-    dplyr::mutate(capture_age = .data$capture_year - .data$birth_year) |>
-    dplyr::rename(cohort = "birth_year")
+  captured = samples |> filter_sampled()
   nsam = nrow(captured)
   hsp = expect_silent(as_hsp(samples))
   hsp2 = expect_silent(as_hsp2(samples))

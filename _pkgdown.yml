@@ -9,16 +9,19 @@ reference:
   - tekka
   - tekka_path
   - read_tekka
-  - make_gene_genealogy
-  - make_snp
-  - as_vcf
 - title: Kinship
   contents:
   - find_kinship
   - starts_with("as_hsp")
   - starts_with("as_pop")
+  - starts_with("as_igraph")
+- title: Generate SNPs
+  contents:
+  - make_gene_genealogy
+  - make_snp
+  - as_vcf
 - title: Misc.
   contents:
-  - starts_with("as_igraph")
+  - count_sampled
   - starts_with("augment")
   - plot_parameters_json

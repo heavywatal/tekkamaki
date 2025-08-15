@@ -23,10 +23,7 @@
 #' samples = result$sample_family[[1L]]
 #' as_hsp(samples)
 as_hsp = function(samples) {
-  captured = dplyr::filter(samples, !is.na(.data$capture_year)) |>
-    dplyr::mutate(capture_age = .data$capture_year - .data$birth_year) |>
-    dplyr::rename(cohort = "birth_year") |>
-    dplyr::select(!"capture_year")
+  captured = filter_sampled(samples)
   comps = count_hsp_comps(captured)
   count_hsp(captured) |>
     dplyr::right_join(comps, by = hsp_keys) |>

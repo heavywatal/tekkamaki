@@ -23,9 +23,7 @@
 #' samples = result$sample_family[[1L]]
 #' as_pop(samples)
 as_pop = function(samples) {
-  captured = dplyr::filter(samples, !is.na(.data$capture_year)) |>
-    dplyr::mutate(capture_age = .data$capture_year - .data$birth_year) |>
-    dplyr::rename(cohort = "birth_year")
+  captured = filter_sampled(samples)
   comps = count_pop_comps(captured)
   pop = count_pops(captured) |>
     dplyr::right_join(comps, by = pop_keys) |>
