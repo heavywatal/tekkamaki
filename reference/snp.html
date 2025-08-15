@@ -123,7 +123,8 @@ illustrated like this:
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">666</span><span class="op">)</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">RNGkind</a></span><span class="op">(</span><span class="st">"L'Ecuyer-CMRG"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">666</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">result</span> <span class="op">=</span> <span class="fu"><a href="tekka.html">tekka</a></span><span class="op">(</span><span class="st">"-y20 -l2 --sa 2,2 --sj 2,2"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">samples</span> <span class="op">=</span> <span class="va">result</span><span class="op">$</span><span class="va">sample_family</span><span class="op">[[</span><span class="fl">1L</span><span class="op">]</span><span class="op">]</span></span></span>
 <span class="r-in"><span><span class="va">segments</span> <span class="op">=</span> <span class="fu"><a href="genealogy.html">gather_segments</a></span><span class="op">(</span><span class="va">samples</span><span class="op">)</span></span></span>
@@ -131,19 +132,19 @@ illustrated like this:
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">place_mutations</span><span class="op">(</span><span class="va">genealogy</span>, <span class="fl">3L</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 'data.frame':	32 obs. of  3 variables:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ : int  1 0 0 0 0 0 0 0 0 0 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  $ : int  0 0 0 1 0 0 0 0 0 0 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ : int  0 0 0 0 0 0 0 0 0 0 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  $ : int  0 0 0 0 0 0 0 0 0 0 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ : int  0 0 0 0 0 0 0 0 0 0 ...</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">ss</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>chr1 <span class="op">=</span> <span class="fl">3</span>, chr2 <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">make_snp</span><span class="op">(</span><span class="va">segments</span>, <span class="va">ss</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> List of 2</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ chr1:'data.frame':	32 obs. of  3 variables:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ : int [1:32] 0 0 0 0 0 0 0 0 0 0 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ : int [1:32] 0 0 0 1 0 0 0 0 0 0 ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ : int [1:32] 0 0 0 0 0 1 0 0 0 0 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ : int [1:32] 0 0 0 0 0 0 0 0 0 0 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ : int [1:32] 0 0 0 0 0 0 0 0 0 0 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ chr2:'data.frame':	32 obs. of  2 variables:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ : int [1:32] 1 0 0 0 0 0 0 0 0 0 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ : int [1:32] 0 0 1 0 0 0 0 0 0 0 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ : int [1:32] 0 0 0 0 0 0 0 0 0 0 ...</span>
 </code></pre></div>
     </div>
