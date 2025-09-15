@@ -9,7 +9,7 @@ R interface to [tekka](https://github.com/heavywatal/tekka).
 
 - Unix-like OS (macOS, Linux, etc.)
 - C++17 compiler (clang++ >= Apple clang 11.0, g++ >= 9.1)
-- [CMake](https://cmake.org/) (>= 3.21.0)
+- [CMake](https://cmake.org/)
 
 ## Installation
 
