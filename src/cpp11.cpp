@@ -12,18 +12,10 @@ extern "C" SEXP _tekkamaki_tekka_path_config() {
     return cpp11::as_sexp(tekka_path_config());
   END_CPP11
 }
-// config.cpp
-cpp11::strings default_parameters_json_text();
-extern "C" SEXP _tekkamaki_default_parameters_json_text() {
-  BEGIN_CPP11
-    return cpp11::as_sexp(default_parameters_json_text());
-  END_CPP11
-}
 
 extern "C" {
 static const R_CallMethodDef CallEntries[] = {
-    {"_tekkamaki_default_parameters_json_text", (DL_FUNC) &_tekkamaki_default_parameters_json_text, 0},
-    {"_tekkamaki_tekka_path_config",            (DL_FUNC) &_tekkamaki_tekka_path_config,            0},
+    {"_tekkamaki_tekka_path_config", (DL_FUNC) &_tekkamaki_tekka_path_config, 0},
     {NULL, NULL, 0}
 };
 }

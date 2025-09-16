@@ -26,7 +26,7 @@ plot_parameters_json = function(obj = default_parameters_json()) {
 }
 
 default_parameters_json = function() {
-  txt = default_parameters_json_text()
+  txt = tekka("--json")
   parse_parameters_json(txt)
 }
 

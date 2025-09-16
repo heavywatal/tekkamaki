@@ -4,8 +4,3 @@
 cpp11::strings tekka_path_config() {
   return cpp11::writable::strings{R"(@exec_path@)"};
 }
-
-[[cpp11::register]]
-cpp11::strings default_parameters_json_text() {
-  return cpp11::writable::strings{R"(@default_parameters_json_text@)"};
-}

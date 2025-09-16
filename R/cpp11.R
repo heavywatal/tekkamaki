@@ -3,7 +3,3 @@
 tekka_path_config <- function() {
   .Call(`_tekkamaki_tekka_path_config`)
 }
-
-default_parameters_json_text <- function() {
-  .Call(`_tekkamaki_default_parameters_json_text`)
-}

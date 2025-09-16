@@ -32,8 +32,8 @@ tekka = function(args = character(0L), cache = NULL) {
   if (length(args) == 1L) {
     args = stringr::str_split_1(args, "\\s+")
   }
-  if ("--version" %in% args) {
-    return(system2(tekka_path(), "--version", stdout = TRUE))
+  if (any(c("--version", "--json") %in% args)) {
+    return(system2(tekka_path(), args, stdout = TRUE))
   }
   if (any(c("-h", "--help", "--default") %in% args)) {
     msg = system2(tekka_path(), args, stdout = TRUE)

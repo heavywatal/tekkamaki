@@ -1,6 +1,6 @@
 Package: tekkamaki
 Title: Individual-based simulator of pacific bluefin tuna
-Version: 0.8.3
+Version: 0.8.4
 Authors@R:
     person("Watal M.", "Iwasaki", , "heavywatal@gmail.com", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0002-4718-7605"))
@@ -39,5 +39,5 @@ Remotes:
 Config/testthat/edition: 3
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.3.2
+RoxygenNote: 7.3.3
 SystemRequirements: CMake (>= 3.28.0), glpk, gmp, libxml2
