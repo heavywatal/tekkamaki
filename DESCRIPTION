@@ -14,7 +14,7 @@ Imports:
     cubelyr (>= 1.0.2),
     dplyr (>= 1.1.4),
     generics (>= 0.1.4),
-    igraphlite (>= 0.10.16),
+    igraphlite (>= 1.0.0),
     jsonlite (>= 2.0.0),
     purrr (>= 1.1.0),
     readr (>= 2.1.5),

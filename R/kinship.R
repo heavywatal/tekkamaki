@@ -76,7 +76,7 @@ find_shortest_paths = function(graph, pairs) {
     dplyr::summarize(to = list(!!as.name("to")), .by = "from")
   .path = nested_pairs |>
     purrr::pmap(\(from, to) {
-      igraphlite::get_all_shortest_paths(graph, from, to, mode = 3)
+      igraphlite::get_all_shortest_paths(graph, from = from, to = to, mode = 3)
     })
   vnames = igraphlite::Vnames(graph)
   tibble::tibble(from = nested_pairs$from, path = .path) |>
@@ -112,7 +112,7 @@ count_updown = function(graph, from, to, order) {
   vlist = igraphlite::neighborhood(graph, c(from, to), order = order, mode = 2L)
   common_ancestors = intersect(vlist[[1L]], vlist[[2L]])
   distances = if (length(common_ancestors) > 0L) {
-    igraphlite::distances(graph, common_ancestors, c(from, to))
+    igraphlite::distances(graph, from = common_ancestors, to = c(from, to))
   } else {
     matrix(numeric(0L), nrow = 0L, ncol = 2L)
   }
