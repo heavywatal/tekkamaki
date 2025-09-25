@@ -1,6 +1,6 @@
 Package: tekkamaki
 Title: Individual-based simulator of pacific bluefin tuna
-Version: 0.8.4
+Version: 0.9.0
 Authors@R:
     person("Watal M.", "Iwasaki", , "heavywatal@gmail.com", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0002-4718-7605"))
@@ -26,7 +26,7 @@ Suggests:
     conflicted,
     covr,
     cowplot,
-    ggplot2,
+    ggplot2 (>= 4.0.0),
     knitr,
     rmarkdown,
     testthat (>= 3.2.3)

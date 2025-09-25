@@ -16,7 +16,7 @@ count_uncoalesced(genealogy)
 annotate_sampled(genealogy)
 }
 \arguments{
-\item{samples}{A data.frame: \code{sample_family} or its tranfromation by \code{\link[=gather_segments]{gather_segments()}}.
+\item{samples}{A data.frame: \code{sample_family} or its transformation by \code{\link[=gather_segments]{gather_segments()}}.
 Using the latter will improve performance when the function is called many times,
 e.g., in \code{\link[=make_snp]{make_snp()}}.}
 
@@ -41,7 +41,7 @@ Sampled segments and their ancestors can be annotated with \code{\link[=annotate
 }
 \examples{
 set.seed(666)
-result = tekka("-y20 -l2 --sa 2,2 --sj 2,2")
+result = tekka("-y25 -l2 --sa 2,2 --sj 2,2")
 samples = result$sample_family[[1L]]
 segments = gather_segments(samples)
 segments

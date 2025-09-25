@@ -10,7 +10,7 @@
 #' @export
 #' @examples
 #' set.seed(666)
-#' result = tekka("-y20 -l2 --sa 2,2 --sj 2,2")
+#' result = tekka("-y25 -l2 --sa 2,2 --sj 2,2")
 #' samples = result$sample_family[[1L]]
 #' count_sampled(samples)
 count_sampled = function(samples) {

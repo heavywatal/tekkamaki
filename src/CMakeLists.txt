@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.28)
 project($ENV{R_PACKAGE_NAME}
-  VERSION 0.8.4
+  VERSION 0.9.0
   LANGUAGES CXX)
 
 include(CMakePrintHelpers)

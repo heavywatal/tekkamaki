@@ -32,7 +32,7 @@ it is read without calling \code{tekka}.
 set.seed(666)
 # tekka("--help")
 
-result = tekka("-y20 -l2 --sa 2,2 --sj 2,2")
+result = tekka("-y25 -l2 --sa 2,2 --sj 2,2")
 result |> dplyr::select(!"outdir")
 
 result$sample_family[[1L]]

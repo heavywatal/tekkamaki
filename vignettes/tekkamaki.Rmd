@@ -16,12 +16,12 @@ library(conflicted)
 library(tekkamaki)
 library(dplyr)
 library(ggplot2)
-grDevices::palette("Okabe-Ito")
-options(
-  ggplot2.continuous.colour = "viridis",
-  ggplot2.continuous.fill = "viridis",
-  ggplot2.discrete.colour = grDevices::palette()[-1],
-  ggplot2.discrete.fill = grDevices::palette()[-1]
+palette_discrete = grDevices::palette.colors(palette = "Okabe-Ito")[-1]
+theme_palette = ggplot2::theme(
+  palette.colour.continuous = "viridis",
+  palette.fill.continuous = "viridis",
+  palette.colour.discrete = palette_discrete,
+  palette.fill.discrete = palette_discrete
 )
 ```
 
@@ -52,6 +52,7 @@ ggplot(df) +
   aes(time, count) +
   geom_path(aes(colour = age, group = age)) +
   facet_grid(vars(location)) +
-  theme_bw() +
+  theme_bw(base_size = 12) +
+  theme_palette +
   theme(legend.position = "top")
 ```

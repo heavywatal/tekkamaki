@@ -4,7 +4,7 @@
 #' into a gene-based table with [gather_segments()].
 #' Then, the ancestry of each gene/segment is randomly assigned in [make_gene_genealogy()].
 #' Sampled segments and their ancestors can be annotated with [annotate_sampled()].
-#' @param samples A data.frame: `sample_family` or its tranfromation by [gather_segments()].
+#' @param samples A data.frame: `sample_family` or its transformation by [gather_segments()].
 #' Using the latter will improve performance when the function is called many times,
 #' e.g., in [make_snp()].
 #' @returns An igraphlite object with `genealogy` subclass.
@@ -13,7 +13,7 @@
 #' @export
 #' @examples
 #' set.seed(666)
-#' result = tekka("-y20 -l2 --sa 2,2 --sj 2,2")
+#' result = tekka("-y25 -l2 --sa 2,2 --sj 2,2")
 #' samples = result$sample_family[[1L]]
 #' segments = gather_segments(samples)
 #' segments

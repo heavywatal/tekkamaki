@@ -15,12 +15,12 @@ knitr::opts_chunk$set(fig.alt = " ")
 library(conflicted)
 library(tekkamaki)
 library(ggplot2)
-grDevices::palette("Okabe-Ito")
-options(
-  ggplot2.continuous.colour = "viridis",
-  ggplot2.continuous.fill = "viridis",
-  ggplot2.discrete.colour = grDevices::palette()[-1],
-  ggplot2.discrete.fill = grDevices::palette()[-1]
+palette_discrete = grDevices::palette.colors(palette = "Okabe-Ito")[-1]
+theme_palette = ggplot2::theme(
+  palette.colour.continuous = "viridis",
+  palette.fill.continuous = "viridis",
+  palette.colour.discrete = palette_discrete,
+  palette.fill.discrete = palette_discrete
 )
 ```
 
@@ -40,6 +40,7 @@ genealogy = make_gene_genealogy(samples) |> print()
 #| fig-width: 10
 plot(genealogy) +
   theme_void() +
+  theme_palette +
   theme(legend.position = "top")
 ```
 
