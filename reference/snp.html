@@ -21,7 +21,7 @@ The number of CPU cores used can be configured via mc.cores option."><meta prope
 
     <a class="navbar-brand me-2" href="../index.html">tekkamaki</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.8.4</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -76,7 +76,7 @@ The number of CPU cores used can be configured via <code>mc.cores</code> option.
 
 
 <dl><dt id="arg-samples">samples<a class="anchor" aria-label="anchor" href="#arg-samples"></a></dt>
-<dd><p>A data.frame: <code>sample_family</code> or its tranfromation by <code><a href="genealogy.html">gather_segments()</a></code>.
+<dd><p>A data.frame: <code>sample_family</code> or its transformation by <code><a href="genealogy.html">gather_segments()</a></code>.
 Using the latter will improve performance when the function is called many times,
 e.g., in <code>make_snp()</code>.</p></dd>
 
@@ -125,7 +125,7 @@ illustrated like this:
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">RNGkind</a></span><span class="op">(</span><span class="st">"L'Ecuyer-CMRG"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">666</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">result</span> <span class="op">=</span> <span class="fu"><a href="tekka.html">tekka</a></span><span class="op">(</span><span class="st">"-y20 -l2 --sa 2,2 --sj 2,2"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">result</span> <span class="op">=</span> <span class="fu"><a href="tekka.html">tekka</a></span><span class="op">(</span><span class="st">"-y25 -l2 --sa 2,2 --sj 2,2"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">samples</span> <span class="op">=</span> <span class="va">result</span><span class="op">$</span><span class="va">sample_family</span><span class="op">[[</span><span class="fl">1L</span><span class="op">]</span><span class="op">]</span></span></span>
 <span class="r-in"><span><span class="va">segments</span> <span class="op">=</span> <span class="fu"><a href="genealogy.html">gather_segments</a></span><span class="op">(</span><span class="va">samples</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">genealogy</span> <span class="op">=</span> <span class="fu"><a href="genealogy.html">make_gene_genealogy</a></span><span class="op">(</span><span class="va">segments</span><span class="op">)</span></span></span>
@@ -140,11 +140,11 @@ illustrated like this:
 <span class="r-in"><span><span class="fu">make_snp</span><span class="op">(</span><span class="va">segments</span>, <span class="va">ss</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> List of 2</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ chr1:'data.frame':	32 obs. of  3 variables:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ : int [1:32] 0 0 0 1 0 0 0 0 0 0 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ : int [1:32] 0 0 0 0 0 0 0 1 0 0 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ : int [1:32] 0 0 0 0 0 0 0 0 0 0 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ : int [1:32] 0 0 0 0 0 0 0 0 0 0 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  $ chr2:'data.frame':	32 obs. of  2 variables:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ : int [1:32] 0 0 1 0 0 0 0 0 0 0 ...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ : int [1:32] 1 0 0 0 0 0 0 0 0 0 ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ..$ : int [1:32] 0 0 0 0 0 0 0 0 0 0 ...</span>
 </code></pre></div>
     </div>
