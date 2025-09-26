@@ -11,7 +11,7 @@ cmake_print_variables(CMAKE_CURRENT_SOURCE_DIR)
 
 set(git_tag "$ENV{TEKKA_GIT_TAG}")
 if(NOT git_tag)
-  set(git_tag 487b48e507185cd317ba692a101157a00316092e)
+  set(git_tag 533da8e567c810805c43a2511ef4252ab6d6a79d)
   set(find_package_args FIND_PACKAGE_ARGS ${PROJECT_VERSION})
 endif()
 FetchContent_Declare(tekka
