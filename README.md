@@ -18,10 +18,12 @@ R interface to [tekka](https://github.com/heavywatal/tekka).
 pak::pak("heavywatal/tekkamaki")
 ```
 
-The code above tries to find and use an installed `tekka` in your system.
-If it is too old or not found, [the latest version](https://github.com/heavywatal/tekka/tags) will be installed.
+The code above tries to find and use an pre-installed `tekka` in your system.
+If it is too old or not found, a compatible version will be installed automatically.
+Manual installation by `brew install heavywatal/tap/tekka` is therefore unnecessary,
+but may be useful to reduce the cost of repetitive installation of `tekkamaki`.
 
-To use a bleeding edge (`HEAD`) or some specific revision, set the environment variable `TEKKA_GIT_TAG` before installation:
+To ignore pre-installed `tekka` and build a bleeding edge (`HEAD`) or some specific revision from source, set the environment variable `TEKKA_GIT_TAG` before installation:
 ```r
 Sys.setenv(TEKKA_GIT_TAG = "HEAD")
 ```
