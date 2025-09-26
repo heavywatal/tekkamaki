@@ -29,7 +29,7 @@
 
     <a class="navbar-brand me-2" href="index.html">tekkamaki</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.9.0.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -82,8 +82,8 @@
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># install.packages("pak")</span></span>
 <span><span class="fu">pak</span><span class="fu">::</span><span class="fu"><a href="https://pak.r-lib.org/reference/pak.html" class="external-link">pak</a></span><span class="op">(</span><span class="st">"heavywatal/tekkamaki"</span><span class="op">)</span></span></code></pre></div>
-<p>The code above tries to find and use an installed <code>tekka</code> in your system. If it is too old or not found, <a href="https://github.com/heavywatal/tekka/tags" class="external-link">the latest version</a> will be installed.</p>
-<p>To use a bleeding edge (<code>HEAD</code>) or some specific revision, set the environment variable <code>TEKKA_GIT_TAG</code> before installation:</p>
+<p>The code above tries to find and use an pre-installed <code>tekka</code> in your system. If it is too old or not found, a compatible version will be installed automatically. Manual installation by <code>brew install heavywatal/tap/tekka</code> is therefore unnecessary, but may be useful to reduce the cost of repetitive installation of <code>tekkamaki</code>.</p>
+<p>To ignore pre-installed <code>tekka</code> and build a bleeding edge (<code>HEAD</code>) or some specific revision from source, set the environment variable <code>TEKKA_GIT_TAG</code> before installation:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Sys.setenv.html" class="external-link">Sys.setenv</a></span><span class="op">(</span>TEKKA_GIT_TAG <span class="op">=</span> <span class="st">"HEAD"</span><span class="op">)</span></span></code></pre></div>
 <p>The installation of <code>tekka</code> and <code>tekkamaki</code> can be checked with the following commands:</p>
