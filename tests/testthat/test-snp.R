@@ -17,10 +17,10 @@ test_that("genealogy methods and make_snp() work", {
 
   nsam = sum(!is.na(samples$capture_year))
   ss = c(2L, 3L)
-  m = make_snp_chromosome(genealogy, ss[1L]) |>
-    expect_silent()
-  expect_identical(dim(m), c(2L * nsam, ss[1L]))
-  l = make_snp(samples, ss = ss) |>
+  make_snp_chromosome(genealogy, ss[1L]) |>
+    expect_silent() |>
+    expect_shape(dim = c(2L * nsam, ss[1L]))
+  make_snp(samples, ss = ss) |>
     expect_silent() |>
     expect_length(length(ss))
 })

@@ -6,13 +6,13 @@ test_that("vcf works", {
   ss = c(2L, 1L)
   segsites = sum(ss)
   snp = make_snp(samples, ss)
-  vcf_gt = as_vcf_gt(Reduce(cbind, snp))
-  expect_identical(dim(vcf_gt), c(segsites, 1L))
+  vcf_gt = as_vcf_gt(Reduce(cbind, snp)) |>
+    expect_shape(dim = c(segsites, 1L))
   expect_identical(as_vcf_gt(vcf_gt), vcf_gt)
   vcf = as_vcf(snp) |>
     add_pos_id() |>
-    expect_s3_class("data.frame")
-  expect_identical(dim(vcf), c(segsites, 9L + 1L))
+    expect_s3_class("data.frame") |>
+    expect_shape(dim = c(segsites, 9L + 1L))
   expect_identical(as_vcf_gt(vcf), vcf_gt)
   vcf |>
     separate_gt() |>

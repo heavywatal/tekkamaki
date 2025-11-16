@@ -29,7 +29,7 @@ Suggests:
     ggplot2 (>= 4.0.0),
     knitr,
     rmarkdown,
-    testthat (>= 3.2.3)
+    testthat (>= 3.3.0)
 LinkingTo:
     cpp11
 VignetteBuilder:
