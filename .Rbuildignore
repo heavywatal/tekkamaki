@@ -3,11 +3,13 @@
 ^\.travis\.yml$
 ^\.vscode$
 ^Meta$
-^doc$
+^build$
 ^codecov\.yml$
+^doc$
 ^docs$
 ^data-raw$
 ^pkgdown$
 ^_pkgdown\.yml$
+^\.cache$
 ^\.github$
 ^LICENSE\.md$
