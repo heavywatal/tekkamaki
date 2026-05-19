@@ -12,8 +12,8 @@ These objects are imported from other packages. Follow the links
 below to see their documentation.
 
 \describe{
-  \item{generics}{\code{\link[generics]{augment}}}
+  \item{generics}{\code{\link[generics:augment]{augment()}}}
 
-  \item{igraphlite}{\code{\link[igraphlite:conversion]{as_igraph}}}
+  \item{igraphlite}{\code{\link[igraphlite:as_igraph]{as_igraph()}}}
 }}
 

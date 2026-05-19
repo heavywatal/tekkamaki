@@ -9,7 +9,7 @@
 \arguments{
 \item{x}{A \code{sample_family} data.frame in the output of \code{\link[=tekka]{tekka()}}.}
 
-\item{...}{Additional arguments passed to \code{\link[igraphlite:conversion-impl]{igraphlite::graph_from_data_frame()}}.}
+\item{...}{Additional arguments passed to \code{\link[igraphlite:graph_from_data_frame]{igraphlite::graph_from_data_frame()}}.}
 }
 \description{
 Connections among samples and their ancestors are recorded in
