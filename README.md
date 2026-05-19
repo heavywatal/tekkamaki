@@ -1,7 +1,9 @@
 # tekkamaki <img src="man/figures/logo.svg" align="right" height=140/>
 
+<!-- badges: start -->
+[![Codecov test coverage](https://codecov.io/gh/heavywatal/tekkamaki/graph/badge.svg)](https://app.codecov.io/gh/heavywatal/tekkamaki)
 [![R-CMD-check](https://github.com/heavywatal/tekkamaki/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/heavywatal/tekkamaki/actions/workflows/R-CMD-check.yaml)
-[![codecov](https://codecov.io/gh/heavywatal/tekkamaki/graph/badge.svg?token=IRpj1vyfrZ)](https://codecov.io/gh/heavywatal/tekkamaki)
+<!-- badges: end -->
 
 R interface to [tekka](https://github.com/heavywatal/tekka).
 
