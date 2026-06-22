@@ -9,16 +9,19 @@ include(GNUInstallDirs)
 set(CMAKE_VERBOSE_MAKEFILE ON)
 cmake_print_variables(CMAKE_CURRENT_SOURCE_DIR)
 
-set(git_tag "$ENV{TEKKA_GIT_TAG}")
-if(NOT git_tag)
-  set(git_tag 533da8e567c810805c43a2511ef4252ab6d6a79d)
-  set(find_package_args FIND_PACKAGE_ARGS ${PROJECT_VERSION})
+set(repo_url https://github.com/heavywatal/tekka)
+if(DEFINED ENV{TEKKA_GIT_TAG})
+  FetchContent_Declare(tekka
+    GIT_REPOSITORY ${repo_url}.git
+    GIT_TAG $ENV{TEKKA_GIT_TAG}
+  )
+else()
+  FetchContent_Declare(tekka
+    URL ${repo_url}/archive/refs/tags/v${PROJECT_VERSION}.tar.gz
+    URL_HASH SHA256=d74e7e9e94d770ff9fff570c3ff31dfd5170ed0aa422ccf99964889d0e6c1f16
+    FIND_PACKAGE_ARGS ${PROJECT_VERSION}
+  )
 endif()
-FetchContent_Declare(tekka
-  GIT_REPOSITORY https://github.com/heavywatal/tekka.git
-  GIT_TAG ${git_tag}
-  ${find_package_args}
-)
 
 set(CMAKE_BUILD_TYPE Release)
 set(CMAKE_INSTALL_BINDIR "exec")
