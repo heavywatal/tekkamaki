@@ -33,7 +33,13 @@ tekka_version = function() {
   v_exe = tekka("--version")
   v_pkg = utils::packageVersion("tekkamaki") |> as.character()
   if (extract_release(v_exe) != extract_release(v_pkg)) {
-    warning("tekka ", v_exe, " may be incompatible with tekkamaki ", v_pkg, call. = FALSE)
+    warning(
+      "tekka ",
+      v_exe,
+      " may be incompatible with tekkamaki ",
+      v_pkg,
+      call. = FALSE
+    )
   }
   v_exe
 }

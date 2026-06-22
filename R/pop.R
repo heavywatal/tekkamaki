@@ -46,9 +46,12 @@ write_pop = function(x, path = "pop.txt") {
 #' @rdname pop
 #' @export
 read_pop = function(path) {
-  x = readr::read_tsv(path,
+  x = readr::read_tsv(
+    path,
     col_names = c(pop_keys, "pops", "comps"),
-    col_types = "iiiiii", comment = "#", show_col_types = FALSE
+    col_types = "iiiiii",
+    comment = "#",
+    show_col_types = FALSE
   )[]
   class(x) = c("pop", class(x))
   x
@@ -68,7 +71,13 @@ count_pops = function(captured) {
     dplyr::filter(.data$id %in% parents$id)
   dplyr::bind_rows(offspring_with_mother, offspring_with_father) |>
     dplyr::left_join(parents, by = "id") |>
-    dplyr::count(.data$cohort, .data$capture_year, .data$capture_age, .data$location, name = "pops")
+    dplyr::count(
+      .data$cohort,
+      .data$capture_year,
+      .data$capture_age,
+      .data$location,
+      name = "pops"
+    )
 }
 
 count_pop_comps = function(captured) {
@@ -76,9 +85,11 @@ count_pop_comps = function(captured) {
     dplyr::count(.data$capture_year, .data$capture_age, .data$location, name = "n_i")
   captured |>
     dplyr::count(.data$cohort, name = "n_j") |>
-    dplyr::mutate(nested = purrr::map(.data$cohort, \(x) {
-      dplyr::filter(cnt_adults, x > .data$capture_year - .data$capture_age)
-    })) |>
+    dplyr::mutate(
+      nested = purrr::map(.data$cohort, \(x) {
+        dplyr::filter(cnt_adults, x > .data$capture_year - .data$capture_age)
+      })
+    ) |>
     tidyr::unnest("nested") |>
     dplyr::mutate(comps = .data$n_i * .data$n_j) |>
     dplyr::select(dplyr::all_of(pop_keys), "comps")

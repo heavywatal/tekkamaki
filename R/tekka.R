@@ -52,7 +52,9 @@ tekka = function(args = character(0L), cache = NULL) {
 sanitize_cache_dir = function(cache) {
   if (isTRUE(cache)) {
     cache = "."
-  } else if (length(cache) != 1L || !is.character(cache) || is.na(cache) || !nzchar(cache)) {
+  } else if (
+    length(cache) != 1L || !is.character(cache) || is.na(cache) || !nzchar(cache)
+  ) {
     cache = tempdir()
   }
   cache

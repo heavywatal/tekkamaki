@@ -47,7 +47,8 @@ as_vcf.default = function(x, phased = TRUE, chrom = NA_character_, pos = NA_inte
 as_vcf.list = function(x, phased = TRUE, ...) {
   purrr::imap(x, \(.x, .i) {
     as_vcf(.x, phased = phased, chrom = as.character(.i))
-  }) |> purrr::list_rbind()
+  }) |>
+    purrr::list_rbind()
 }
 
 #' @export

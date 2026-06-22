@@ -48,7 +48,13 @@ find_kinship = function(samples, order = 4L, experimental = FALSE) {
 
 neighbor_pairs = function(graph, vids, order) {
   # NOTE: mode = 3L can include down-up pairs
-  kins = igraphlite::neighborhood(graph, vids, order = order, mode = 3L, mindist = 1L) |>
+  kins = igraphlite::neighborhood(
+    graph,
+    vids,
+    order = order,
+    mode = 3L,
+    mindist = 1L
+  ) |>
     lapply(filter_in_vids, vids = vids)
   tibble::tibble(from = vids, to = kins) |>
     tidyr::unnest("to") |>
@@ -65,8 +71,12 @@ find_kinship_shortest = function(samples, graph, pairs, order) {
   paths = find_shortest_paths(graph, pairs)
   birth_year = samples$birth_year[order(samples$id)]
   paths |>
-    dplyr::mutate(path = lapply(.data$path, \(x) as.integer(diff(birth_year[x]) < 0L))) |>
-    dplyr::filter(purrr::map_lgl(.data$path, \(x) length(rle(x)$lengths) < 3L & !identical(x, c(0L, 1L)))) |>
+    dplyr::mutate(
+      path = lapply(.data$path, \(x) as.integer(diff(birth_year[x]) < 0L))
+    ) |>
+    dplyr::filter(purrr::map_lgl(.data$path, \(x) {
+      length(rle(x)$lengths) < 3L & !identical(x, c(0L, 1L))
+    })) |>
     label_kinship()
 }
 

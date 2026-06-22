@@ -84,7 +84,9 @@ as_genealogy = function(x) {
 #' @rdname plot
 #' @export
 layout_demography = function(x) {
-  if ("to" %in% names(x)) x = dplyr::rename(x, id = "to")
+  if ("to" %in% names(x)) {
+    x = dplyr::rename(x, id = "to")
+  }
   x |>
     dplyr::distinct(.data$id, .data$birth_year) |>
     dplyr::mutate(x = dplyr::row_number(), .by = "birth_year") |>
@@ -101,7 +103,12 @@ plot.genealogy = function(x, ..., lwd = 0.5, cex = 5, pch = 16) {
   f = function(x) dplyr::filter(x, !is.na(.data$xend))
   ggplot2::ggplot(.df) +
     ggplot2::aes(.data$x, .data$y) +
-    ggplot2::geom_segment(data = f, ggplot2::aes(xend = .data$xend, yend = .data$yend), linewidth = lwd, alpha = 0.5) +
+    ggplot2::geom_segment(
+      data = f,
+      ggplot2::aes(xend = .data$xend, yend = .data$yend),
+      linewidth = lwd,
+      alpha = 0.5
+    ) +
     ggplot2::geom_point(ggplot2::aes(colour = .data$sampled), shape = pch, size = cex) +
     ggplot2::geom_text(ggplot2::aes(label = .data$label), size = cex * 0.5)
 }

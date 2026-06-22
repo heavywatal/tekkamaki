@@ -54,9 +54,12 @@ write_hsp = function(x, path = "hsp.txt") {
 #' @rdname hsp
 #' @export
 read_hsp = function(path) {
-  x = readr::read_tsv(path,
+  x = readr::read_tsv(
+    path,
     col_names = c(hsp_keys, "comps", "hsps"),
-    col_types = "iiiiii", skip = 5L, show_col_types = FALSE
+    col_types = "iiiiii",
+    skip = 5L,
+    show_col_types = FALSE
   )[]
   class(x) = c("hsp", class(x))
   x
@@ -116,7 +119,13 @@ count_coh_loc = function(x, name = NULL) {
         purrr::list_rbind()
     }) |>
     dplyr::ungroup() |>
-    dplyr::count(.data$cohort_i, .data$cohort_j, .data$location_i, .data$location_j, name = name)
+    dplyr::count(
+      .data$cohort_i,
+      .data$cohort_j,
+      .data$location_i,
+      .data$location_j,
+      name = name
+    )
 }
 
 count_hsp_comps = function(captured) {
@@ -131,9 +140,13 @@ count_hsp_comps = function(captured) {
     tidyr::unnest("df_i") |>
     tidyr::unnest("df_j") |>
     dplyr::filter(.data$cohloc_i <= .data$cohloc_j) |>
-    dplyr::mutate(comps = ifelse(
-      .data$cohloc_i == .data$cohloc_j, choose2(.data$n_i), .data$n_i * .data$n_j
-    )) |>
+    dplyr::mutate(
+      comps = ifelse(
+        .data$cohloc_i == .data$cohloc_j,
+        choose2(.data$n_i),
+        .data$n_i * .data$n_j
+      )
+    ) |>
     dplyr::select(!c("n_i", "n_j")) |>
     tidyr::separate("cohloc_i", c("cohort_i", "location_i"), convert = TRUE) |>
     tidyr::separate("cohloc_j", c("cohort_j", "location_j"), convert = TRUE)
@@ -142,8 +155,10 @@ count_hsp_comps = function(captured) {
 filter_sibs = function(captured) {
   captured |>
     dplyr::mutate(
-      share_father = duplicated(.data$father_id) | duplicated(.data$father_id, fromLast = TRUE),
-      share_mother = duplicated(.data$mother_id) | duplicated(.data$mother_id, fromLast = TRUE)
+      share_father = duplicated(.data$father_id) |
+        duplicated(.data$father_id, fromLast = TRUE),
+      share_mother = duplicated(.data$mother_id) |
+        duplicated(.data$mother_id, fromLast = TRUE)
     ) |>
     dplyr::filter(.data$share_father | .data$share_mother)
 }

@@ -39,21 +39,31 @@ write_pop2 = function(x, path = "pop2.tsv") {
 #' @rdname pop2
 #' @export
 read_pop2 = function(path) {
-  x = readr::read_tsv(path, col_types = "iiiiiiii", comment = "#", show_col_types = FALSE)[]
+  x = readr::read_tsv(
+    path,
+    col_types = "iiiiiiii",
+    comment = "#",
+    show_col_types = FALSE
+  )[]
   class(x) = c("pop2", class(x))
   x
 }
 
 pop2_keys = c(
-  "cohort_parent", "cohort_offspring",
-  "capture_age_parent", "capture_age_offspring",
-  "location_parent", "location_offspring"
+  "cohort_parent",
+  "cohort_offspring",
+  "capture_age_parent",
+  "capture_age_offspring",
+  "location_parent",
+  "location_offspring"
 )
 
 count_pops2 = function(captured) {
   parents = captured |>
     dplyr::select("id", "cohort", "capture_age", "location") |>
-    dplyr::filter(.data$id %in% captured$father_id | .data$id %in% captured$mother_id) |>
+    dplyr::filter(
+      .data$id %in% captured$father_id | .data$id %in% captured$mother_id
+    ) |>
     dplyr::rename_with(\(x) paste0(x, "_parent"), !"id")
   offspring_with_mother = captured |>
     dplyr::select(id = "mother_id", "cohort", "capture_age", "location") |>
@@ -72,9 +82,11 @@ count_pop2_comps = function(captured) {
   cnt_offspring = dplyr::rename_with(cnt, \(x) paste0(x, "_offspring"))
   cnt |>
     dplyr::rename_with(\(x) paste0(x, "_parent")) |>
-    dplyr::mutate(nested = purrr::map(.data$cohort_parent, \(x) {
-      dplyr::filter(cnt_offspring, .data$cohort_offspring > x)
-    })) |>
+    dplyr::mutate(
+      nested = purrr::map(.data$cohort_parent, \(x) {
+        dplyr::filter(cnt_offspring, .data$cohort_offspring > x)
+      })
+    ) |>
     tidyr::unnest("nested") |>
     dplyr::mutate(comps = .data$n_parent * .data$n_offspring) |>
     dplyr::select(dplyr::all_of(pop2_keys), "comps")

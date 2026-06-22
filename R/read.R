@@ -28,7 +28,12 @@ read_sample_family = function(file) {
 }
 
 read_tsv_int = function(file, ...) {
-  readr::read_tsv(file, col_types = readr::cols(.default = "i"), show_col_types = FALSE, ...)[]
+  readr::read_tsv(
+    file,
+    col_types = readr::cols(.default = "i"),
+    show_col_types = FALSE,
+    ...
+  )[]
 }
 
 read_conf = function(indir = getwd()) {

@@ -13,3 +13,4 @@
 ^\.cache$
 ^\.github$
 ^LICENSE\.md$
+^[.]?air[.]toml$

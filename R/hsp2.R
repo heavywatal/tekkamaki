@@ -47,7 +47,14 @@ read_hsp2 = function(path) {
   x
 }
 
-hsp2_keys = c("cohort_i", "cohort_j", "capture_age_i", "capture_age_j", "location_i", "location_j")
+hsp2_keys = c(
+  "cohort_i",
+  "cohort_j",
+  "capture_age_i",
+  "capture_age_j",
+  "location_i",
+  "location_j"
+)
 
 count_hsp2 = function(captured) {
   sibs = filter_sibs(captured)
@@ -79,9 +86,12 @@ count_coh_cap_loc = function(x, name = NULL) {
     }) |>
     dplyr::ungroup() |>
     dplyr::count(
-      .data$cohort_i, .data$cohort_j,
-      .data$capture_age_i, .data$capture_age_j,
-      .data$location_i, .data$location_j,
+      .data$cohort_i,
+      .data$cohort_j,
+      .data$capture_age_i,
+      .data$capture_age_j,
+      .data$location_i,
+      .data$location_j,
       name = name
     )
 }
@@ -90,7 +100,9 @@ count_hsp2_comps = function(captured) {
   cnt = captured |>
     dplyr::count(.data$cohort, .data$capture_age, .data$location) |>
     tidyr::unite("coh_age_loc", "cohort", "capture_age", "location") |>
-    dplyr::mutate(coh_age_loc = ordered(.data$coh_age_loc, levels = unique(.data$coh_age_loc)))
+    dplyr::mutate(
+      coh_age_loc = ordered(.data$coh_age_loc, levels = unique(.data$coh_age_loc))
+    )
   tibble::tibble(
     df_i = cnt |> dplyr::rename_with(\(x) paste0(x, "_i")) |> list(),
     df_j = cnt |> dplyr::rename_with(\(x) paste0(x, "_j")) |> list()
@@ -98,10 +110,22 @@ count_hsp2_comps = function(captured) {
     tidyr::unnest("df_i") |>
     tidyr::unnest("df_j") |>
     dplyr::filter(.data$coh_age_loc_i <= .data$coh_age_loc_j) |>
-    dplyr::mutate(comps = ifelse(
-      .data$coh_age_loc_i == .data$coh_age_loc_j, choose2(.data$n_i), .data$n_i * .data$n_j
-    )) |>
+    dplyr::mutate(
+      comps = ifelse(
+        .data$coh_age_loc_i == .data$coh_age_loc_j,
+        choose2(.data$n_i),
+        .data$n_i * .data$n_j
+      )
+    ) |>
     dplyr::select(!c("n_i", "n_j")) |>
-    tidyr::separate("coh_age_loc_i", c("cohort_i", "capture_age_i", "location_i"), convert = TRUE) |>
-    tidyr::separate("coh_age_loc_j", c("cohort_j", "capture_age_j", "location_j"), convert = TRUE)
+    tidyr::separate(
+      "coh_age_loc_i",
+      c("cohort_i", "capture_age_i", "location_i"),
+      convert = TRUE
+    ) |>
+    tidyr::separate(
+      "coh_age_loc_j",
+      c("cohort_j", "capture_age_j", "location_j"),
+      convert = TRUE
+    )
 }

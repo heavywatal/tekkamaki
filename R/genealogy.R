@@ -46,7 +46,8 @@ gather_segments = function(samples) {
   samples |>
     dplyr::select(!"location") |>
     dplyr::filter(.data$mother_id > 0L) |>
-    tidyr::pivot_longer(tidyr::all_of(id_cols),
+    tidyr::pivot_longer(
+      tidyr::all_of(id_cols),
       names_to = "homolog",
       names_transform = \(x) as.integer(factor(x, levels = id_cols)),
       values_to = "parent_id"

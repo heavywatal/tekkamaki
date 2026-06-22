@@ -57,13 +57,14 @@ make_snp = function(samples, ss) {
 make_snp_chromosome = function(genealogy, segsites) {
   plan = genealogy |> prepare_snp(segsites)
   v_sam = igraphlite::igraph_to(genealogy)[edge_sampled(genealogy)]
-  snp_tbls = plan |> purrr::pmap(\(segsites, vt) {
-    x = place_mutations(genealogy, segsites, v_sam)
-    if (length(vt) > 0L) {
-      recombination(genealogy, vt)
-    }
-    x
-  })
+  snp_tbls = plan |>
+    purrr::pmap(\(segsites, vt) {
+      x = place_mutations(genealogy, segsites, v_sam)
+      if (length(vt) > 0L) {
+        recombination(genealogy, vt)
+      }
+      x
+    })
   purrr::list_cbind(snp_tbls, name_repair = "minimal")
 }
 
@@ -96,7 +97,11 @@ prepare_snp = function(genealogy, segsites) {
   )
   nested = flat |>
     dplyr::mutate(group = cumsum(.data$segsites)) |>
-    dplyr::summarize(segsites = .data$segsites[1L], vt = list(.data$vt), .by = "group") |>
+    dplyr::summarize(
+      segsites = .data$segsites[1L],
+      vt = list(.data$vt),
+      .by = "group"
+    ) |>
     dplyr::select(!"group") |>
     dplyr::filter(.data$segsites > 0L)
   nested$vt[nrow(nested)] = list(integer(0))
