@@ -1,4 +1,4 @@
-# tekkamaki <img src="man/figures/logo.svg" align="right" height=140/>
+# tekkamaki <a href="https://heavywatal.github.io/tekkamaki/"><img src="man/figures/logo.svg" align="right" height="139" alt="tekkamaki website" /></a>
 
 <!-- badges: start -->
 [![Codecov test coverage](https://codecov.io/gh/heavywatal/tekkamaki/graph/badge.svg)](https://app.codecov.io/gh/heavywatal/tekkamaki)
